@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+
+/**
+ * Class User
+ */
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+{
+    protected $table = 'users';
+
+    public $timestamps = true;
+
+    protected $fillable = [
+        'corporate_id',
+        'email',
+        'password',
+        'first_name',
+        'last_name',
+        'summary',
+        'domicle_area',
+        'service_area',
+        'address',
+        'phone_number',
+        'gender',
+        'dob',
+        'profile_picture',
+        'job_title',
+        'job_function',
+        'job_seniority_level',
+        'training_method',
+        'training_style',
+        'mandays_fee',
+        'slug',
+        'last_online',
+        'is_verified',
+        'is_tour',
+        'remember_token'
+    ];
+
+    protected $guarded = [];
+
+
+}

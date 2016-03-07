@@ -1,0 +1,37 @@
+HACK:
+
+Ganti file yang namanya:
+src > Commands > MakeModelsCommands
+
+
+cari script berikut:
+
+$class = str_replace('{{table}}', 'protected $table = \'' . $table . '\';' .....
+
+tambah script berikut sebelum script sebelumnya:
+
+//CUSTOM HACKING
+
+        $arr = explode('_',$table);
+
+        $tableClass = '';
+
+        foreach($arr as $key)
+        {
+        	$tableClass .= ucfirst($key);
+        }
+
+        $tableClass .= 'Table';
+
+        $class = str_replace('{{tableClass}}', $tableClass, $class);
+
+        //END OF CUSTOM HACKING
+
+
+Save!
+
+Lalu, cari src > stubs > model.stub
+
+ubah DummyContent jadi namespace App/Models
+
+dan ubah DUmmyClass jadi {{tableClass}}
