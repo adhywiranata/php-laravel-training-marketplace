@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\General;
 use Illuminate\Http\Request;
 
+use DB;
+
 class GroupController extends Controller {
 
 	/**
@@ -36,150 +38,65 @@ class GroupController extends Controller {
 	*/
 	public function getGroups()
 	{
-		$groups_query =
-		[
-			"table"			=> "group",
-			"condition"	=>
-									[
-										"0"		=>
-													[
-														"column"			=>  "group.group_type_id",
-														"comparison"	=>	"=",
-														"value"				=>	2,
-													],
-										"1"		=>
-													[
-														"column"			=>  "group.group_profile_picture",
-														"comparison"	=>	"!=",
-														"value"				=>	"",
-													],
-										"2"		=>
-													[
-														"column"			=>  "group.group_profile_picture",
-														"comparison"	=>	"!=",
-														"value"				=>	"default.png",
-													],
-/*										"3"		=>
-													[
-														"column"			=>  "group.group_profile_picture",
-														"comparison"	=>	"!=",
-														"value"				=>	"spqs-logo-tagline.png",
-													],*/
-									],
-		];
-		$groups = General::Selects($groups_query)->get();
+		$groups =	DB::table('providers')
+	 					  ->where('providers.profile_picture', '!=', '')
+						  ->get();
 
 		$groups_data = array();
 		foreach($groups as $group):
 				// <!-- GROUP EXPERTISES
 				// Get Expertises Data
-				$group_expertises_query =
-				[
-					"table"			=> "tr_group_expertise",
-					"join"			=>
-											[
-												"expertise"	=>
-																[
-																	"statement"	=> "expertise.expertise_id = tr_group_expertise.expertise_id",
-																	"type"			=> "join",
-																],
-											],
-					"condition"	=>
-											[
-												"0"		=>
-															[
-																"column"			=>  "tr_group_expertise.group_id",
-																"comparison"	=>	"=",
-																"value"				=>	$group->group_id,
-															],
-											],
-				];
-				$group_expertises = General::Selects($group_expertises_query)->get();
+
+				$group_expertises =	DB::table('user_skill_nodes')
+													 ->join('skills', 'user_skill_nodes.skill_id', '=', 'skills.id')
+													 ->where('user_skill_nodes.owner_id', '=', $group->id)
+														->where('user_skill_nodes.owner_role_id', '=', 3)
+													 ->get();
 
 				$group_expertises_data  = array();
 				foreach($group_expertises as $group_expertise):
 					// Get Endorse Data
-					$group_endorses_query =
-					[
-						"table"			=> "tr_group_endorse",
-						"condition"	=>
-												[
-													"0"		=>
-																[
-																	"column"			=>  "tr_group_endorse.tr_group_expertise_id",
-																	"comparison"	=>	"=",
-																	"value"				=>	$group_expertise->tr_group_expertise_id,
-																],
-												],
-					];
-					$group_endorses = General::Selects($group_endorses_query)->get();
+					$group_endorses =	DB::table('user_skill_endorse_nodes')
+													 ->where('user_skill_endorse_nodes.user_skill_node_id', '=', $group_expertise->id)
+													 ->get();
 
 					$group_expertise_data  = array(
-						"expertise_name"		=> $group_expertise->expertise_name,
+						"expertise_name"		=> $group_expertise->skill_name,
 						"total_endorse"			=> count($group_endorses),
 					);
 					array_push($group_expertises_data,$group_expertise_data);
 				endforeach;
 				// USER EXPERTISES -->
 
+
 				//<!-- SPEAKING EXPERIENCE
-				$group_speaking_experience_query =
-				[
-					"table"		 	=> "tr_group_speaking_experience",
-					"condition"	=>
-											 [
-												"0"		=>
-															[
-																"column"			  =>  "tr_group_speaking_experience.group_id",
-																"comparison"	  =>	"=",
-																"value"					=>	$group->group_id,
-															],
-											 ],
-				];
-				$group_speaking_experience = General::Selects($group_speaking_experience_query)->get();
+				$group_speaking_experience =	DB::table('training_experiences')
+																		 ->where('training_experiences.owner_id', '=', $group->id)
+																		 ->where('training_experiences.owner_role_id', '=', 3)
+																		 ->get();
 				$total_group_speaking_experience_data = count($group_speaking_experience);
 				// SPEAKING EXPERIENCE -->
 
 				//<!-- LANGUAGE PROFIECIENCY
-				$group_languages_query =
-				[
-					"table"			=> "tr_group",
-					"join"			=>
-											[
-												"tr_language"	=>
-																[
-																	"statement"	=> "tr_group.user_id = tr_language.user_id",
-																	"type"			=> "join",
-																],
-											],
-					"condition"	=>
-											[
-												"0"		=>
-															[
-																"column"			=>  "tr_group.group_role_id",
-																"comparison"	=>	"=",
-																"value"				=>	2,
-															],
-												"1"		=>
-															[
-																"column"			=>  "tr_group.group_id",
-																"comparison"	=>	"=",
-																"value"				=>	$group->group_id,
-															],
-											],
-				];
-				$group_languages = General::Selects($group_languages_query)->groupBy('language_code')->get();
+
+				$group_languages =	DB::table('user_language_nodes')
+													 ->join('languages', 'user_language_nodes.language_id' ,'=', 'languages.id')
+													 ->where('user_language_nodes.owner_id', '=', $group->id)
+													 ->where('user_language_nodes.owner_role_id', '=', 3)
+													 ->get();
+
 
 				$group_languages_data = array();
 				foreach($group_languages as $group_language):
 					$group_language_data = array(
-						"language_name"		=> $group_language->language_code,
+						"language_name"		=> $group_language->language,
 					);
 					array_push($group_languages_data,$group_language_data);
 				endforeach;
 				// LANGUAGE PROFIECIENCY -->
 
 				//<!-- REVIEW
+				/*
 				$group_reviews_material_facility_query =
 				[
 					"table"			=> "tr_group",
@@ -294,34 +211,30 @@ class GroupController extends Controller {
 				endif;
 
 				$total_group_review_data = $flag_material_facility + $flag_delivery;
+				*/
 				// REVIEW -->
+				$average_material_score = "N/A";
+				$average_facility_score = "N/A";
+				$average_delivery_score = "N/A";
+				$average_group_review_score_data = "N/A";
+				$total_group_review_data = 0;
 
-				//CONNECTION
-				$group_followings_query =
-				[
-					"table"			=> "tr_follow_group",
-					"condition"	=>
-											[
-												"0"		=>
-															[
-																"column"			=>  "tr_follow_group.group_id",
-																"comparison"	=>	"=",
-																"value"				=>	$group->group_id,
-															],
-											],
-				];
-				$group_followings 					= General::Selects($group_followings_query)->get();
-				$total_group_following_data = count($group_followings);
+				//CONTACT
+				$group_contact 		=	DB::table('contacts')
+													 ->where('contacts.contact_owner_id', '=', $group->id)
+													 ->where('contacts.contact_owner_role_id', '=', 3)
+													 ->get();
+				$total_group_following_data = count($group_contact);
 
 				//ALL GROUP DATA
 				$group_data = array(
-					"user_id"														=> $group->group_id,
-					"name"															=> $group->group_name,
+					"user_id"														=> $group->id,
+					"name"															=> $group->provider_name,
 					"email"															=> $group->email,
-					"profile_picture"										=> $group->group_profile_picture,
+					"profile_picture"										=> $group->profile_picture,
 					"summary"														=> $group->summary,
 					"area"															=> "",
-					"slug"												  		=> $group->group_slug,
+					"slug"												  		=> $group->slug,
 					"language"													=> $group_languages_data,
 					"material_score"										=> $average_material_score,
 					"facility_score"										=> $average_facility_score,
