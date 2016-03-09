@@ -28,7 +28,7 @@
       -->
         <br/>
         <a href="#">{{$trainingExperience->company_name}}</a>
-        <p>Jakarta, {{ date("F jS Y",strtotime($trainingExperience->speaking_experience_date)) }}</p>
+        <p>Jakarta, {{ date("F jS Y",strtotime($trainingExperience->speaking_experience_start_date)) }}</p>
         <!--<p>Jakarta, May 23th 2015 at Great Place Hotel</p>-->
 
         <p class="description">

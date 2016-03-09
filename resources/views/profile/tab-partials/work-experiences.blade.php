@@ -17,19 +17,19 @@
       -->
       <!--<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">-->
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <a href="" class="title">{{$workExperience->work_experience_title}}</a>
+        <a href="" class="title">{{$workExperience->title}}</a>
         <!--<a href="" class="title">Marketing Manager</a>-->
         <!--
         <a href="#" class="btn btn-margin red-back pull-right">Delete</a>
         <a href="#" class="btn btn-margin green-back pull-right">Edit</a>
       -->
         <br/>
-        <a href="#">{{ $workExperience->group_name }}</a>
-        <p>{{ date("F jS Y",strtotime($workExperience->work_experience_start_date)) }} - {{ date("F jS Y",strtotime($workExperience->work_experience_end_date)) }}</p>
+        <a href="#">{{ $workExperience->corporate_name }}</a>
+        <p>{{ date("F jS Y",strtotime($workExperience->start_date)) }} - {{ date("F jS Y",strtotime($workExperience->end_date)) }}</p>
         <!--<p>May 23th 2015 - May 23th 2016 (1 year)</p>-->
 
         <p class="description">
-          {{ $workExperience->work_experience_description }}
+          {{ $workExperience->description }}
           <!--Trained 50 future leaders from Smartlearn University
           to teach them the way to be a successful entrepreneur.
           Each participants learned from how to build a business

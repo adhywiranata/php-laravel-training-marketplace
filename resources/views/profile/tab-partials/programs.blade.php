@@ -14,14 +14,13 @@
     <div class="row experience-grid">
       <div class="col-lg-12 col-md-10 col-sm-10 col-xs-10">
 
-        <a href="" class="title">{{$trainingProgramme->training_programme_title}}</a>
+        <a href="" class="title">{{$trainingProgramme->training_program_name_id}}</a>
         <!--<a href="" class="title">Marketing in Entrepreneurship</a>-->
         <!--
         <a href="#" class="btn btn-margin red-back pull-right">Delete</a>
         <a href="#" class="btn btn-margin green-back pull-right">Edit</a>
       -->
         <p class="description">
-        <?php echo $trainingProgramme->training_programme_description; ?>
         <!--
         <?php if($flag % 2 == 0){ ?>
           1. the history and basis of NLP (Neuro-Linguistic Programming)<br/>
