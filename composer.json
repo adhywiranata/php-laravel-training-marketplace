@@ -9,7 +9,8 @@
 		"intervention/image": "^2.3",
 		"laravel/socialite": "~2.0",
 		"socialiteproviders/linkedin": "^1.1",
-		"ignasbernotas/laravel-model-generator": "^1"
+		"ignasbernotas/laravel-model-generator": "^1",
+		"jenssegers/mongodb": "~2.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
