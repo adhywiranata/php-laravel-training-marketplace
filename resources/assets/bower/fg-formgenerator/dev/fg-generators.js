@@ -5,19 +5,22 @@
 */
 
 function Generator(data){
-  this.ids          = data['ids'];
-  this.classes      = data['classes'];
-  this.inputIndex   = data['inputIndex'];
-  this.label        = data['label'];
-  this.type         = data['type'];
-  this.name         = data['name'];
-  this.placeholder  = data['placeholder'];
-  this.labelList    = data['labelList'];
-  this.valList      = data['valList'];
-  this.currentVal   = data['currentVal'];
-  this.items        = data['items'];
-  this.multiple     = data['multiple'];
-  this.input        = '';
+  this.ids            = data['ids'];
+  this.classes        = data['classes'];
+  this.inputIndex     = data['inputIndex'];
+  this.label          = data['label'];
+  this.type           = data['type'];
+  this.name           = data['name'];
+  this.placeholder    = data['placeholder'];
+  this.labelList      = data['labelList'];
+  this.valList        = data['valList'];
+  this.currentVal     = data['currentVal'];
+  this.items          = data['items'];
+  this.multiple       = data['multiple'];
+  this.multipleChip   = data['multipleChip'];
+  this.getAjax        = data['getAjax'];
+  this.getAjaxColumn  = data['getAjaxColumn'];
+  this.input          = '';
   this.input += generateLabel(this.label,this.inputIndex);
 
   var multi_class = ''; //for multiplicity purpose
@@ -28,6 +31,13 @@ function Generator(data){
     this.input += '<input type="hidden" class="fg-input-multipler-hidden" name="' + this.name + '">';
     this.input += '</div>';
     multi_class = 'fg-input-multipler';
+  }
+
+  if(typeof this.multipleChip !== 'undefined' && this.multipleChip != '')
+  {
+    this.input += '<div class="fg-input-container-hidden">';
+    this.input += '<input type="hidden" class="fg-input-multipler-hidden" name="' + this.name + '">';
+    this.input += '</div>';
   }
 
   this.input += '<div class="fg-input-container ' + multi_class + '">';
@@ -51,10 +61,10 @@ function Generator(data){
       this.input += generatePassword(this.ids,this.classes,this.name,this.placeholder,this.currentVal);
       break;
     case "text-autocomplete":
-      this.input += generateAutocompleteText(this.ids,this.classes,this.name,this.placeholder,this.currentVal,this.items);
+      this.input += generateAutocompleteText(this.ids,this.classes,this.name,this.placeholder,this.currentVal,this.items, this.getAjax, this.getAjaxColumn);
       break;
-    case "text-autocomplete":
-      this.input += generateAutocompleteText(this.ids,this.classes,this.name,this.placeholder,this.currentVal,this.items);
+    case "text-autocomplete-long":
+      this.input += generateAutocompleteLongText(this.ids,this.classes,this.name,this.placeholder,this.currentVal,this.items, this.getAjax, this.getAjaxColumn);
       break;
     case "textarea":
       this.input += generateTextarea(this.ids,this.classes,this.name,this.placeholder,this.currentVal);
@@ -83,6 +93,12 @@ function Generator(data){
   if(typeof this.multiple !== 'undefined' && this.multiple != '')
   {
     this.input += '<a class="fg-more-field"> ' + this.multiple + '</a>';
+  }
+
+  if(typeof this.multipleChip !== 'undefined' && this.multipleChip != '')
+  {
+    this.input += '<div class="fg-row fg-chip-list"></div>';
+    this.input += '<a class="fg-more-chip"> ' + this.multipleChip + '</a>';
   }
 
 }
@@ -149,7 +165,7 @@ function generatePassword(ids,classes,name,placeholder,currentVal){
   return input;
 }
 
-function generateAutocompleteText(ids,classes,name,placeholder,currentVal,items){
+function generateAutocompleteText(ids,classes,name,placeholder,currentVal,items,getAjax, getAjaxColumn){
   input = '';
   input += '<input type="text" name="';
   input += name;
@@ -162,6 +178,36 @@ function generateAutocompleteText(ids,classes,name,placeholder,currentVal,items)
   input += currentVal;
   input += '" autocomplete="off" data-items="';
   input += items;
+  input += '" data-get-ajax="';
+  input += getAjax;
+  input += '" data-get-ajax-column="';
+  input += getAjaxColumn;
+  input += '" data-json="';
+  input += '"/>';
+
+  input += '<ul class="fg-autocomplete-list">';
+  input += '</ul>';
+  return input;
+}
+
+function generateAutocompleteLongText(ids,classes,name,placeholder,currentVal,items, getAjax, getAjaxColumn){
+  input = '';
+  input += '<input type="text" name="';
+  input += name;
+  input += '" class="';
+  input += classes;
+  input += ' fg-autocomplete" ';
+  input += 'placeholder="';
+  input += placeholder;
+  input += '" value="';
+  input += currentVal;
+  input += '" autocomplete="off" data-items="';
+  input += items;
+  input += '" data-get-ajax="';
+  input += getAjax;
+  input += '" data-get-ajax-column="';
+  input += getAjaxColumn;
+  input += '" data-json="';
   input += '"/>';
 
   input += '<ul class="fg-autocomplete-list">';

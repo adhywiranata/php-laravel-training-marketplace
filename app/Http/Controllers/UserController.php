@@ -46,7 +46,7 @@ class UserController extends Controller {
  	 */
 	 public function editBasicProfile()
 	 {
-		 $id = Auth::user()->user_id;
+		 $id = Auth::user()->id;
 		 $user = User::where('id',$id)->first();
 		 return view('profile.forms.basic-profile')->with('user',$user);
 	 }
@@ -59,20 +59,21 @@ class UserController extends Controller {
 	 public function updateBasicProfile(updateBasicProfileRequest $request)
 	 {
 		 $input = $request->all();
-		 $user_id = Auth::user()->user_id;
+		 $id = Auth::user()->id;
 
 		 $update = [
 			 'first_name' 		=> $input['first_name'],
 			 'last_name' 			=> $input['last_name'],
 			 'email' 					=> $input['email'],
 			 'summary' 				=> $input['summary'],
-			 'area' 					=> $input['address'],
+			 'domicle_area' 	=> $input['address'],
 			 'gender' 				=> $input['gender'],
 			 'dob' 						=> $input['dob'],
 		 ];
 
-		 $user = User::find($user_id)->update();
+		 $user = User::find($id)->update($update);
 
+		 /*
 		 $group_found = Group::where('group_name',$input['group_name'])->count();
 
 		 if($group_found == 0)
@@ -83,6 +84,10 @@ class UserController extends Controller {
 
 			 Group::create($insert);
 		 }
+		 */
+
+		 $user = User::where('id',$id)->first();
+		 return view('profile.forms.basic-profile')->with('user',$user);
 	 }
 
 	/**

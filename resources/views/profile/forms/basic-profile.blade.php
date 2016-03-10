@@ -26,7 +26,7 @@
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
           <input type="hidden" name="_method" value="PUT" />
 
-          <input type="hidden" name="user_id" value="{{ $user->user_id }}">
+          <input type="hidden" name="user_id" value="{{ $user->id }}">
           <div class="col-xs-6 fg-input"
             data-type="text"
             data-label="First Name"
@@ -62,17 +62,17 @@
           @else
             <?php $group_name = $user->group->group_name ?>
           @endif
-          "
 
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
-            data-label="Current Company"
-            data-name="group_name"
-            data-validation="required"
-            data-placeholder="insert publisher name"
-            data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current="{{ $group_name }}"
-            data-classes="form-control">
+            data-label="Current Corporate"
+            data-name="corporate_name"
+            data-validation=""
+            data-placeholder="insert corporate name"
+            data-current=""
+            data-items="Foo, Bar, John, Doe, Hello, World"
+            data-classes="form-control"
+            data-get-ajax="{{ url('getautocompletedata/training_program/title_EN') }}/">
           </div>
 
           <div class="col-xs-12 fg-input"

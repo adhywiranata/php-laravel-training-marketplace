@@ -22,7 +22,7 @@ class updateBasicProfileRequest extends Request {
 	public function rules()
 	{
 		return [
-				//'first_name'    => 'required',
+				'first_name'    => 'required',
 		];
 	}
 

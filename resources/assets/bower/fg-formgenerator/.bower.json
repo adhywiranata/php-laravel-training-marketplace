@@ -16,15 +16,18 @@
     "jquery": "~2.1.4",
     "underscore": "~1.8.3"
   },
-  "_source": "https://github.com/adhywiranata/fg-formgenerator.git",
+  "ignore": [
+    "bower.json,README.md"
+  ],
+  "_source": "git://github.com/adhywiranata/fg-formgenerator.git",
   "_target": "*",
-  "_originalSource": "https://github.com/adhywiranata/fg-formgenerator.git",
+  "_originalSource": "fg-formgenerator",
   "_direct": true,
   "homepage": "https://github.com/adhywiranata/fg-formgenerator",
-  "_release": "0f3a4dfe27",
+  "_release": "e27ac39c92",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "0f3a4dfe276c3d73f11ac366766009e50bf582c5"
+    "commit": "e27ac39c923e24afecb3e3b9652ca3bb3ddc56c6"
   }
 }
