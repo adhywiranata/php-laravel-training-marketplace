@@ -46,7 +46,13 @@ Route::get('auth/linkedin/callback', 'AuthController@handleLinkedinCallback');
 | Search
 |--------
 */
+Route::get('/training-needs-analysis', 'SearchController@trainingNeedsAnalysis');
 
+/*
+|--------
+| PROFILE
+|--------
+*/
 Route::get('/dashboard', 'UserController@getUser');
 Route::get('/dashboard/contacts', 'UserController@getContacts');
 Route::get('/dashboard/messages', 'MessageController@index');

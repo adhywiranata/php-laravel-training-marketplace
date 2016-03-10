@@ -47,7 +47,7 @@ class UserController extends Controller {
 	 public function editBasicProfile()
 	 {
 		 $id = Auth::user()->user_id;
-		 $user = User::where('user_id',$id)->first();
+		 $user = User::where('id',$id)->first();
 		 return view('profile.forms.basic-profile')->with('user',$user);
 	 }
 

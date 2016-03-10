@@ -14,6 +14,12 @@ return [
     'Testimonial',
   ],
 
+  "list_training_objectives_category" => [
+    'Increase Productivity',
+    'Improve Personal Competency',
+    'Increase Sales Volume',
+  ],
+
   "list_training_objectives" => [
     'Increase Output',
     'Reduce Cost',

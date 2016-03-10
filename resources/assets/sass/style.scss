@@ -908,3 +908,27 @@ MESSAGING
 .fg-autocomplete-list{
   top:62px !important;
 }
+
+/*
+ * TnA
+ */
+.tna-section{
+  height: 100vh;
+  padding-top: 35vh;
+}
+.tna-section.first-section{
+  padding-top: 20vh;
+}
+.tna-section.no-padding{
+  padding-top: 10vh;
+}
+
+.tna-section .tna-option{
+  padding: 10px 15px;
+  width: 20%;
+}
+
+.tna-section .form-control{
+  padding: 10px !important;
+  height: auto;
+}

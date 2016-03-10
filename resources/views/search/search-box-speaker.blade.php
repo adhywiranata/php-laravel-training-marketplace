@@ -171,7 +171,9 @@
       </a>
       <br/><br/>
       <span>If you are confused to look for the right training,click:</span>
-      <a href="#"><span class="trigger-popup trigger-request-trainer">Training Needs Analysis</span></a>
+      <a href="{{ url('training-needs-analysis') }}">
+        <span>Training Needs Analysis</span>
+      </a>
     </div>
   </form>
   <div class="col-lg-12">

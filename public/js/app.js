@@ -319,3 +319,13 @@ $(document).on('click','.btn-submit',function(){
     window.location = 'public-trainings';
   }
 });
+
+/*
+ * ADVANCED SEARCH
+ */
+function goToSearchWizard(step)
+{
+  $('html, body').animate({
+    scrollTop: $("#search-wizard-step-"+step).offset().top
+  }, 700);
+}

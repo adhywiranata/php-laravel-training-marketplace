@@ -224,7 +224,7 @@ class SearchController extends Controller {
 				//ALL TRAINER DATA
 				$user_data = array(
 					"user_id"														=> $user->user_id,
-					"name"															=> $user->first_name . ' ' . user->last_name,
+					"name"															=> $user->first_name . ' ' . $user->last_name,
 					"email"															=> $user->email,
 					"summary"														=> $user->summary,
 					"area"															=> $user->area,
@@ -243,6 +243,16 @@ class SearchController extends Controller {
 		return view('search.grid-list')
 			->withGridList($users_data_object)
 			->withGridType(1);
+	}
+
+	/**
+	 * Display the training need analysis as an step-by-step search.
+	 *
+	 * @return View
+	 */
+	public function trainingNeedsAnalysis()
+	{
+		return view('search.training-needs-analysis');
 	}
 
 
