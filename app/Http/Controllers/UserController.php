@@ -598,7 +598,7 @@ class UserController extends Controller {
 				$user_speaking_experience_expertises =	DB::table('section_skills')
 																								 ->join('skills','section_skills.skill_id','=','skills.id')
 																								 ->where('section_skills.section_id', '=', 1)
-																								 ->where('section_skills.section_item_id', '=', $user_speaking_experience->id)
+																								 ->where('section_skills.section_item_id', '=', $user_speaking_experience->training_experience_id)
 																								 ->get();
 
 				$user_speaking_experience_expertises_data = array();
@@ -609,10 +609,12 @@ class UserController extends Controller {
 					array_push($user_speaking_experience_expertises_data,$user_speaking_experience_expertise_data);
 				endforeach;
 
+
+
 				//PHOTO TRAINING EXPERIENCE
 				$user_speaking_experience_photos = DB::table('section_photos')
 																					 ->where('section_photos.section_id', '=', 1)
-																					 ->where('section_photos.section_item_id', '=', $user_speaking_experience->id)
+																					 ->where('section_photos.section_item_id', '=', $user_speaking_experience->training_experience_id)
 																					 ->get();
 
 				$user_speaking_experience_photos_data = array();
@@ -628,7 +630,7 @@ class UserController extends Controller {
 				//VIDEO TRAINING EXPERIENCE
 				$user_speaking_experience_videos = DB::table('section_videos')
 																					 ->where('section_videos.section_id', '=', 1)
-																					 ->where('section_videos.section_item_id', '=', $user_speaking_experience->id)
+																					 ->where('section_videos.section_item_id', '=', $user_speaking_experience->training_experience_id)
 																					 ->where('section_videos.video_type', '=', "youtube")
 																					 ->get();
 
@@ -673,20 +675,6 @@ class UserController extends Controller {
 			// WORK EXPERIENCES -->
 
 			//<!--TRAINING PROGRAMME
-			$user_training_programmes_query =
-			[
-				"table"			=> "tr_training_programme",
-				"condition"	=>
-										[
-											"0"		=>
-														[
-															"column"			=>  "tr_training_programme.user_id",
-															"comparison"	=>	"=",
-															"value"				=>	$user->user_id,
-														],
-										],
-			];
-
 			$user_training_programs =	DB::table('user_training_program_nodes')
 																	 ->join('training_program','user_training_program_nodes.training_program_id','=','training_program.id')
 																	 ->where('user_training_program_nodes.owner_id', '=', $user->id)

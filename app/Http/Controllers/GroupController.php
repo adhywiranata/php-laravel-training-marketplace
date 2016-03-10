@@ -263,26 +263,12 @@ class GroupController extends Controller {
 	*/
 	public function getGroup($group_slug)
 	{
-		$group_query =
-		[
-			"table"			=> "group",
-			"condition"	=>
-									[
-										"0"		=>
-													[
-														"column"				=>  "group.group_type_id",
-														"comparison"		=>	"=",
-														"value"					=>	2,
-													],
-										"1"		=>
-													[
-														"column"				=>  "group.group_slug",
-														"comparison"		=>	"=",
-														"value"					=>	$group_slug,
-													],
-									],
-		];
-		$group = General::Selects($group_query)->first();
+		$group =	DB::table('user_role_nodes')
+						 ->join('roles', 'user_role_nodes.role_id', '=', 'roles.id')
+						 ->join('providers', 'user_role_nodes.user_id', '=', 'providers.id')
+						 ->where('role_id', '=', 3)
+						 ->where('providers.slug', '=', $group_slug)
+						 ->first();
 
 		if(count($group) == 0 ):
 			 echo "Not Found";
@@ -290,95 +276,47 @@ class GroupController extends Controller {
 		else:
 			 // <!-- GROUP EXPERTISES
 			 // Get Expertises Data
-			 $group_expertises_query =
-			 [
-				 "table"			=> "tr_group_expertise",
-				 "join"			=>
-										 [
-											 "expertise"	=>
-															 [
-																 "statement"	=> "expertise.expertise_id = tr_group_expertise.expertise_id",
-																 "type"				=> "join",
-															 ],
-										 ],
-				 "condition"	=>
-										 [
-											 "0"		=>
-														 [
-															 "column"				=>  "tr_group_expertise.group_id",
-															 "comparison"		=>	"=",
-															 "value"				=>	$group->group_id,
-														 ],
-										 ],
-			 ];
-			 $group_expertises = General::Selects($group_expertises_query)->get();
+			 $group_expertises =	DB::table('user_skill_nodes')
+													->join('skills', 'user_skill_nodes.skill_id', '=', 'skills.id')
+													->where('user_skill_nodes.owner_id', '=', $group->id)
+													->where('user_skill_nodes.owner_role_id', '=', 3)
+													->get();
 
 			 $group_expertises_data  = array();
 			 foreach($group_expertises as $group_expertise):
 				 // Get Endorse Data
-				 $group_endorses_query =
-				 [
-					 "table"			=> "tr_group_endorse",
-					 "condition"	=>
-											 [
-												 "0"		=>
-															 [
-																 "column"				=>  "tr_group_endorse.tr_group_expertise_id",
-																 "comparison"		=>	"=",
-																 "value"				=>	$group_expertise->tr_group_expertise_id,
-															 ],
-											 ],
-				 ];
-				 $group_endorses_query = General::Selects($group_endorses_query)->get();
+
+				 $group_endorses =	DB::table('user_skill_endorse_nodes')
+													->where('user_skill_endorse_nodes.user_skill_node_id', '=', $group_expertise->id)
+													->get();
 
 				 $group_expertise_data  = array(
-					 "expertise_name"			=> $group_expertise->expertise_name,
-					 "total_endorse"			=> count($group_endorses_query),
+					 "expertise_name"			=> $group_expertise->skill_name,
+					 "total_endorse"			=> count($group_endorses),
 				 );
 				 array_push($group_expertises_data,$group_expertise_data);
 			 endforeach;
 			 // GROUP EXPERTISES -->
 
 			 //<!-- LANGUAGE PROFIECIENCY
-			 $group_languages_query =
-			 [
-				 "table"			=> "tr_group",
-				 "join"			=>
-										 [
-											 "tr_language"	=>
-															 [
-																 "statement"	=> "tr_group.user_id = tr_language.user_id",
-																 "type"			=> "join",
-															 ],
-										 ],
-				 "condition"	=>
-										 [
-											 "0"		=>
-														 [
-															 "column"			=>  "tr_group.group_role_id",
-															 "comparison"	=>	"=",
-															 "value"				=>	2,
-														 ],
-											 "1"		=>
-														 [
-															 "column"			=>  "tr_group.group_id",
-															 "comparison"	=>	"=",
-															 "value"				=>	$group->group_id,
-														 ],
-										 ],
-			 ];
-			 $group_languages = General::Selects($group_languages_query)->groupBy('language_code')->get();
+
+			 $group_languages =	DB::table('user_language_nodes')
+ 												 ->join('languages', 'user_language_nodes.language_id' ,'=', 'languages.id')
+ 												 ->where('user_language_nodes.owner_id', '=', $group->id)
+ 												 ->where('user_language_nodes.owner_role_id', '=', 3)
+ 												 ->get();
 
 			 $group_languages_data = array();
 			 foreach($group_languages as $group_language):
 				 $group_language_data = array(
-					 "language_name"		=> $group_language->language_code,
+					 "language_name"		=> $group_language->language,
 				 );
 				 array_push($group_languages_data,$group_language_data);
 			 endforeach;
 			 // LANGUAGE PROFIECIENCY -->
 
 			 //<!-- REVIEW
+			 /*
 			 $group_reviews_material_facility_query =
 			 [
 				 "table"			=> "tr_group",
@@ -493,90 +431,110 @@ class GroupController extends Controller {
 			 endif;
 
 			 $total_group_review_data = $flag_material_facility + $flag_delivery;
-		   // REVIEW -->
+		   */
+			 $average_material_score = "N/A";
+			 $average_facility_score = "N/A";
+			 $average_delivery_score = "N/A";
+			 $average_group_review_score_data = "N/A";
+			 $total_group_review_data = 0;
+			 // REVIEW -->
 
 		 ///////////////////
 		 //// TABS DATA ////
 		 ///////////////////
 		 //<!--TRAINING EXPERIENCES
-		 $group_speaking_experiences_query =
-		 [
-			 "table"		=> "tr_group_speaking_experience",
-			 "join"			=>
-									 [
-										 "group"	=>
-														 [
-															 "statement"	=> "tr_group_speaking_experience.group_id = group.group_id",
-															 "type"			=> "join",
-														 ],
-										 "user"	=>
-														 [
-															 "statement"	=> "tr_group_speaking_experience.user_id = user.user_id",
-															 "type"			=> "left join",
-														 ],
-									 ],
-			 "condition"	=>
-									 [
-										 "0"		=>
-													 [
-														 "column"			=>  "tr_group_speaking_experience.provider_id",
-														 "comparison"	=>	"=",
-														 "value"				=>	$group->group_id,
-													 ],
-									 ],
-		 ];
-		 $group_speaking_experiences = General::Selects($group_speaking_experiences_query)->get();
+		 $group_speaking_experiences =	DB::table('training_experience_program_nodes')
+																	->join('training_experiences','training_experience_program_nodes.training_experience_id','=','training_experiences.id')
+																	->join('training_program','training_experience_program_nodes.training_program_id','=','training_program.id')
+																	->join('providers','training_experiences.provider_id','=','providers.id')
+																	->join('corporates','training_experiences.corporate_id','=','corporates.id')
+																	->where('training_experiences.owner_id', '=', $group->id)
+																	->where('training_experiences.owner_role_id', '=', 3)
+																	->get();
+
 
 		 $group_speaking_experiences_data  = array();
 		 foreach($group_speaking_experiences as $group_speaking_experience):
 
-			 $group_speaking_experience_expertises_query =
-			 [
-				 "table"			=> "tr_group_speaking_experience_expertise",
-				 "join"			=>
-										 [
-											 "expertise"	=>
-															 [
-																 "statement"	=> "expertise.expertise_id = tr_group_speaking_experience_expertise.expertise_id",
-																 "type"				=> "join",
-															 ],
-										 ],
-				 "condition"	=>
-										 [
-											 "0"		=>
-														 [
-															 "column"			=>  "tr_group_speaking_experience_expertise.tr_group_speaking_experience_id",
-															 "comparison"	=>	"=",
-															 "value"				=>	$group_speaking_experience->tr_group_speaking_experience_id,
-														 ],
-										 ],
-			 ];
-			 $group_speaking_experience_expertises = General::Selects($group_speaking_experience_expertises_query)->get();
+			 //SKILL TRAINING EXPERIENCE
+			 $group_speaking_experience_expertises =	DB::table('section_skills')
+																								->join('skills','section_skills.skill_id','=','skills.id')
+																								->where('section_skills.section_id', '=', 1)
+																								->where('section_skills.section_item_id', '=', $group_speaking_experience->training_experience_id)
+																								->get();
 
 			 $group_speaking_experience_expertises_data = array();
 			 foreach($group_speaking_experience_expertises as $group_speaking_experience_expertise):
 				 $group_speaking_experience_expertise_data = array(
-					 "expertise_name"		=>	$group_speaking_experience_expertise->expertise_name,
+					 "expertise_name"		=>	$group_speaking_experience_expertise->skill_name,
 				 );
 				 array_push($group_speaking_experience_expertises_data,$group_speaking_experience_expertise_data);
 			 endforeach;
 
+			 //PHOTO TRAINING EXPERIENCE
+			 $group_speaking_experience_photos = DB::table('section_photos')
+			                                    ->where('section_photos.section_id', '=', 1)
+			                                    ->where('section_photos.section_item_id', '=', $group_speaking_experience->training_experience_id)
+			                                    ->get();
+
+			 $group_speaking_experience_photos_data = array();
+			 foreach($group_speaking_experience_photos as $group_speaking_experience_photo):
+			   $group_speaking_experience_photo_data = array(
+			     "photo_name"					=>	$group_speaking_experience_photo->photo_name,
+			     "photo_path"					=>	$group_speaking_experience_photo->photo_path,
+			     "photo_description"		=>	$group_speaking_experience_photo->photo_description,
+			   );
+			   array_push($group_speaking_experience_photos_data,$group_speaking_experience_photo_data);
+			 endforeach;
+
+			 //VIDEO TRAINING EXPERIENCE
+			 $group_speaking_experience_videos = DB::table('section_videos')
+			                                    ->where('section_videos.section_id', '=', 1)
+			                                    ->where('section_videos.section_item_id', '=', $group_speaking_experience->training_experience_id)
+			                                    ->where('section_videos.video_type', '=', "youtube")
+			                                    ->get();
+
+			 $group_speaking_experience_videos_data = array();
+			 foreach($group_speaking_experience_videos as $group_speaking_experience_video):
+			   $group_speaking_experience_video_data = array(
+			     "video_name"					=>	$group_speaking_experience_video->video_name,
+			     "video_path"					=>	$group_speaking_experience_video->video_path,
+			     "video_description"		=>	$group_speaking_experience_video->video_description,
+			   );
+			   array_push($group_speaking_experience_videos_data,$group_speaking_experience_video_data);
+			 endforeach;
+
+
 			 //SUMMARY TRAINING EXPERIENCES VARIABLE
 			 $group_speaking_experience_data  = array(
-				 "speaking_experience_id"					  		=>		$group_speaking_experience->tr_group_speaking_experience_id,
-				 "speaking_experience_title"					  =>		$group_speaking_experience->group_speaking_experience_title,
-				 "speaking_experience_description"			=>		$group_speaking_experience->group_speaking_experience_description,
-				 "speaking_experience_date"					  	=>		$group_speaking_experience->group_speaking_experience_date,
-				 "company_profile_picture"					  	=>		$group_speaking_experience->group_profile_picture,
-				 "company_name"					  							=>		$group_speaking_experience->group_name,
-				 "speaking_experience_expertises"				=>		$group_speaking_experience_expertises_data,
+				 "speaking_experience_id"					  	=>		$group_speaking_experience->id,
+				 "speaking_experience_title"					  =>		$group_speaking_experience->training_experience,
+				 "speaking_experience_description"			=>		$group_speaking_experience->description,
+				 "speaking_experience_start_date"		  =>		$group_speaking_experience->start_date,
+				 "speaking_experience_end_date"				=>		$group_speaking_experience->end_date,
+				 "company_profile_picture"					  	=>		$group_speaking_experience->corporate_profile_picture,
+				 "company_name"											  =>		$group_speaking_experience->corporate_name,
+				 "provider_profile_picture"					  =>		$group_speaking_experience->profile_picture,
+				 "provider_name"											  =>		$group_speaking_experience->provider_name,
+				 "speaking_experience_expertises"			=>		$group_speaking_experience_expertises_data,
+				 "speaking_experience_photos"					=>		$group_speaking_experience_photos_data,
+				 "speaking_experience_videos"					=>		$group_speaking_experience_videos_data,
+				 "training_programme_title"						=>		$group_speaking_experience->training_program_name_id,
 			 );
 			 array_push($group_speaking_experiences_data,$group_speaking_experience_data);
 
 		 endforeach;
 		 // TRAINING EXPERIENCES -->
 
+
+
+
+
+// TO BE CONTINUED
+
+
 		 //<!--PROVIDER'S TRAINER
+/*
 		 $companies_providers_trainers_query =
 		 [
 			 "table"		=> "user",
@@ -688,37 +646,70 @@ class GroupController extends Controller {
           array_push($companies_providers_trainers_data,$company_provider_trainer_data);
 
 		 endforeach;
+		 */
 		 // PROVIDER"S TRAINER -->
+		 $companies_providers_trainers_data = array();
+// END HERE TO BE CONTINUED
 
 		 //<!--TRAINING PROGRAMME
-		 $group_training_programmes_query =
-		 [
-			 //"select"			=> "* tr_group_training_programme.group_training_programme_title AS training_programme_title",
-			 "table"			=> "tr_group_training_programme",
-			 "condition"	=>
-									 [
-										 "0"		=>
-													 [
-														 "column"				=>  "tr_group_training_programme.group_id",
-														 "comparison"		=>	"=",
-														 "value"				=>	$group->group_id,
-													 ],
-									 ],
-		 ];
-		 $group_training_programmes = General::Selects($group_training_programmes_query)->get();
-		 $group_training_programmes_data = array();
-		 foreach($group_training_programmes as $group_training_programme):
-		 		$group_training_programme_data = array(
-					"tr_training_programme_id"	 				=> $group_training_programme->tr_group_training_programme_id,
-					"group_id"	 								 				=> $group_training_programme->group_id,
-					"user_id"	 									 				=> $group_training_programme->user_id,
-					"training_programme_title"	 				=> $group_training_programme->group_training_programme_title,
-				);
-				array_push($group_training_programmes_data,$group_training_programme_data);
+
+		 $group_training_programs =	DB::table('user_training_program_nodes')
+		                              ->join('training_program','user_training_program_nodes.training_program_id','=','training_program.id')
+		                              ->where('user_training_program_nodes.owner_id', '=', $group->id)
+		                              ->where('user_training_program_nodes.owner_role_id', '=', 3)
+		                              ->get();
+
+		 $group_training_programs_data = array();
+		 foreach($group_training_programs as $group_training_program):
+
+		   //Learning Outcome
+		   $group_training_program_learning_outcomes =
+		   DB::table('user_training_program_learning_outcome_nodes')
+		   ->join('learning_outcomes','user_training_program_learning_outcome_nodes.learning_outcome_id','=','learning_outcomes.id')
+		   ->where('user_training_program_learning_outcome_nodes.group_training_program_id', '=', $group_training_program->id)
+		   ->get();
+
+		   $group_training_programs_learning_outcomes_data = array();
+		   foreach($group_training_program_learning_outcomes as $group_training_program_learning_outcome):
+
+		     //outcome preferences
+		     $group_training_program_learning_outcome_outcome_preferences =
+		     DB::table('user_training_program_learning_outcome_outcome_preference_nodes')
+		     ->join('outcome_preferences','user_training_program_learning_outcome_outcome_preference_nodes.outcome_preference_id','=','outcome_preferences.id')
+		     ->where('user_training_program_learning_outcome_outcome_preference_nodes.group_training_program_learning_outcome_id', '=', $group_training_program_learning_outcome->id)
+		     ->get();
+
+		     $group_training_program_learning_outcome_outcome_preferences_data = array();
+		     foreach($group_training_program_learning_outcome_outcome_preferences as $group_training_program_learning_outcome_outcome_preference):
+
+		       $group_training_program_learning_outcome_outcome_preference_data = array(
+		             "outcome_preference_name" => $group_training_program_learning_outcome_outcome_preference->outcome_preference_name,
+		       );
+		       array_push($group_training_program_learning_outcome_outcome_preferences_data,$group_training_program_learning_outcome_outcome_preference_data);
+		     endforeach;
+
+
+		     $group_training_programs_learning_outcome_data = array(
+		         "learning_outcome_name"				=> $group_training_program_learning_outcome->learning_outcome_name,
+		         "outcome_preference_names"		=> $group_training_program_learning_outcome_outcome_preferences_data,
+		     );
+		     array_push($group_training_programs_learning_outcomes_data,$group_training_programs_learning_outcome_data);
+		   endforeach;
+
+
+		   $group_training_program_data = array(
+		       "training_program_id"					=> $group_training_program->id,
+		       "training_program_name_id"		=> $group_training_program->training_program_name_id,
+		       "learning_outcome_names"			=> $group_training_programs_learning_outcomes_data,
+		   );
+
+
+		   array_push($group_training_programs_data,$group_training_program_data);
 		 endforeach;
 		 // TRAINING PROGRAMME-->
 
 		 //<!--TESTIMONIAL
+		 /*
 		 $group_testimonials_query =
 		 [
 			 "table"			=> "tr_group",
@@ -764,148 +755,164 @@ class GroupController extends Controller {
 										 ],
 		 ];
 		 $group_testimonials = General::Selects($group_testimonials_query)->get();
+		 */
 
-
-
+		 $group_testimonials = array();
 		 // TESTIMONIAL -->
 
 		 //<!--CERTIFICATION
-		 $group_certifications_query =
-		 [
-			 "table"			=> "tr_group_certification",
-			 "condition"	=>
-									 [
-										 "0"		=>
-													 [
-														 "column"				=>  "tr_group_certification.group_id",
-														 "comparison"		=>	"=",
-														 "value"				=>	$group->group_id,
-													 ],
-									 ],
-		 ];
-		 $group_certifications = General::Selects($group_certifications_query)->get();
+		 $group_certifications =	DB::table('certifications')
+		                         ->where('certifications.owner_id', '=', $group->id)
+		                         ->where('certifications.owner_role_id', '=', 3)
+		                         ->get();
 
 		 $group_certifications_data  = array();
 		 foreach($group_certifications as $group_certification):
 
-			 $group_certification_expertises_query =
-			 [
-				 "table"			=> "tr_group_certification_expertise",
-				 "join"			=>
-										 [
-											 "expertise"	=>
-															 [
-																 "statement"	=> "expertise.expertise_id = tr_group_certification_expertise.expertise_id",
-																 "type"				=> "join",
-															 ],
-										 ],
-				 "condition"	=>
-										 [
-											 "0"		=>
-														 [
-															 "column"				=>  "tr_group_certification_expertise.tr_group_certification_id",
-															 "comparison"		=>	"=",
-															 "value"				=>	$group_certification->tr_group_certification_id,
-														 ],
-										 ],
-			 ];
-			 $group_certification_expertises = General::Selects($group_certification_expertises_query)->get();
+		   //SKILL CERTIFICATION
+		   $group_certification_expertises =	DB::table('section_skills')
+		                                    ->join('skills','section_skills.skill_id','=','skills.id')
+		                                    ->where('section_skills.section_id', '=', 7)
+		                                    ->where('section_skills.section_item_id', '=', $group_certification->id)
+		                                    ->get();
 
-			 $group_certification_expertises_data = array();
-			 foreach($group_certification_expertises as $group_certification_expertise):
-				 $group_certification_expertise_data = array(
-					 "expertise_name"		=>	$group_certification_expertise->expertise_name,
-				 );
-				 array_push($group_certification_expertises_data,$group_certification_expertise_data);
-			 endforeach;
+		   $group_certification_expertises_data = array();
+		   foreach($group_certification_expertises as $group_certification_expertise):
+		     $group_certification_expertise_data = array(
+		       "expertise_name"		=>	$group_certification_expertise->skill_name,
+		     );
+		     array_push($group_certification_expertises_data,$group_certification_expertise_data);
+		   endforeach;
 
-			 //SUMMARY CERTIFICATION VARIABLE
-			 $group_certification_data  = array(
-				 "certification_id"					  		=>		$group_certification->tr_group_certification_id,
-				 "certification_title"					  =>		$group_certification->group_certification_title,
-				 "certification_description"			=>		$group_certification->group_certification_description,
-				 "certification_publisher_name"		=>		$group_certification->group_publisher_name,
-				 "certification_date"					  	=>		$group_certification->group_certification_date,
-				 "certification_expertises"				=>		$group_certification_expertises_data,
-			 );
-			 array_push($group_certifications_data,$group_certification_data);
+		   //PHOTO CERTIFICATION
+		   $group_certification_photos = DB::table('section_photos')
+		                                      ->where('section_photos.section_id', '=', 7)
+		                                      ->where('section_photos.section_item_id', '=', $group_certification->id)
+		                                      ->get();
+
+		   $group_certification_photos_data = array();
+		   foreach($group_certification_photos as $group_certification_photo):
+		     $group_certification_photo_data = array(
+		       "photo_name"					=>	$group_certification_photo->photo_name,
+		       "photo_path"					=>	$group_certification_photo->photo_path,
+		       "photo_description"		=>	$group_certification_photo->photo_description,
+		     );
+		     array_push($group_certification_photos_data,$group_certification_photo_data);
+		   endforeach;
+
+		   //VIDEO CERTIFICATION
+		   $group_certification_videos = DB::table('section_videos')
+		                                ->where('section_videos.section_id', '=', 7)
+		                                ->where('section_videos.section_item_id', '=', $group_certification->id)
+		                                ->get();
+
+		   $group_certification_videos_data = array();
+		   foreach($group_certification_videos as $group_certification_video):
+		     $group_certification_video_data = array(
+		       "video_name"					=>	$group_certification_video->video_name,
+		       "video_path"					=>	$group_certification_video->video_path,
+		       "video_description"		=>	$group_certification_video->video_description,
+		     );
+		     array_push($group_certification_videos_data,$group_certification_video_data);
+		   endforeach;
+
+		   //SUMMARY CERTIFICATION VARIABLE
+		   $group_certification_data  = array(
+		     "certification_id"					  		=>		$group_certification->id,
+		     "certification_title"					  =>		$group_certification->title,
+		     "certification_description"			=>		$group_certification->description,
+		     "certification_publisher_name"		=>		$group_certification->publisher,
+		     "certification_date"					  	=>		$group_certification->published_date,
+		     "certification_expertises"				=>		$group_certification_expertises_data,
+		     "certification_photos"						=>		$group_certification_photos_data,
+		     "certification_videos"						=>		$group_certification_videos_data
+		   );
+		   array_push($group_certifications_data,$group_certification_data);
 
 		 endforeach;
 		 // CERTIFICATION -->
 
 		 //<!--AWARD
-		 $group_awards_query =
-		 [
-			 "table"			=> "tr_group_award",
-			 "condition"	=>
-									 [
-										 "0"		=>
-													 [
-														 "column"				=>  "tr_group_award.group_id",
-														 "comparison"		=>	"=",
-														 "value"				=>	$group->group_id,
-													 ],
-									 ],
-		 ];
-		 $group_awards = General::Selects($group_awards_query)->get();
+		 $group_awards =	DB::table('awards')
+		                 ->where('awards.owner_id', '=', $group->id)
+		                 ->where('awards.owner_role_id', '=', 3)
+		                 ->get();
 
 		 $group_awards_data  = array();
 		 foreach($group_awards as $group_award):
 
-			 $group_award_expertises_query =
-			 [
-				 "table"		=> "tr_group_award_expertise",
-				 "join"			=>
-										 [
-											 "expertise"	=>
-															 [
-																 "statement"	=> "expertise.expertise_id = tr_group_award_expertise.expertise_id",
-																 "type"				=> "join",
-															 ],
-										 ],
-				 "condition"	=>
-										 [
-											 "0"		=>
-														 [
-															 "column"				=>  "tr_group_award_expertise.tr_group_award_id",
-															 "comparison"		=>	"=",
-															 "value"				=>	$group_award->tr_group_award_id,
-														 ],
-										 ],
-			 ];
-			 $group_award_expertises = General::Selects($group_award_expertises_query)->get();
+		   //SKILL award
+		   $group_award_expertises =	DB::table('section_skills')
+		                              ->join('skills','section_skills.skill_id','=','skills.id')
+		                              ->where('section_skills.section_id', '=', 8)
+		                              ->where('section_skills.section_item_id', '=', $group_award->id)
+		                              ->get();
 
-			 $group_award_expertises_data = array();
-			 foreach($group_award_expertises as $group_award_expertise):
-				 $group_award_expertise_data = array(
-					 "expertise_name"		=>	$group_award_expertise->expertise_name,
-				 );
-				 array_push($group_award_expertises_data,$group_award_expertise_data);
-			 endforeach;
+		   $group_award_expertises_data = array();
+		   foreach($group_award_expertises as $group_award_expertise):
+		     $group_award_expertise_data = array(
+		       "expertise_name"		=>	$group_award_expertise->skill_name,
+		     );
+		     array_push($group_award_expertises_data,$group_award_expertise_data);
+		   endforeach;
 
-			 //SUMMARY AWARD VARIABLE
-			 $user_award_data  = array(
-				 "award_id"					  		=>		$group_award->tr_group_award_id,
-				 "award_title"					  =>		$group_award->group_award_title,
-				 "award_description"			=>		$group_award->group_award_description,
-				 "award_publisher_name"		=>		$group_award->group_publisher_name,
-				 "award_date"					  	=>		$group_award->group_award_date,
-				 "award_expertises"				=>		$group_award_expertises_data,
-			 );
-			 array_push($group_awards_data,$group_award_data);
+		   //PHOTO award
+		   $group_award_photos = DB::table('section_photos')
+		                        ->where('section_photos.section_id', '=', 8)
+		                        ->where('section_photos.section_item_id', '=', $group_award->id)
+		                        ->get();
+
+		   $group_award_photos_data = array();
+		   foreach($group_award_photos as $group_award_photo):
+		     $group_award_photo_data = array(
+		       "photo_name"					=>	$group_award_photo->photo_name,
+		       "photo_path"					=>	$group_award_photo->photo_path,
+		       "photo_description"		=>	$group_award_photo->photo_description,
+		     );
+		     array_push($group_award_photos_data,$group_award_photo_data);
+		   endforeach;
+
+		   //VIDEO award
+		   $group_award_videos = DB::table('section_videos')
+		                        ->where('section_videos.section_id', '=', 8)
+		                        ->where('section_videos.section_item_id', '=', $group_award->id)
+		                        ->get();
+
+		   $group_award_videos_data = array();
+		   foreach($group_award_videos as $group_award_video):
+		     $group_award_video_data = array(
+		       "video_name"					=>	$group_award_video->video_name,
+		       "video_path"					=>	$group_award_video->video_path,
+		       "video_description"		=>	$group_award_video->video_description,
+		     );
+		     array_push($group_award_videos_data,$group_award_video_data);
+		   endforeach;
+
+		   //SUMMARY award VARIABLE
+		   $group_award_data  = array(
+		     "award_id"					  		=>		$group_award->id,
+		     "award_title"					  =>		$group_award->title,
+		     "award_description"			=>		$group_award->description,
+		     "award_publisher_name"		=>		$group_award->publisher,
+		     "award_date"					  	=>		$group_award->published_date,
+		     "award_expertises"				=>		$group_award_expertises_data,
+		     "award_photos"						=>		$group_award_photos_data,
+		     "award_videos"						=>		$group_award_videos_data
+		   );
+		   array_push($group_awards_data,$group_award_data);
 
 		 endforeach;
 		 // AWARD -->
 
 		 //SUMMARY PROVIDER PROFILING VARIABLE
 		 $group_data = array(
-			 "user_id"														=> $group->group_id,
-			 "name"																=> $group->group_name,
+			 "user_id"														=> $group->id,
+			 "name"																=> $group->provider_name,
 			 "email"															=> $group->email,
-			 "profile_picture"										=> $group->group_profile_picture,
+			 "profile_picture"										=> $group->profile_picture,
 			 "summary"														=> $group->summary,
 			 "area"																=> "",
-			 "slug"												  			=> $group->group_slug,
+			 "slug"												  			=> $group->slug,
 			 "languages"													=> $group_languages_data,
 			 "material_score"											=> $average_material_score,
 			 "facility_score"											=> $average_facility_score,
@@ -919,8 +926,8 @@ class GroupController extends Controller {
 		 $group_data 														= json_decode(json_encode($group_data), FALSE); // ARRAY DATA
 		 $group_training_experiences 						= json_decode(json_encode($group_speaking_experiences_data), FALSE); // ARRAY DATA
 		 $group_trainers 												= json_decode(json_encode($companies_providers_trainers_data), FALSE); // ARRAY DATA
-		 $group_training_programmes							= json_decode(json_encode($group_training_programmes_data), FALSE); // ARRAY DATA
-		 $group_testimonials										= $group_testimonials; // OBJECT DATA
+		 $group_training_programmes							= json_decode(json_encode($group_training_programs_data), FALSE); // ARRAY DATA
+		 $group_testimonials										= json_decode(json_encode($group_testimonials), FALSE); // OBJECT DATA
 		 $group_certifications									= json_decode(json_encode($group_certifications_data), FALSE); // ARRAY DATA
 		 $group_awards													= json_decode(json_encode($group_awards_data), FALSE); // ARRAY DATA
 
