@@ -9,6 +9,11 @@ use DB;
 
 use App\Models\General;
 use App\Models\User as User;
+use App\Models\Corporate as Corporate;
+use App\Models\JobTitle as JobTitle;
+use App\Models\JobSeniorityLevel as JobSeniorityLevel;
+use App\Models\JobFunction as JobFunction;
+use App\Models\JobNode as JobNode;
 use App\Models\Provider as Provider;
 
 class UserController extends Controller {
@@ -61,30 +66,69 @@ class UserController extends Controller {
 		 $input = $request->all();
 		 $id = Auth::user()->id;
 
-		 $update = [
-			 'first_name' 		=> $input['first_name'],
-			 'last_name' 			=> $input['last_name'],
-			 'email' 					=> $input['email'],
-			 'summary' 				=> $input['summary'],
-			 'domicle_area' 	=> $input['address'],
-			 'gender' 				=> $input['gender'],
-			 'dob' 						=> $input['dob'],
-		 ];
-
-		 $user = User::find($id)->update($update);
-
-		 /*
-		 $group_found = Group::where('group_name',$input['group_name'])->count();
-
-		 if($group_found == 0)
+		 //CHECK IF CORPORATE DOES NOT EXIST,CREATE A NEW ONE
+		 $corp_exist = Corporate::where('corporate_name',$input['corporate_name'])
+ 											->count();
+		 if($corp_exist == 0)
 		 {
-			 $insert = [
-				 'group_name' => $input['group_name'],
-			 ];
-
-			 Group::create($insert);
+			 Corporate::create(['corporate_name' => $input['corporate_name']]);
 		 }
-		 */
+
+		 //CHECK IF JOB TITLE DOES NOT EXIST,CREATE A NEW ONE
+		 $title_exist = JobTitle::where('job_title_name',$input['job_title'])
+ 											->count();
+
+		 if($title_exist == 0)
+		 {
+			 JobTitle::create(['job_title_name' => $input['job_title']]);
+		 }
+
+		 $job_title_id = JobTitle::where('job_title_name',$input['job_title'])
+		 									->first()->id;
+
+		 //Fetch the right JobNode or create new
+		 $job_node_exist = JobNode::where('job_title_id',$job_title_id)->count();
+
+		 if($job_node_exist == 0)
+		 {
+			 JobNode::create([
+				 'job_title_id' => $job_title_id,
+				 'job_seniority_level_id' => 999999999,
+				 'job_function_id' => 999999999,
+			 ]);
+		 }
+
+		 $job_node = JobNode::where('job_title_id',$job_title_id)->first();
+
+		 $job_seniority_level = JobSeniorityLevel::where('id',$job_node->job_seniority_level_id)
+		 														->first();
+
+		 $job_function = JobFunction::where('id',$job_node->job_function_id)
+		 														->first();
+
+ 		 $update = [
+ 			 'first_name' 						=> $input['first_name'],
+ 			 'last_name' 							=> $input['last_name'],
+
+ 			 'corporate_name' 				=> $input['corporate_name'],
+ 			 'job_title' 							=> $input['job_title'],
+
+			 'job_seniority_level' 		=> $job_seniority_level->job_seniority_level_name,
+			 'job_function' 					=> $job_function->job_function_name,
+
+ 			 'email' 									=> $input['email'],
+ 			 'summary' 								=> $input['summary'],
+ 			 'domicle_area' 					=> $input['domicle_area'],
+ 			 'service_area' 					=> $input['service_area'],
+
+ 			 'gender' 								=> $input['gender'],
+ 			 'dob' 										=> $input['dob'],
+
+ 			 'training_method' 				=> $input['training_method'],
+ 			 'training_style' 				=> $input['training_style'],
+ 		 ];
+
+ 		 $user = User::find($id)->update($update);
 
 		 $user = User::where('id',$id)->first();
 		 return view('profile.forms.basic-profile')->with('user',$user);

@@ -51,7 +51,11 @@ elixir(function(mix) {
     	'../bower/bootstrap/dist/js/bootstrap.js',
     	'../bower/chart-js/Chart.min.js',
     	'../bower/chart-js/Chart.min.js',
-    	'../bower/fg-formgenerator/dist/fg-formgenerator.min.js',
+    	//'../bower/fg-formgenerator/dist/fg-formgenerator.min.js',
+    	'../bower/fg-formgenerator/dev/fg-actions.js',
+    	'../bower/fg-formgenerator/dev/fg-generators.js',
+    	'../bower/fg-formgenerator/dev/fg-helpers.js',
+    	'../bower/fg-formgenerator/dev/fg-validations.js',
     	'../js/underscore.min.js'
     ], 'public/js/vendor.js');
     mix.phpUnit();

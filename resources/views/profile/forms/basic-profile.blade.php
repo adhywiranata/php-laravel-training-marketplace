@@ -11,10 +11,10 @@
     <div class="row box-profile">
       <div class="col-md-12 box-section profile-section datatable-section" data-section="trainings">
         <div class="row text-center">
-          <h3>
+          <!--<h3>
             <span class="lnr lnr-plus-circle bigger-1-5 blue-border circle text-blue" style="padding:15px;">
             </span>
-          </h3>
+          </h3>-->
           <br/>
           <h3 class="roboto-light text-blue">BASIC PROFILE</h3>
         </div>
@@ -69,21 +69,26 @@
             data-name="corporate_name"
             data-validation=""
             data-placeholder="insert corporate name"
-            data-current=""
+            data-current="{{ $user->corporate_name }}"
             data-items="Foo, Bar, John, Doe, Hello, World"
             data-classes="form-control"
-            data-get-ajax="{{ url('getautocompletedata/training_program/title_EN') }}/">
+            data-get-ajax="{{ url('getautocompletedata/corporates/corporate_name') }}/"
+            data-get-ajax-column="corporate_name"
+            >
           </div>
 
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
             data-label="Current Job Title"
             data-name="job_title"
-            data-validation="required"
-            data-placeholder="insert publisher name"
-            data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current="{{ $user->current_job_position }}"
-            data-classes="form-control">
+            data-validation=""
+            data-placeholder="pick job title name"
+            data-current="{{ $user->job_title }}"
+            data-items="Foo, Bar, John, Doe, Hello, World"
+            data-classes="form-control"
+            data-get-ajax="{{ url('getautocompletedata/job_titles/job_title_name') }}/"
+            data-get-ajax-column="job_title_name"
+            >
           </div>
 
           <div class="col-xs-12 fg-input"
@@ -109,22 +114,22 @@
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
             data-label="Location"
-            data-name="location"
+            data-name="domicle_area"
             data-validation="required"
             data-placeholder="insert publisher name"
             data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current="{{ $user->area }}"
+            data-current="{{ $user->domicle_area }}"
             data-classes="form-control">
           </div>
 
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
             data-label="Area of Service"
-            data-name="area"
+            data-name="service_area"
             data-validation="required"
             data-placeholder="insert publisher name"
             data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current="{{ $user->area }}"
+            data-current="{{ $user->service_area }}"
             data-classes="form-control">
           </div>
 
@@ -159,7 +164,59 @@
             data-classes="form-control">
           </div>
 
-          <div class="col-xs-12 fg-submit" data-value="Insert"></div>
+          <div class="col-xs-12 fg-input"
+            data-type="combobox"
+            data-label="Training Method"
+            data-name="training_method"
+            data-validation=""
+            data-item-label="-- Choose Training Methods Below --,<?php echo implode(',',trans('custom.list_training_methods')); ?>"
+            data-item-value="0,<?php echo implode(',',trans('custom.list_training_methods')); ?>"
+            data-current="{{ $user->training_method }}"
+            data-classes="form-control">
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-type="combobox"
+            data-label="Training Style"
+            data-name="training_style"
+            data-validation=""
+            data-item-label="-- Choose Training Styles Below --,<?php echo implode(',',trans('custom.list_training_styles')); ?>"
+            data-item-value="0,<?php echo implode(',',trans('custom.list_training_styles')); ?>"
+            data-current="{{ $user->training_style }}"
+            data-classes="form-control">
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-type="text"
+            data-label="Daily Rate"
+            data-name="mandays_fee"
+            data-validation="numeric"
+            data-placeholder="insert daily rate"
+            data-current="{{ $user->mandays_fee }}"
+            data-classes="form-control">
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-type="text"
+            data-label="Slug"
+            data-name="mandays_fee"
+            data-validation="required"
+            data-placeholder="insert daily rate"
+            data-current="{{ $user->mandays_fee }}"
+            data-classes="form-control">
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-type="file"
+            data-label="profile Picture"
+            data-name="profile_picture"
+            data-validation="required"
+            data-placeholder="insert profile picture"
+            data-current="{{ $user->profile_picture }}"
+            data-classes="form-control">
+          </div>
+
+          <div class="col-xs-12 fg-submit" data-value="UPDATE PROFILE"></div>
         </form>
       </div>
     </div>

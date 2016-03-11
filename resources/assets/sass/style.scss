@@ -909,6 +909,16 @@ MESSAGING
   top:62px !important;
 }
 
+.fg-autocomplete-list{
+  background:#fff;
+  display: none;
+}
+
+.fg-autocomplete-list > li{
+  background:#fff;
+  width: 100% !important;
+}
+
 /*
  * TnA
  */
