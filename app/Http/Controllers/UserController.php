@@ -551,13 +551,25 @@ class UserController extends Controller {
 					// Get Endorse Data
 
 					$user_endorses =	DB::table('user_skill_endorse_nodes')
+													 ->join('users','user_skill_endorse_nodes.user_id','=','users.id')
 													 ->where('user_skill_endorse_nodes.user_skill_node_id', '=', $user_expertise->id)
 													 ->get();
 
+					$user_endorses_data = array();
+					foreach($user_endorses as $user_endorse):
+
+						$user_endorse_data  = array(
+								"profile_picture"		=>	$user_endorse->profile_picture,
+								"first_name"				=>	$user_endorse->first_name,
+								"last_name"					=>	$user_endorse->last_name,
+						);
+						array_push($user_endorses_data,$user_endorse_data);
+					endforeach;
 
 					$user_expertise_data  = array(
 						"expertise_name"		=> $user_expertise->skill_name,
 						"total_endorse"			=> count($user_endorses),
+						"endorse_users"			=> $user_endorses_data,
 					);
 					array_push($user_expertises_data,$user_expertise_data);
 				endforeach;
@@ -717,10 +729,12 @@ class UserController extends Controller {
 
 			//<!--WORK EXPERIENCES
 			$user_work_experiences =	DB::table('work_experiences')
+																 ->select('*','work_experiences.id AS work_experience_id')
 																 ->join('corporates','work_experiences.corporate_id','=','corporates.id')
 																 ->where('work_experiences.owner_id', '=', $user->id)
 																 ->where('work_experiences.owner_role_id', '=', 2)
 																 ->get();
+
 			// WORK EXPERIENCES -->
 
 			//<!--TRAINING PROGRAMME
@@ -946,6 +960,7 @@ class UserController extends Controller {
 			$user_testimonials										= json_decode(json_encode($user_reviews), FALSE); // OBJECT DATA
 			$user_certifications									= json_decode(json_encode($user_certifications_data), FALSE); // ARRAY DATA
 			$user_awards													= json_decode(json_encode($user_awards_data), FALSE); // ARRAY DATA
+			$user_expertises											= json_decode(json_encode($user_expertises_data),FALSE);
 
 			return view('profile/profile-page')
 								->with('grids',$user_data)
@@ -955,6 +970,7 @@ class UserController extends Controller {
 								->with('testimonials',$user_testimonials)
 								->with('certifications',$user_certifications)
 								->with('awards',$user_awards)
+								->with('expertises',$user_expertises)
 								->with('gridType',1)
 								->with('role',1);
 		endif;

@@ -2,7 +2,7 @@
 
 use App\Http\Requests\Request;
 
-class updateBasicProfileRequest extends Request {
+class skillRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -21,9 +21,10 @@ class updateBasicProfileRequest extends Request {
 	 */
 	public function rules()
 	{
-			return [
-					'first_name'    => 'required',
-			];
+		return [
+			//
+			"skill"			=>	"required",
+		];
 	}
 
 }
