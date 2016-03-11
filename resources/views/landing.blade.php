@@ -94,7 +94,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 			<div class="slide-banner-right">
 				<h1 style="width:100%">
-					{{ trans('content.main_headline') }}
+					{{ trans('content.main_headline'.$page_role) }}
 				</h1>
 				<p>{{ trans('content.headline_description') }}</p>
 				<!--
@@ -124,7 +124,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="clear"> </div>
 				</div>
 				<div class="top-grid-info">
-					<p>{{ trans('content.why_cektraining_col_1') }}</p>
+					<p>{{ trans('content.why_cektraining_col_1'.$page_role ) }}</p>
 				</div>
 			</div>
 			<div class="top-grid">
@@ -138,7 +138,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="clear"> </div>
 				</div>
 				<div class="top-grid-info">
-					<p>{{ trans('content.why_cektraining_col_2') }}</p>
+					<p>{{ trans('content.why_cektraining_col_2'.$page_role ) }}</p>
 				</div>
 			</div>
 			<div class="top-grid top-grid1">
@@ -152,7 +152,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="clear"> </div>
 				</div>
 				<div class="top-grid-info">
-					<p>{{ trans('content.why_cektraining_col_3') }}</p>
+					<p>{{ trans('content.why_cektraining_col_3'.$page_role ) }}</p>
 				</div>
 			</div>
 			<div class="clear"> </div>

@@ -38,9 +38,11 @@ Route::get('/skill/add', 'GeneralController@addSkill');
 // INSERT SKILL USER -->
 
 
-Route::get('/land', 'GeneralController@index');
+Route::get('/', 'GeneralController@index');
+Route::get('/training-provider', 'GeneralController@provider');
+Route::get('/freelance-trainer', 'GeneralController@freelancer');
 
-Route::get('/', 'UserController@getUsers');
+Route::get('/trainerlist', 'UserController@getUsers');
 Route::get('/lang', 'WelcomeController@changeLanguage');
 Route::get('/send_email', 'WelcomeController@send_email');
 

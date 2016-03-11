@@ -23,7 +23,20 @@ class GeneralController extends Controller {
 	 */
 	public function index()
 	{
-		return view('landing');
+		$page_role = '';
+		return view('landing')->with('page_role',$page_role);
+	}
+
+	public function provider()
+	{
+		$page_role = '_provider';
+		return view('landing')->with('page_role',$page_role);
+	}
+
+	public function freelancer()
+	{
+		$page_role = '_freelancer';
+		return view('landing')->with('page_role',$page_role);
 	}
 
 	/**
