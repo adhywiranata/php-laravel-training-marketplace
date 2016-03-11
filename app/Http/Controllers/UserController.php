@@ -16,6 +16,8 @@ use App\Models\JobFunction as JobFunction;
 use App\Models\JobNode as JobNode;
 use App\Models\Provider as Provider;
 
+use Intervention\Image\Facades\Image;
+
 class UserController extends Controller {
 
 	/**
@@ -103,35 +105,54 @@ class UserController extends Controller {
 		 $job_seniority_level = JobSeniorityLevel::where('id',$job_node->job_seniority_level_id)
 		 														->first();
 
-		 $job_function = JobFunction::where('id',$job_node->job_function_id)
-		 														->first();
+		$job_function = JobFunction::where('id',$job_node->job_function_id)->first();
 
- 		 $update = [
- 			 'first_name' 						=> $input['first_name'],
- 			 'last_name' 							=> $input['last_name'],
+		if ( $request->hasFile('profile_picture') )
+		{
+			if( $request->file('profile_picture')->isvalid() ):
 
- 			 'corporate_name' 				=> $input['corporate_name'],
- 			 'job_title' 							=> $input['job_title'],
+				$file  						= $request->file('profile_picture');
+				$file_name  			= $request->file('profile_picture')->getClientOriginalName();
 
-			 'job_seniority_level' 		=> $job_seniority_level->job_seniority_level_name,
-			 'job_function' 					=> $job_function->job_function_name,
+				$destinationPath = public_path() . '/images/users';
+	    	$request->file('profile_picture')->move($destinationPath, $file_name);
+				//Resize & Crop | source image started from level public
+				$img = Image::make('images/users/'.$file_name)->fit(200,200)->save('images/users/thumb/'.$file_name);
+			else:
+				$photo_error = $request->file('profile_picture')->getErrorMessage();
+				echo $photo_error;
+			endif;
+		}
 
- 			 'email' 									=> $input['email'],
- 			 'summary' 								=> $input['summary'],
- 			 'domicle_area' 					=> $input['domicle_area'],
- 			 'service_area' 					=> $input['service_area'],
+		$update = [
+			'first_name' 						=> $input['first_name'],
+			'last_name' 						=> $input['last_name'],
 
- 			 'gender' 								=> $input['gender'],
- 			 'dob' 										=> $input['dob'],
+			'corporate_name' 				=> $input['corporate_name'],
+			'job_title' 						=> $input['job_title'],
 
- 			 'training_method' 				=> $input['training_method'],
- 			 'training_style' 				=> $input['training_style'],
- 		 ];
+			'job_seniority_level' 	=> $job_seniority_level->job_seniority_level_name,
+			'job_function' 					=> $job_function->job_function_name,
 
- 		 $user = User::find($id)->update($update);
+			'email' 								=> $input['email'],
+			'summary' 							=> $input['summary'],
+			'domicle_area' 					=> $input['domicle_area'],
+			'service_area' 					=> $input['service_area'],
 
-		 $user = User::where('id',$id)->first();
-		 return view('profile.forms.basic-profile')->with('user',$user);
+			'gender' 								=> $input['gender'],
+			'dob' 									=> $input['dob'],
+
+			'training_method' 			=> $input['training_method'],
+			'training_style' 				=> $input['training_style'],
+			'profile_picture' 			=> (isset($file_name))?$file_name:'',
+		];
+
+		$user = User::find($id)->update($update);
+
+		$user = User::where('id',$id)->first();
+		return view('profile.forms.basic-profile')->with('user',$user);
+
+
 	 }
 
 	/**

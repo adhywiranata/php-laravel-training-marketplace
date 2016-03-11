@@ -19,6 +19,7 @@
 Route::get('/hack1','UserController@hack1');
 
 
+
 //<!-- CRUD WORK EXPERIENCE
 Route::post('/create-work-experience','GeneralController@createWorkExperience');
 Route::get('/add-work-experience','GeneralController@addWorkExperience');
@@ -35,6 +36,9 @@ Route::post('/skill/create', 'GeneralController@createSkill');
 Route::get('/skill/add', 'GeneralController@addSkill');
 
 // INSERT SKILL USER -->
+
+
+Route::get('/land', 'GeneralController@index');
 
 Route::get('/', 'UserController@getUsers');
 Route::get('/lang', 'WelcomeController@changeLanguage');

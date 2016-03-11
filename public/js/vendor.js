@@ -12592,23 +12592,38 @@ function Generator(data){
   this.getAjax        = data['getAjax'];
   this.getAjaxColumn  = data['getAjaxColumn'];
   this.input          = '';
+  this.multipleImage  = false;
   this.input += generateLabel(this.label,this.inputIndex);
 
   var multi_class = ''; //for multiplicity purpose
 
   if(typeof this.multiple !== 'undefined' && this.multiple != '')
   {
-    this.input += '<div class="fg-input-container-hidden">';
-    this.input += '<input type="hidden" class="fg-input-multipler-hidden" name="' + this.name + '">';
-    this.input += '</div>';
-    multi_class = 'fg-input-multipler';
+    if(this.type == 'file' || this.type == 'image')
+    {
+      this.multipleImage  = true;
+    }
+    else
+    {
+      this.input += '<div class="fg-input-container-hidden">';
+      this.input += '<input type="hidden" class="fg-input-multipler-hidden" name="' + this.name + '">';
+      this.input += '</div>';
+      multi_class = 'fg-input-multipler';
+    }
   }
 
   if(typeof this.multipleChip !== 'undefined' && this.multipleChip != '')
   {
-    this.input += '<div class="fg-input-container-hidden">';
-    this.input += '<input type="hidden" class="fg-input-multipler-hidden" name="' + this.name + '">';
-    this.input += '</div>';
+    if(this.type == 'file' || this.type == 'image')
+    {
+      this.multipleImage  = true;
+    }
+    else
+    {
+      this.input += '<div class="fg-input-container-hidden">';
+      this.input += '<input type="hidden" class="fg-input-multipler-hidden" name="' + this.name + '">';
+      this.input += '</div>';
+    }
   }
 
   this.input += '<div class="fg-input-container ' + multi_class + '">';
@@ -12630,6 +12645,12 @@ function Generator(data){
       break;
     case "password":
       this.input += generatePassword(this.ids,this.classes,this.name,this.placeholder,this.currentVal);
+      break;
+    case "file":
+      this.input += generateFile(this.ids,this.classes,this.name,this.placeholder,this.currentVal,this.multipleImage);
+      break;
+    case "image":
+      this.input += generateImage(this.ids,this.classes,this.name,this.placeholder,this.currentVal,this.multipleImage);
       break;
     case "text-autocomplete":
       this.input += generateAutocompleteText(this.ids,this.classes,this.name,this.placeholder,this.currentVal,this.items, this.getAjax, this.getAjaxColumn);
@@ -12661,12 +12682,12 @@ function Generator(data){
   this.input += '</div>';
   this.input += '';
 
-  if(typeof this.multiple !== 'undefined' && this.multiple != '')
+  if(typeof this.multiple !== 'undefined' && this.multiple != '' && this.type != 'file' && this.type != 'image')
   {
     this.input += '<a class="fg-more-field"> ' + this.multiple + '</a>';
   }
 
-  if(typeof this.multipleChip !== 'undefined' && this.multipleChip != '')
+  if(typeof this.multipleChip !== 'undefined' && this.multipleChip != '' && this.type != 'file' && this.type != 'image')
   {
     this.input += '<div class="fg-row fg-chip-list"></div>';
     this.input += '<a class="fg-more-chip"> ' + this.multipleChip + '</a>';
@@ -12733,6 +12754,50 @@ function generatePassword(ids,classes,name,placeholder,currentVal){
   input += '" value="';
   input += currentVal;
   input += '"/>';
+  return input;
+}
+
+function generateFile(ids,classes,name,placeholder,currentVal,multipleImage){
+  input = '';
+  input += '<input type="file" name="';
+  input += name;
+  input += '" class="';
+  input += classes;
+  input += '" ';
+  input += 'placeholder="';
+  input += placeholder;
+  input += '" value="';
+  input += currentVal;
+  input += '"';
+  if(multipleImage)
+  {
+    input += ' multiple=multiple ';
+  }
+  input += '/>';
+  return input;
+}
+
+function generateImage(ids,classes,name,placeholder,currentVal,multipleImage){
+  input = '';
+  input += '<input type="file" name="';
+  input += name;
+  input += '" class="';
+  input += classes;
+  input += ' fg-input-image';
+  input += '" ';
+  input += 'placeholder="';
+  input += placeholder;
+  input += '" value="';
+  input += currentVal;
+  input += '"';
+  if(multipleImage)
+  {
+    input += ' multiple=multiple ';
+  }
+  input += '/>';
+  input += '<br/>';
+  input += '<div class="fg-image-previews">';
+  input += '</div>';
   return input;
 }
 
@@ -12992,6 +13057,32 @@ function pushAutoComplete(selector,curr_val,data_string,ul){
   selector.parent().find('.fg-autocomplete-list').find('li:last-child').attr('data-position','bottom');
 
 }
+
+/* IMAGE UPLOAD PREVIEWS */
+function readURL(file,curr_image) {
+
+    var reader = new FileReader();
+    reader.onload = function (e, loop) {
+      $(curr_image).attr('src', e.target.result);
+    }
+    reader.readAsDataURL(file);
+}
+
+$(document).on('change','.fg-input-image',function () {
+    var current_elem = $(this);
+    current_elem.parent().find('.fg-image-previews').html('');
+    var image_count = this.files.length;
+    var image_elem = '';
+    var loop = 0;
+    for(loop=0;loop<image_count;loop++)
+    {
+      //data-image="key-index" key:which input, index:image index
+      image_elem = '<img data-image="99-'+loop+'" class="fg-image-upload-preview" src="" alt=""/>';
+      current_elem.parent().find('.fg-image-previews').append(image_elem);
+      var curr_image = current_elem.parent().find('[data-image="'+ 99 +'-'+ loop +'"]');
+      readURL(this.files[loop],curr_image);
+    }
+});
 
 //VALIDATION ACTIONS
 

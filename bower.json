@@ -1,9 +1,9 @@
 {
-  "name": "speaqus",
+  "name": "cektraining",
   "dependencies": {
     "jquery": "~2.2.0",
     "bootstrap": "~3.3.6",
-    "fg-formgenerator": "*",
-    "font-awesome": "fontawesome#~4.5.0"
+    "fg-formgenerator":"*",
+    "font-awesome": "~4.5.0"
   }
 }
