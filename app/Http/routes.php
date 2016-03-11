@@ -18,6 +18,7 @@
 */
 Route::get('/hack1','UserController@hack1');
 
+Route::get('/land', 'GeneralController@index');
 Route::get('/', 'UserController@getUsers');
 Route::get('/lang', 'WelcomeController@changeLanguage');
 Route::get('/send_email', 'WelcomeController@send_email');
