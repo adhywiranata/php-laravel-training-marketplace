@@ -21,7 +21,7 @@
         <br/>
       </div>
       <div class="col-lg-offset-3 col-lg-6 col-md-12">
-        <form action="{{url('dashboard/basic-profile')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
+        <form action="{{url('dashboard/basic-profile')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20" enctype="multipart/form-data">
 
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
           <input type="hidden" name="_method" value="PUT" />
@@ -207,7 +207,7 @@
           </div>
 
           <div class="col-xs-12 fg-input"
-            data-type="file"
+            data-type="image"
             data-label="profile Picture"
             data-name="profile_picture"
             data-validation="required"
@@ -215,8 +215,9 @@
             data-current="{{ $user->profile_picture }}"
             data-classes="form-control">
           </div>
+          <img src="{{ url('images/users/'.$user->profile_picture) }}" width="200px" />
 
-          <div class="col-xs-12 fg-submit" data-value="UPDATE PROFILE"></div>
+          <div class="col-xs-12 fg-submit" data-value="Update Profile"></div>
         </form>
       </div>
     </div>
