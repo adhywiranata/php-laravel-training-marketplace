@@ -19,7 +19,7 @@
         <br/>
       </div>
       <div class="col-lg-offset-4 col-lg-6 col-md-12">
-        <form action="{{url('asd/create-training')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
+        <form action="{{url('skill/create')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
 
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 

@@ -19,10 +19,15 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <a href="" class="title">{{$workExperience->title}}</a>
         <!--<a href="" class="title">Marketing Manager</a>-->
-        <!--
-        <a href="#" class="btn btn-margin red-back pull-right">Delete</a>
-        <a href="#" class="btn btn-margin green-back pull-right">Edit</a>
-      -->
+
+        <form action="{{url('delete-work-experience/'.$workExperience->work_experience_id)}}" method="post">
+        <input type="hidden" name="_method" value="DELETE" />
+        <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+        <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
+        </form>
+
+        <a href="{{url('edit-work-experience/'. $workExperience->work_experience_id) }}" class="btn btn-margin green-back pull-right">Edit</a>
+
         <br/>
         <a href="#">{{ $workExperience->corporate_name }}</a>
         <p>{{ date("F jS Y",strtotime($workExperience->start_date)) }} - {{ date("F jS Y",strtotime($workExperience->end_date)) }}</p>

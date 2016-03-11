@@ -18,7 +18,28 @@
 */
 Route::get('/hack1','UserController@hack1');
 
+
+
+//<!-- CRUD WORK EXPERIENCE
+Route::post('/create-work-experience','GeneralController@createWorkExperience');
+Route::get('/add-work-experience','GeneralController@addWorkExperience');
+
+Route::get('/edit-work-experience/{id}','GeneralController@editWorkExperience');
+Route::put('/update-work-experience/{id}','GeneralController@updateWorkExperience');
+
+Route::delete('/delete-work-experience/{id}','GeneralController@deleteWorkExperience');
+
+// CRUD WORK EXPERIENCE -->
+
+// <!-- INSERT SKILL USER
+Route::post('/skill/create', 'GeneralController@createSkill');
+Route::get('/skill/add', 'GeneralController@addSkill');
+
+// INSERT SKILL USER -->
+
+
 Route::get('/land', 'GeneralController@index');
+
 Route::get('/', 'UserController@getUsers');
 Route::get('/lang', 'WelcomeController@changeLanguage');
 Route::get('/send_email', 'WelcomeController@send_email');

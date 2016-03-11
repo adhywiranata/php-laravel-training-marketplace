@@ -5,23 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class WorkExperience
+ * Class UserRole
  */
-class WorkExperience extends Model
+class UserSkillNode extends Model
 {
-    protected $table = 'work_experiences';
+    protected $table = 'user_skill_nodes';
 
     public $timestamps = true;
 
     protected $fillable = [
         'owner_id',
         'owner_role_id',
-        'corporate_id',
-        'title',
-        'position',
-        'description',
-        'start_date',
-        'end_date'
+        'skill_id',
     ];
 
     protected $guarded = [];

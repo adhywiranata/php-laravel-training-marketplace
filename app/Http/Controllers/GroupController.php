@@ -287,12 +287,25 @@ class GroupController extends Controller {
 				 // Get Endorse Data
 
 				 $group_endorses =	DB::table('user_skill_endorse_nodes')
+													->join('users','user_skill_endorse_nodes.user_id','=','users.id')
 													->where('user_skill_endorse_nodes.user_skill_node_id', '=', $group_expertise->id)
 													->get();
+
+ 				 $user_endorses_data = array();
+				 foreach($group_endorses as $user_endorse):
+
+					 $user_endorse_data  = array(
+							"profile_picture"		=>	$user_endorse->profile_picture,
+							"first_name"				=>	$user_endorse->first_name,
+							"last_name"					=>	$user_endorse->last_name,
+					 );
+					 array_push($user_endorses_data,$user_endorse_data);
+				 endforeach;
 
 				 $group_expertise_data  = array(
 					 "expertise_name"			=> $group_expertise->skill_name,
 					 "total_endorse"			=> count($group_endorses),
+					 "endorse_users"			=> $user_endorses_data,
 				 );
 				 array_push($group_expertises_data,$group_expertise_data);
 			 endforeach;
@@ -930,6 +943,7 @@ class GroupController extends Controller {
 		 $group_testimonials										= json_decode(json_encode($group_testimonials), FALSE); // OBJECT DATA
 		 $group_certifications									= json_decode(json_encode($group_certifications_data), FALSE); // ARRAY DATA
 		 $group_awards													= json_decode(json_encode($group_awards_data), FALSE); // ARRAY DATA
+		 $group_expertises											= json_decode(json_encode($group_expertises_data), FALSE);
 
 		 return view('profile/profile-page')
 							 ->with('grids',$group_data)
@@ -939,6 +953,7 @@ class GroupController extends Controller {
 							 ->with('testimonials',$group_testimonials)
 							 ->with('certifications',$group_certifications)
 							 ->with('awards',$group_awards)
+							 ->with('expertises',$group_expertises)
 							 ->with('gridType',1)
 							 ->with('role',2);
 	 endif;
