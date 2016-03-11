@@ -44,20 +44,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<!---- //End-logo---->
 			<!----start-top-contact-info---->
 			<div class="top-contact-info">
-				<!----start-top-social-icons---->
-				<div class="top-social-icons">
-					<ul>
-						<li><a class="flicker" href="#"><span> </span></a></li>
-						<li><a class="stub" href="#"><span> </span></a></li>
-						<li><a class="face" href="#"><span> </span></a></li>
-						<li><a class="twitter" href="#"><span> </span></a></li>
-					</ul>
-				</div>
-				<!----//End-top-social-icons---->
-				<!----start-top-contact-info-box--->
-				<div class="top-contact-info-box">
-					<span>Call now</span><i></i><label>1-800-123-456</label>
-				</div>
+					<a href="" class="nav-btn">Become a Training Provider</a>
+					<a href="" class="nav-btn">Become a Freelance Trainer</a>
+					<a href="" class="nav-btn">Login</a>
 				<!----//End-top-contact-info-box--->
 				<div class="clear"> </div>
 			</div>
@@ -93,30 +82,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<!----//End-script---->
 				<div id="slideshow">
 					   <div>
-					     <img src="{{ url() }}/images/landing/slide1.jpg" alt="" />
+					     <img src="{{ url() }}/images/landing/ss_basic.jpg" alt="" height="250px" />
 					   </div>
-					   <div>
-					     <img src="{{ url() }}/images/landing/slide2.jpg" alt="" />
+						 <div>
+					     <img src="{{ url() }}/images/landing/ss_basic.jpg" alt="" height="250px" />
 					   </div>
-					   <div>
-					     <img src="{{ url() }}/images/landing/slide3.jpg" alt="" />
+						 <div>
+					     <img src="{{ url() }}/images/landing/ss_basic.jpg" alt="" height="250px" />
 					   </div>
 				</div>
 			</div>
 			<div class="slide-banner-right">
 				<h1 style="width:100%">
-					Find the Most Effective Training Services in Any Minutes
+					{{ trans('content.main_headline') }}
 				</h1>
-				<p>
-					CekTraining is an inspiring and resourceful online global training directory and marketplace
-that helps to connect professionals training organizer and students with the right training services around the world.
-				</p>
+				<p>{{ trans('content.headline_description') }}</p>
 				<!--
 				<p>Lorem <span>ipsum</span> dolor sit amet, consectetur adipiscing elit. Aliquam feugiat et nibh id hendrerit. Sed rhoncus pulvinar ipsum, et commodo nisl sodales vel. Etiam sit amet Duis pellentesque <span>vulputate tortor, ac volutpat</span> in. In ultrices metus purus comot es.</p>
 			-->
-				<ul>
-					<li><a class="slide-bbtn" href="#">SIGN UP NOW FOR FREE</a></li>
-					<li><a class="slide-bbtn" href="#">ARE YOU TRAINING VENDOR?</a></li>
+				<ul class="hero-list">
+					<li><a class="slide-bbtn" href="#">{{ trans('content.sign_up_btn') }}</a></li>
+					<li><a class="slide-bbtn" href="#">{{ trans('content.vendor_btn') }}</a></li>
 				</ul>
 			</div>
 			<div class="clear"> </div>
@@ -133,12 +119,12 @@ that helps to connect professionals training organizer and students with the rig
 						<span> </span>
 					</div>
 					<div class="top-grid-head-right">
-						<h3><span>Lorem</span>ASIGNMENT</h3>
+						<h3><span>IT'S</span>{{ trans('content.why_cektraining_col_1_head') }}</h3>
 					</div>
 					<div class="clear"> </div>
 				</div>
 				<div class="top-grid-info">
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam feugiat et nibh id hendrerit. Sed rhoncus pulvinar ipsum, et commodo nisl sodales vel. Etiam sit amet commodo ligula. Nunc adipiscing. imperdiet est a dignissim.</p>
+					<p>{{ trans('content.why_cektraining_col_1') }}</p>
 				</div>
 			</div>
 			<div class="top-grid">
@@ -147,12 +133,12 @@ that helps to connect professionals training organizer and students with the rig
 						<span> </span>
 					</div>
 					<div class="top-grid-head-right">
-						<h3><span>DOLOR</span>SEARCH</h3>
+						<h3><span>IT'S</span>{{ trans('content.why_cektraining_col_2_head') }}</h3>
 					</div>
 					<div class="clear"> </div>
 				</div>
 				<div class="top-grid-info">
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam feugiat et nibh id hendrerit. Sed rhoncus pulvinar ipsum, et commodo nisl sodales vel. Etiam sit amet commodo ligula. Nunc adipiscing. imperdiet est a dignissim.</p>
+					<p>{{ trans('content.why_cektraining_col_2') }}</p>
 				</div>
 			</div>
 			<div class="top-grid top-grid1">
@@ -161,12 +147,12 @@ that helps to connect professionals training organizer and students with the rig
 						<span> </span>
 					</div>
 					<div class="top-grid-head-right">
-						<h3><span>Amet</span>SETTINGS</h3>
+						<h3><span>IT'S</span>{{ trans('content.why_cektraining_col_3_head') }}</h3>
 					</div>
 					<div class="clear"> </div>
 				</div>
 				<div class="top-grid-info">
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam feugiat et nibh id hendrerit. Sed rhoncus pulvinar ipsum, et commodo nisl sodales vel. Etiam sit amet commodo ligula. Nunc adipiscing. imperdiet est a dignissim.</p>
+					<p>{{ trans('content.why_cektraining_col_3') }}</p>
 				</div>
 			</div>
 			<div class="clear"> </div>
@@ -223,17 +209,15 @@ that helps to connect professionals training organizer and students with the rig
 			<div class="price-table-grids">
 				<div class="price-table-grid price-table-grid1">
 					<div class="price-table-grid-head price-table-grid-head1">
-						<h2>Regular <label>$9.99</label></h2>
+						<h2>{{ trans('content.pricing_header')[0] }} <label>FREE</label></h2>
 					</div>
 					<div class="price-table-grid-info">
 						<h4>included features</h4>
 						<ul>
-							<li><a href="#"><span> </span>basic features mini</a></li>
-							<li><a href="#"><span> </span>lorem ipusm dolor sit amet</a></li>
-							<li><a href="#"><span> </span>adipiscing dolor feugiat</a></li>
-							<li><a href="#"><span> </span>basic features mini</a></li>
-							<li><a href="#"><span> </span>lorem ipusm dolor sit amet</a></li>
-							<a class="btn1" href="#">Buy Now</a>
+							<li><a href="#"><span> </span>{{ trans('content.pricing_benefit')[0] }}</a></li>
+							<li><a href="#"><span> </span>{{ trans('content.pricing_benefit')[1] }}</a></li>
+							<li><a href="#"><span> </span>{{ trans('content.pricing_benefit')[2] }}</a></li>
+							<a class="btn1" href="#">{{ trans('content.pricing_sign_up_btn') }}</a>
 							<div class="clear"> </div>
 						</ul>
 
@@ -241,17 +225,15 @@ that helps to connect professionals training organizer and students with the rig
 				</div>
 				<div class="price-table-grid price-table-grid2">
 					<div class="price-table-grid-head price-table-grid-head2">
-						<h2>ELITE <label>$29.99 </label></h2>
+						<h2>{{ trans('content.pricing_header')[1] }} <label>FREE</label></h2>
 					</div>
 					<div class="price-table-grid-info">
 						<h4>included features</h4>
 						<ul>
-							<li><a href="#"><span> </span>basic features mini</a></li>
-							<li><a href="#"><span> </span>lorem ipusm dolor sit amet</a></li>
-							<li><a href="#"><span> </span>adipiscing dolor feugiat</a></li>
-							<li><a href="#"><span> </span>basic features mini</a></li>
-							<li><a href="#"><span> </span>lorem ipusm dolor sit amet</a></li>
-							<a class="btn1 btn2" href="#">Buy Now</a>
+							<li><a href="#"><span> </span>{{ trans('content.pricing_benefit_provider')[0] }}</a></li>
+							<li><a href="#"><span> </span>{{ trans('content.pricing_benefit_provider')[1] }}</a></li>
+							<li><a href="#"><span> </span>{{ trans('content.pricing_benefit_provider')[2] }}</a></li>
+							<a class="btn1 btn2" href="#">{{ trans('content.pricing_sign_up_btn') }}</a>
 							<div class="clear"> </div>
 						</ul>
 
@@ -259,17 +241,15 @@ that helps to connect professionals training organizer and students with the rig
 				</div>
 				<div class="price-table-grid price-table-grid3">
 					<div class="price-table-grid-head price-table-grid-head3">
-						<h2>Pro-user <label>$19.99</label></h2>
+						<h2>{{ trans('content.pricing_header')[2] }} <label>FREE</label></h2>
 					</div>
 					<div class="price-table-grid-info">
 						<h4>included features</h4>
 						<ul>
-							<li><a href="#"><span> </span>basic features mini</a></li>
-							<li><a href="#"><span> </span>lorem ipusm dolor sit amet</a></li>
-							<li><a href="#"><span> </span>adipiscing dolor feugiat</a></li>
-							<li><a href="#"><span> </span>basic features mini</a></li>
-							<li><a href="#"><span> </span>lorem ipusm dolor sit amet</a></li>
-							<a class="btn1 btn3" href="#">Buy Now</a>
+							<li><a href="#"><span> </span>{{ trans('content.pricing_benefit_freelance')[0] }}</a></li>
+							<li><a href="#"><span> </span>{{ trans('content.pricing_benefit_freelance')[1] }}</a></li>
+							<li><a href="#"><span> </span>{{ trans('content.pricing_benefit_freelance')[2] }}</a></li>
+							<a class="btn1 btn3" href="#">{{ trans('content.pricing_sign_up_btn') }}</a>
 							<div class="clear"> </div>
 						</ul>
 
@@ -283,7 +263,7 @@ that helps to connect professionals training organizer and students with the rig
 	<!----start-bottom-grids---->
 	<div class="bottom-grids">
 		<div class="wrap">
-			<div class="bottom-grid-left">
+			<div class="bottom-grid-left" style="display:none;">
 				<h3>What customers <span>say</span></h3>
 				<div class="bottom-grid-boxs">
 					<div class="bottom-grid-box">
@@ -340,7 +320,8 @@ that helps to connect professionals training organizer and students with the rig
 					</div>
 				</div>
 			</div>
-			<div class="bottom-grid-right">
+
+			<div class="bottom-grid-right" style="float:left">
 				<h3>LEarn <span>more</span></h3>
 				<iframe src="//www.youtube.com/embed/f0xpcXKhlWY"  allowfullscreen></iframe>
 			</div>
@@ -352,7 +333,9 @@ that helps to connect professionals training organizer and students with the rig
 	<div class="news-letter">
 		<div class="wrap">
 			<div class="news-letter-left">
-				<h3><span>subscribe to our</span> Newsletter</h3>
+				<h3>
+					<span>{{ trans('content.footer_subscribe_small') }}</span>
+					{{ trans('content.footer_subscribe') }}</h3>
 			</div>
 			<div class="news-letter-right">
 				<form>
@@ -374,6 +357,7 @@ that helps to connect professionals training organizer and students with the rig
 				<ul>
 					<li><a href="#"> Privacy Policy</a></li>
 					<li><a href="#"> Terms & Conditions</a></li>
+					<li><a href="#"> Contact +62 897 954 9831</a></li>
 				</ul>
 				<script type="text/javascript">
 						$(document).ready(function() {

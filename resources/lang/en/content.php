@@ -16,6 +16,94 @@ $global_delete          = 'delete';
 return [
     'welcome' => 'Welcome to our application',
 
+    //LANDING PAGE
+    'main_headline' => 'Find the Most Effective Training Services in Any Minutes for FREE',
+    'main_headline_provider' => 'Expand Your Training Services Globally in Any Minutes',
+    'main_headline_freelance' => 'Market Your Training Services Together',
+
+    'headline_description' => 'CekTraining is an inspiring and resourceful online global training directory and marketplace
+that helps to connect professionals training organizer and students with the right training services around the world.',
+
+    'sign_up_btn'   => 'SIGN UP FREE',
+    'vendor_btn'    => 'SIGN UP AS VENDOR',
+
+    'why_cektraining' => '<span>WHY </span> CEKTRAINING',
+
+    'why_cektraining_col_1_head' =>
+      'RELEVANT',
+
+    'why_cektraining_col_2_head' =>
+      'REASONABLE',
+
+    'why_cektraining_col_3_head' =>
+      'RELIABLE',
+
+    'why_cektraining_col_1' =>
+      'Analyze your training needs and match with the right training',
+
+    'why_cektraining_col_1_provider' =>
+      'Match your training experience, included associated trainers
+      (don’t worry, the identity is hidden from your profile) with
+      the right client needs',
+
+    'why_cektraining_col_1_freelancer' =>
+      'Match your training track record with the right client needs',
+
+    'why_cektraining_col_2' =>
+      'Adjust our training services recommendation based on your
+      budget, experience and topic preferences',
+
+    'why_cektraining_col_2_provider' =>
+      'Receive leads based on your hidden price through our system',
+
+    'why_cektraining_col_2_freelancer' =>
+      'Receive leads based on your hidden price through our system',
+
+    'why_cektraining_col_3' =>
+      'Review and contact the training services with credible
+      training effectiveness information',
+
+    'why_cektraining_col_3_provider' =>
+      'Get the verified reviews such as endorsement, testimonial
+       and evaluation by your networks',
+
+    'why_cektraining_col_3_freelancer' =>
+      'Get the verified reviews such as endorsement, testimonial
+       and evaluation by your networks',
+
+    'pricing_header' => [
+      'BASIC ACCOUNT',
+      'TRAINING PROVIDER',
+      'FREELANCE TRAINER',
+    ],
+
+    'pricing_benefit'     => [
+      'UNLIMITED Training Need Analysis',
+      'UNLIMITED Training Advanced Search',
+      'UNLIMITED Training Effectiveness Information'
+    ],
+
+    'pricing_benefit_provider'     => [
+      'UNLIMITED Addition to Client Contacts',
+      'UNLIMITED Visibility on Search',
+      'UNLIMITED Training Effectiveness Information Field',
+    ],
+
+    'pricing_benefit_freelance'     => [
+      'UNLIMITED Addition to Client Contacts',
+      'UNLIMITED Visibility on Search',
+      'UNLIMITED Training Effectiveness Information Field',
+    ],
+
+    'pricing_sign_up_btn' => 'Sign Up Free',
+
+    'learn_more' => 'What is CekTraining.com',
+    'learn_more_description' => 'Watch how this video helps you to find the right training services',
+
+    'footer_subscribe_small' => 'subscribe us to get the',
+    'footer_subscribe' => 'Latest Training Advice',
+
+
     //BUTTONS or LINKS
     'link_view_profile'                     => 'Profile',
     'link_add_to_contact'                   => 'Add to Contacts',

@@ -46,11 +46,27 @@ body{
 .logo img{
 	display:block
 }
+.nav-btn{
+	color:#333;
+	margin:5px 0px;
+	padding:5px 9px;
+	border-radius: 10px;
+}
+
+.nav-btn:hover{
+	color:#22A7F0;
+}
+
+.hero-list{
+	margin-top:50px !important;
+}
+
 .top-contact-info{
 	float: right;
 	width: 50%;
 	margin-top: 0.3em;
 	text-align: right;
+	margin-top: 15px;
 }
 .top-social-icons{
 	float: left;
