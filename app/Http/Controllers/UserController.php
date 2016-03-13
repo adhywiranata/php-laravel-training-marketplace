@@ -660,6 +660,7 @@ class UserController extends Controller {
 			///////////////////
 			//<!--TRAINING EXPERIENCES
 			$user_speaking_experiences =	DB::table('training_experience_program_nodes')
+												  				 ->select('*','training_experiences.id AS training_experience_id')
 																	 ->join('training_experiences','training_experience_program_nodes.training_experience_id','=','training_experiences.id')
 																	 ->join('training_program','training_experience_program_nodes.training_program_id','=','training_program.id')
 																	 ->join('providers','training_experiences.provider_id','=','providers.id')
@@ -724,7 +725,7 @@ class UserController extends Controller {
 
 				//SUMMARY TRAINING EXPERIENCES VARIABLE
 				$user_speaking_experience_data  = array(
-					"speaking_experience_id"					  	=>		$user_speaking_experience->id,
+					"speaking_experience_id"					  	=>		$user_speaking_experience->training_experience_id,
 					"speaking_experience_title"					  =>		$user_speaking_experience->training_experience,
 					"speaking_experience_description"			=>		$user_speaking_experience->description,
 					"speaking_experience_start_date"		  =>		$user_speaking_experience->start_date,
@@ -756,6 +757,7 @@ class UserController extends Controller {
 
 			//<!--TRAINING PROGRAMME
 			$user_training_programs =	DB::table('user_training_program_nodes')
+																 	 ->select('*','training_program.id AS training_program_id')
 																	 ->join('training_program','user_training_program_nodes.training_program_id','=','training_program.id')
 																	 ->where('user_training_program_nodes.owner_id', '=', $user->id)
 																	 ->where('user_training_program_nodes.owner_role_id', '=', 2)
@@ -800,7 +802,7 @@ class UserController extends Controller {
 
 
 				$user_training_program_data = array(
-						"training_program_id"					=> $user_training_program->id,
+						"training_program_id"					=> $user_training_program->training_program_id,
 						"training_program_name_id"		=> $user_training_program->training_program_name_id,
 						"learning_outcome_names"			=> $user_training_programs_learning_outcomes_data,
 				);
