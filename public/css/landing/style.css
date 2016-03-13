@@ -1288,3 +1288,41 @@ body{
 	}
 }
 /*--//media Quries for 320px-mobiles-*/
+
+.footer-list{
+	width: 16%;
+	float:left;
+	margin:10px 10px;
+}
+
+.footer-list-narrow{
+	width: 10%;
+}
+
+.footer-list-large{
+	width: 20%;
+}
+
+.footer-list-wide{
+	width: 100%;
+	float:left;
+	margin:10px 10px;
+}
+
+.footer-list li a{
+	color:#666;
+	font-size: 0.9em;
+	margin:0 5px;
+}
+
+.footer-list li a:hover{
+	color:#22A7F0;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.bold:hover{
+	color:#666 !important;
+}

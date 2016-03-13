@@ -7,7 +7,7 @@
       @endif
       @if($role == 1)
       <li data-trigger="work-experiences">Work Experiences</li>
-      <li data-trigger="work-experiences">Education</li>
+      <!--<li data-trigger="work-experiences">Education</li>-->
       @endif
       <li data-trigger="programs">Training Programs</li>
       <li data-trigger="testimonials">Testimonials</li>

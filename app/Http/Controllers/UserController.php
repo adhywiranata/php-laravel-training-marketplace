@@ -91,21 +91,17 @@ class UserController extends Controller {
 		 //Fetch the right JobNode or create new
 		 $job_node_exist = JobNode::where('job_title_id',$job_title_id)->count();
 
+		 $job_seniority_level = '';
+		 $job_function = '';
+
 		 if($job_node_exist == 0)
 		 {
-			 JobNode::create([
-				 'job_title_id' => $job_title_id,
-				 'job_seniority_level_id' => 999999999,
-				 'job_function_id' => 999999999,
-			 ]);
+			 $job_node = JobNode::where('job_title_id',$job_title_id)->first();
+			 $job_seniority_level = JobSeniorityLevel::where('id',$job_node->job_seniority_level_id)
+			 														->first()->job_seniority_level_name;
+			 $job_function = JobFunction::where('id',$job_node->job_function_id)
+ 													->first()->job_function_name;
 		 }
-
-		 $job_node = JobNode::where('job_title_id',$job_title_id)->first();
-
-		 $job_seniority_level = JobSeniorityLevel::where('id',$job_node->job_seniority_level_id)
-		 														->first();
-
-		$job_function = JobFunction::where('id',$job_node->job_function_id)->first();
 
 		if ( $request->hasFile('profile_picture') )
 		{
@@ -131,8 +127,8 @@ class UserController extends Controller {
 			'corporate_name' 				=> $input['corporate_name'],
 			'job_title' 						=> $input['job_title'],
 
-			'job_seniority_level' 	=> $job_seniority_level->job_seniority_level_name,
-			'job_function' 					=> $job_function->job_function_name,
+			'job_seniority_level' 	=> $job_seniority_level,
+			'job_function' 					=> $job_function,
 
 			'email' 								=> $input['email'],
 			'summary' 							=> $input['summary'],
@@ -544,7 +540,7 @@ class UserController extends Controller {
 	 {
 		 if($user_slug == '')
 		 {
-			 $user_slug = Auth::user()->user_slug;
+			 $user_slug = Auth::user()->slug;
 		 }
 
 		 $user =	DB::table('user_role_nodes')

@@ -15,7 +15,8 @@ class TrainingExperience extends Model
 
     protected $fillable = [
         'training_experience',
-        'user_id',
+        'owner_id',
+        'owner_role_id',
         'provider_id',
         'corporate_id',
         'description',
@@ -25,5 +26,5 @@ class TrainingExperience extends Model
 
     protected $guarded = [];
 
-        
+
 }

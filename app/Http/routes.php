@@ -18,19 +18,6 @@
 */
 Route::get('/hack1','UserController@hack1');
 
-
-
-//<!-- CRUD WORK EXPERIENCE
-Route::post('/create-work-experience','GeneralController@createWorkExperience');
-Route::get('/add-work-experience','GeneralController@addWorkExperience');
-
-Route::get('/edit-work-experience/{id}','GeneralController@editWorkExperience');
-Route::put('/update-work-experience/{id}','GeneralController@updateWorkExperience');
-
-Route::delete('/delete-work-experience/{id}','GeneralController@deleteWorkExperience');
-
-// CRUD WORK EXPERIENCE -->
-
 // <!-- INSERT SKILL USER
 Route::post('/skill/create', 'GeneralController@createSkill');
 Route::get('/skill/add', 'GeneralController@addSkill');
@@ -88,8 +75,16 @@ Route::put('dashboard/basic-profile', 'UserController@updateBasicProfile');
 Route::get('/dashboard/forgot-password', 'UserController@editForgotPassword');
 
 Route::get('/dashboard/training-experience/add', 'GeneralController@addTrainingExperience');
+Route::post('/dashboard/training-experience/add','GeneralController@createTrainingExperience');
+Route::get('/dashboard/training-experience/{id}/edit','GeneralController@editTrainingExperience');
+Route::put('/dashboard/training-experience/{id}/edit','GeneralController@updateTrainingExperience');
+Route::delete('/dashboard/training-experience/{id}','GeneralController@deleteTrainingExperience');
 
-Route::get('/dashboard/work-experience/add', 'GeneralController@addWorkExperience');
+Route::get('/dashboard/work-experience/add','GeneralController@addWorkExperience');
+Route::post('/dashboard/work-experience/add','GeneralController@createWorkExperience');
+Route::get('/dashboard/work-experience/{id}/edit','GeneralController@editWorkExperience');
+Route::put('/dashboard/work-experience/{id}/edit','GeneralController@updateWorkExperience');
+Route::delete('/dashboard/work-experience/{id}','GeneralController@deleteWorkExperience');
 
 Route::get('/dashboard/certification/add', 'GeneralController@addCertification');
 

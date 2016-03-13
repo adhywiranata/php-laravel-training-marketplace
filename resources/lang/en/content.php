@@ -19,7 +19,7 @@ return [
     //LANDING PAGE
     'main_headline' => 'Find the Most Effective Training Services in Any Minutes for FREE',
     'main_headline_provider' => 'Expand Your Training Services Globally in Any Minutes',
-    'main_headline_freelance' => 'Market Your Training Services Together',
+    'main_headline_freelancer' => 'Market Your Training Services Together',
 
     'headline_description' => 'CekTraining is an inspiring and resourceful online global training directory and marketplace
 that helps to connect professionals training organizer and students with the right training services around the world.',

@@ -37,16 +37,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<div class="wrap">
 			<!---- start-logo---->
 				<div class="logo">
-					<a href="#">
+					<a href="{{ url('') }}">
 						<img src="{{ url() }}/images/cektraining-color.png" title="CekTraining" width="230px" />
 					</a>
 				</div>
 			<!---- //End-logo---->
 			<!----start-top-contact-info---->
 			<div class="top-contact-info">
-					<a href="" class="nav-btn">Become a Training Provider</a>
-					<a href="" class="nav-btn">Become a Freelance Trainer</a>
-					<a href="" class="nav-btn">Login</a>
+					<a href="{{ url('training-provider') }}" class="nav-btn">Become a Training Provider</a>
+					<a href="{{ url('freelance-trainer') }}" class="nav-btn">Become a Freelance Trainer</a>
+					<a href="{{ url('login') }}" class="nav-btn">Login</a>
 				<!----//End-top-contact-info-box--->
 				<div class="clear"> </div>
 			</div>
@@ -160,7 +160,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</div>
 	<!----//End-top-grids---->
 	<!---carousel---->
-	<div class="img-carousel">
+	<div class="img-carousel" style="display:none;">
 		<div class="wrap">
 			<h3><span>Take a look at</span> Our Users</h3>
 			<!-- start content_slider -->
@@ -205,7 +205,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<!----start-price-tables----->
 	<div class="price-tables">
 		<div class="wrap">
-			<h3><span>SING UP YOUR</span> PREMIUM memembership</h3>
+			<h3><span>SIGN UP NOW FOR </span>UNLIMITED BENEFITS</h3>
 			<div class="price-table-grids">
 				<div class="price-table-grid price-table-grid1">
 					<div class="price-table-grid-head price-table-grid-head1">
@@ -323,7 +323,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 			<div class="bottom-grid-right" style="float:left">
 				<h3>LEarn <span>more</span></h3>
-				<iframe src="//www.youtube.com/embed/f0xpcXKhlWY"  allowfullscreen></iframe>
+				<iframe src="//www.youtube.com/embed/O9fJB5cOKfs"  allowfullscreen></iframe>
 			</div>
 			<div class="clear"> </div>
 		</div>
@@ -351,14 +351,49 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<div class="footer">
 		<div class="wrap">
 			<div class="footer-left">
-				<p>Copyright &#169; 2013 <a href="http://munka.softpae.sk/">Martina Pitakova.</a> All right reserved .Template by <a href="http://w3layouts.com/">W3layouts</a></p>
+				<p>
+					<img src="{{ url('images/cektraining-color.png') }}" width="150px" />
+				</p>
+				<p>Copyright &#169; 2016 </p>
+
+					<ul class="footer-list footer-list-wide">
+						<li><a href="#"> Privacy Policy</a></li>
+						<li><a href="#"> Terms & Conditions</a></li>
+						<li><a href="#"> Contact +62 897 954 9831</a></li>
+					</ul>
 			</div>
+
+			<ul class="footer-list footer-list-narrow">
+				<li><a class="bold">COMPANY</a></li>
+				<li><a href="#"> About</a></li>
+				<li><a href="#"> Team</a></li>
+				<li><a href="#"> Blog</a></li>
+			</ul>
+
+			<ul class="footer-list footer-list-narrow">
+				<li><a class="bold">CUSTOMERS</a></li>
+				<li><a href="#"> How it works</a></li>
+				<li><a href="#"> Sign up</a></li>
+			</ul>
+
+			<ul class="footer-list">
+				<li><a class="bold">TRAINING PROVIDERS</a></li>
+				<li><a href="#"> How it works</a></li>
+				<li><a href="#"> Sign up</a></li>
+			</ul>
+
+			<ul class="footer-list">
+				<li><a class="bold">FREELANCE TRAINERS</a></li>
+				<li><a href="#"> How it works</a></li>
+				<li><a href="#"> Sign up</a></li>
+			</ul>
+
+			<ul class="footer-list footer-list-large">
+				<li><a class="bold">QUESTIONS? NEED HELP?</a></li>
+				<li><a href="#"> Contact CekTraining</a></li>
+			</ul>
+
 			<div class="footer-right">
-				<ul>
-					<li><a href="#"> Privacy Policy</a></li>
-					<li><a href="#"> Terms & Conditions</a></li>
-					<li><a href="#"> Contact +62 897 954 9831</a></li>
-				</ul>
 				<script type="text/javascript">
 						$(document).ready(function() {
 							/*

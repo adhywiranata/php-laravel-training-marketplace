@@ -12542,11 +12542,21 @@ $('.fg-form .fg-input').each(function(index,value){
   }
 
   var inputSelector = 'input';
+
+  //selector change to textarea instead of finding input
   if(type == 'textarea')
   {
     inputSelector = 'textarea';
   }
 
+  //change the input name of the visible input to <name>_display
+  if(typeof multipleChip !== 'undefined' && multipleChip != '')
+  {
+    var container = $(this).find('.fg-input-container');
+    container.find(inputSelector).attr('name','chipFake');
+  }
+
+  //add id to inputs
   if(typeof ids === 'undefined' || ids == '')
   {
     ids = '';
@@ -12612,6 +12622,7 @@ function Generator(data){
     }
   }
 
+  //Check if multiple chip is used
   if(typeof this.multipleChip !== 'undefined' && this.multipleChip != '')
   {
     if(this.type == 'file' || this.type == 'image')
