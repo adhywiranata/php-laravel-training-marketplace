@@ -105,9 +105,12 @@ Route::get('/settings/plan', 'UserController@getPlans');
 |--------
 */
 
-Route::get('/trainers', 'UserController@getUsers');
-Route::get('/trainers-fandy', 'UserController@getUsersF');
-Route::get('/training-providers', 'GroupController@getGroups');
+//Route::get('/trainers', 'UserController@getUsers');
+//Route::get('/trainers-fandy', 'UserController@getUsersF');
+//Route::get('/training-providers', 'GroupController@getGroups');
+Route::get('/trainers', 'SearchController@find_trainers');
+Route::get('/training-providers', 'SearchController@find_providers');
+
 
 /*
 |--------

@@ -56,7 +56,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
   	 * @var array
   	 */
   	//protected $hidden = ['password', 'remember_token'];
-    	protected $hidden 		= ['password'];
+    protected $hidden 		= ['password'];
+
+
+    public function trainerSkills()
+    {
+        return $this->hasMany('App\Models\UserSkillNode', 'owner_id')
+            ->join('skills', function ($join) {
+                $join->on('skills.id', '=', 'user_skill_nodes.skill_id')
+                    ->where('owner_role_id', '=', 2);
+            });
+    }
 
 
 }
