@@ -25,10 +25,10 @@
       <div class="col-md-9 box-section">
         <h3 class="bold uppercase text-grey">
           @if($gridType == 1)
-            83 Trainers Found
+            {{ sizeof($grids) }} Trainers Found
           @endif
           @if($gridType == 2)
-            3 Training Providers Found
+            {{ sizeof($grids) }} Training Providers Found
           @endif
           @if($gridType == 3)
             1 Public Training Found
@@ -36,16 +36,18 @@
 
         </h3>
 
-        @if($gridType == 1 || $gridType == 2)
-          @foreach($grids as $grid)
-            @include('search.grid-list-partials.profile-grid')
-          @endforeach
+        @if(sizeof($grids) > 0)
+          @if($gridType == 1 || $gridType == 2)
+            @foreach($grids as $grid)
+              @include('search.grid-list-partials.profile-grid')
+            @endforeach
+          @endif
+          @if($gridType == 3)
+            @include('search.grid-list-partials.event-grid')
+          @endif
+        @else
+          @include('search.grid-list-partials.not-found-grid')
         @endif
-        @if($gridType == 3)
-          @include('search.grid-list-partials.event-grid')
-        @endif
-
-        @include('search.grid-list-partials.not-found-grid')
         <div class="row"><br/><br/></div>
         <div class="row" style="margin-top:100px;">
           <center>

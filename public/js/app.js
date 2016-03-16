@@ -297,27 +297,60 @@ $('.box-profile').find("[data-section='trainings']").show();
 //sidebar
 
 $(document).on('click','.btn-submit',function(){
-  var role = $('input[name=role]:checked').val();
-  var title = $('input[name=title]').val();
+  var role            = $('input[name=role]:checked').val();
+  var keywords_temp   = $('.sf_keyword_label');
+  var budget          = $('input[name=budget]').val();
+  var location        = $('input[name=location]').val().trim();
+  var method_temp     = $('select[name=method]').val();
+  var style_temp      = $('select[name=style]').val();
+  var must_have_temp  = $('input[name=must_have]:checked');
+  var start_date      = $('input[name=start_date_day]')+'-'+$('input[name=start_date_month]')+'-'+$('input[name=start_date_year]');
+  var end_date        = $('input[name=end_date_day]')+'-'+$('input[name=end_date_month]')+'-'+$('input[name=end_date_year]');
+
+  var keywords = "";
+  for(var i=0; i<keywords_temp.length; i++){
+    if(i == 0)
+      keywords += keywords_temp[i].innerHTML.replace('<i class="fa fa-close"></i>', "").trim();
+    else
+      keywords += "%2B"+keywords_temp[i].innerHTML.replace('<i class="fa fa-close"></i>', "").trim();
+  }
+
+  var method = "";
+  for(var i=0; i<method_temp.length; i++){
+    if(i == 0)
+      method += method_temp[i].value.trim();
+    else
+      method += "%2B"+method_temp[i].value.trim();
+  }
+
+  var style = "";
+  for(var i=0; i<style_temp.length; i++){
+    if(i == 0)
+      style += style_temp[i].value.trim();
+    else
+      style += "%2B"+style_temp[i].value.trim();
+  }
+
+  var must_have = "";
+  for(var i=0; i<must_have_temp.length; i++){
+    if(i == 0)
+      must_have += must_have_temp[i].value;
+    else
+      must_have += "%2B"+must_have_temp[i].value;
+  }
+
   if(role == 1)
   {
-    if(role != '')
-    {
-      window.location = 'trainers-fandy';
-    }
-    else{
-    window.location = 'trainers';
-
-    }
+    window.location = 'trainers?keywords='+keywords+'&budget='+budget+'&location='+location+'&method='+method+'&style='+style+'&must_have='+must_have+'&start_date='+start_date+'&end_date='+end_date;
   }
-  if(role == 2)
+  else if(role == 2)
   {
-    window.location = 'training-providers';
+    window.location = 'training-providers?keywords='+keywords+'&budget='+budget+'&location='+location+'&method='+method+'&style='+style+'&must_have='+must_have+'&start_date='+start_date+'&end_date='+end_date;
   }
-  if(role == 3)
+  /*else if(role == 3)
   {
     window.location = 'public-trainings';
-  }
+  }*/
 });
 
 /*

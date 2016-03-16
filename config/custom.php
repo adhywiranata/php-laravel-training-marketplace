@@ -5,7 +5,7 @@ return array(
   "list_role" => [
     'Freelance Trainer',
     'Training Provider',
-    'Public Training',
+    'Public Training (On Development)',
   ],
 
   "list_must_have" => [
