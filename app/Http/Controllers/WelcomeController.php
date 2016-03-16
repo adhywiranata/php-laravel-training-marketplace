@@ -12,6 +12,9 @@ use Intervention\Image\Facades\Image;
 // User Request for validation
 use App\Http\Requests\TrainingFormRequest;
 
+// CALL SESSION
+use Illuminate\Support\Facades\Session;
+
 class WelcomeController extends Controller {
 
 	/*
@@ -43,6 +46,18 @@ class WelcomeController extends Controller {
 	public function index()
 	{
 		return view('welcome');
+	}
+
+	public function select_all_session()
+	{
+		Session::set('cobain','value123');
+		//Session::get('cobain'); // get only array cobain
+
+		//$request->session()->forget('key'); ||Session::forget('key'); // remove only a variable
+		//$request->session()->flush(); ||Session::flush(); // remove all variable
+
+		print_r(Session::get(null));
+		exit();
 	}
 
 	public function select()

@@ -92,7 +92,6 @@ class GeneralController extends Controller {
 	{
 
 		// role 1 for basic, 2 for freelance, 3 for provider
-		$role = $role;
 		$input = $request->all();
 		//CHECK IF CORPORATE DOES NOT EXIST,CREATE A NEW ONE
 		$corp_exist = Corporate::where('corporate_name',$input['corporate_name'])
@@ -150,25 +149,25 @@ class GeneralController extends Controller {
 
 		 'email'								=> $input['email'],
 		 'password'							=> md5($input['password']),
-		 'first_name' 						=> $input['first_name'],
+		 'first_name' 					=> $input['first_name'],
 		 'last_name' 						=> $input['last_name'],
 
-		 'corporate_name' 				=> $input['corporate_name'],
+		 'corporate_name' 			=> $input['corporate_name'],
 		 'job_title' 						=> $input['job_title'],
 
 		 'job_seniority_level' 	=> $job_seniority_level,
-		 'job_function' 					=> $job_function,
+		 'job_function' 				=> $job_function,
 
 		 'email' 								=> $input['email'],
 		 'summary' 							=> $input['summary'],
-		 'domicle_area' 					=> $input['domicle_area'],
-		 'service_area' 					=> $input['service_area'],
+		 'domicle_area' 				=> $input['domicle_area'],
+		 'service_area' 				=> $input['service_area'],
 
-		 'gender' 								=> $input['gender'],
+		 'gender' 							=> $input['gender'],
 		 'dob' 									=> $input['dob'],
 
 		 'training_method' 			=> $input['training_method'],
-		 'training_style' 				=> $input['training_style'],
+		 'training_style' 			=> $input['training_style'],
 		 'profile_picture' 			=> (isset($file_name))?$file_name:'',
 	 ];
 
@@ -491,6 +490,13 @@ class GeneralController extends Controller {
 		return redirect('dashboard');
 	}
 
+	public function deleteCertification($id)
+	{
+		Certification::find($id)->delete();
+
+		return redirect('dashboard');
+	}
+
 	/**
 	* Display user training experience form page
 	*
@@ -572,6 +578,13 @@ class GeneralController extends Controller {
 		];
 
 		$award = Award::where('id',$id)->update($update_award);
+
+		return redirect('dashboard');
+	}
+
+	public function deleteAward($id)
+	{
+		Award::find($id)->delete();
 
 		return redirect('dashboard');
 	}
