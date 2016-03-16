@@ -457,6 +457,7 @@ class GroupController extends Controller {
 		 ///////////////////
 		 //<!--TRAINING EXPERIENCES
 		 $group_speaking_experiences =	DB::table('training_experience_program_nodes')
+												  				->select('*','training_experiences.id AS training_experience_id')
 																	->join('training_experiences','training_experience_program_nodes.training_experience_id','=','training_experiences.id')
 																	->join('training_program','training_experience_program_nodes.training_program_id','=','training_program.id')
 																	->join('providers','training_experiences.provider_id','=','providers.id')
@@ -520,19 +521,19 @@ class GroupController extends Controller {
 
 			 //SUMMARY TRAINING EXPERIENCES VARIABLE
 			 $group_speaking_experience_data  = array(
-				 "speaking_experience_id"					  	=>		$group_speaking_experience->id,
+				 "speaking_experience_id"					  		=>		$group_speaking_experience->training_experience_id,
 				 "speaking_experience_title"					  =>		$group_speaking_experience->training_experience,
 				 "speaking_experience_description"			=>		$group_speaking_experience->description,
-				 "speaking_experience_start_date"		  =>		$group_speaking_experience->start_date,
-				 "speaking_experience_end_date"				=>		$group_speaking_experience->end_date,
+				 "speaking_experience_start_date"		  	=>		$group_speaking_experience->start_date,
+				 "speaking_experience_end_date"					=>		$group_speaking_experience->end_date,
 				 "company_profile_picture"					  	=>		$group_speaking_experience->corporate_profile_picture,
-				 "company_name"											  =>		$group_speaking_experience->corporate_name,
-				 "provider_profile_picture"					  =>		$group_speaking_experience->profile_picture,
+				 "company_name"											  	=>		$group_speaking_experience->corporate_name,
+				 "provider_profile_picture"					  	=>		$group_speaking_experience->profile_picture,
 				 "provider_name"											  =>		$group_speaking_experience->provider_name,
-				 "speaking_experience_expertises"			=>		$group_speaking_experience_expertises_data,
-				 "speaking_experience_photos"					=>		$group_speaking_experience_photos_data,
-				 "speaking_experience_videos"					=>		$group_speaking_experience_videos_data,
-				 "training_programme_title"						=>		$group_speaking_experience->training_program_name_id,
+				 "speaking_experience_expertises"				=>		$group_speaking_experience_expertises_data,
+				 "speaking_experience_photos"						=>		$group_speaking_experience_photos_data,
+				 "speaking_experience_videos"						=>		$group_speaking_experience_videos_data,
+				 "training_programme_title"							=>		$group_speaking_experience->training_program_name_id,
 			 );
 			 array_push($group_speaking_experiences_data,$group_speaking_experience_data);
 
@@ -667,10 +668,11 @@ class GroupController extends Controller {
 		 //<!--TRAINING PROGRAMME
 
 		 $group_training_programs =	DB::table('user_training_program_nodes')
-		                              ->join('training_program','user_training_program_nodes.training_program_id','=','training_program.id')
-		                              ->where('user_training_program_nodes.owner_id', '=', $group->id)
-		                              ->where('user_training_program_nodes.owner_role_id', '=', 3)
-		                              ->get();
+											  				->select('*','training_program.id AS training_program_id')
+	                              ->join('training_program','user_training_program_nodes.training_program_id','=','training_program.id')
+	                              ->where('user_training_program_nodes.owner_id', '=', $group->id)
+	                              ->where('user_training_program_nodes.owner_role_id', '=', 3)
+	                              ->get();
 
 		 $group_training_programs_data = array();
 		 foreach($group_training_programs as $group_training_program):
@@ -711,9 +713,9 @@ class GroupController extends Controller {
 
 
 		   $group_training_program_data = array(
-		       "training_program_id"					=> $group_training_program->id,
-		       "training_program_name_id"		=> $group_training_program->training_program_name_id,
-		       "learning_outcome_names"			=> $group_training_programs_learning_outcomes_data,
+		       "training_program_id"					=> $group_training_program->training_program_id,
+		       "training_program_name_id"			=> $group_training_program->training_program_name_id,
+		       "learning_outcome_names"				=> $group_training_programs_learning_outcomes_data,
 		   );
 
 
