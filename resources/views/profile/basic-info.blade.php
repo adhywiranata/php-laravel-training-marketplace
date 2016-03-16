@@ -14,9 +14,9 @@
   <div class="profile-picture">
 
     @if($grids->profile_picture == 'default.png'):
-      <img src="http://speaqus.com/img/photos/profile_picture/100x100/{{ $grids->profile_picture }}" width="100%">
+      <img src="{{ url('images/users/thumb/'.$grids->profile_picture) }}" width="100%">
     @else
-      <img src="http://speaqus.com/img/photos/profile_picture/original/{{ $grids->profile_picture }}" width="100%">
+      <img src="{{ url('images/users/thumb/'.$grids->profile_picture) }}" width="100%">
     @endif
 
     <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>

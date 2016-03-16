@@ -121,7 +121,7 @@ class UserController extends Controller {
 				$destinationPath = public_path() . '/images/users';
 	    	$request->file('profile_picture')->move($destinationPath, $file_name);
 				//Resize & Crop | source image started from level public
-				$img = Image::make('images/users/'.$file_name)->fit(200,200)->save('images/users/thumb/'.$file_name);
+				$img = Image::make('images/users/'.$file_name)->fit(400,400)->save('images/users/thumb/'.$file_name);
 
 
 				$update = [
