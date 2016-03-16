@@ -8,7 +8,7 @@ use Request;
 use Redirect;
 use Socialize;
 use App\Models\User;
-
+use App\Models\UserRoleNode;
 
 class AuthController extends Controller {
 
@@ -52,10 +52,26 @@ class AuthController extends Controller {
 		else
 		{
 			//Hasn't Registered
-			$user = new User();
-			$user->email 		= $data['email'];
-			$user->password 	= $data['password'];
+			$user 									= new User();
+			$user->email 						= $data['email'];
+			$user->password 				= $data['password'];
+			$user->is_verified 			= 1;
+			$user->profile_picture 	= 'default.png';
 			$user->save();
+
+
+			$update = [
+				'slug' 			=> $user->id,
+			];
+			User::find($user->id)->update($update);
+
+
+			$create_node = [
+	 		 'user_id' => $user->id,
+	 		 'role_id' => 1, // BASIC ROLE
+	 	 	];
+	 	 $userRoleNode = UserRoleNode::create($create_node);
+
 
 			Auth::login($user);
 			return Redirect::to('/');

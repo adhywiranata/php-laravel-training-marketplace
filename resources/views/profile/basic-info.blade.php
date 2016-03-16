@@ -19,16 +19,21 @@
       <img src="http://speaqus.com/img/photos/profile_picture/original/{{ $grids->profile_picture }}" width="100%">
     @endif
 
-    <?php $user_id = (isset(Auth::user()->user_id))?Auth::user()->user_id:''; ?>
+    <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
     @if($grids->user_id != $user_id)
     <a class="btn full-width trigger-popup" data-trigger-popup="send-message">Send Message</a>
     <a class="btn full-width view_phone"> View Contact Number</a><br/>
 
-    <span class="invisible_phone" style="display:none;">
+    <span class="invisible_phone" style="display:none;" >
+      <i class="fa fa-whatsapp text-green"></i> {{ $grids->phone_number }} <br/>
+      <i class="fa fa-envelope-o text-green"></i> {{ $grids->email }} <br/>
+      <i class="fa fa-building text-green"></i> work area: {{ $grids->service_area }} <br/>
+      <!--
       <i class="fa fa-whatsapp text-green"></i> +6281231234 <br/>
       <i class="fa fa-envelope-o text-green"></i> ysubianto@gmail.com <br/>
       <i class="fa fa-whatsapp text-green"></i> office: +6281231234 <br/>
       <i class="fa fa-building text-green"></i> work address: Jalan Satu No. dua <br/>
+      -->
     </span>
     @else
       <a href="{{ url('dashboard/basic-profile') }}" class="btn full-width">Edit Basic Profile</a>
