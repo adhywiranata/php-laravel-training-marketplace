@@ -29,11 +29,15 @@ Route::get('/', 'GeneralController@index');
 Route::get('/training-provider', 'GeneralController@provider');
 Route::get('/freelance-trainer', 'GeneralController@freelancer');
 
+Route::get('/signup-front/{role}', 'GeneralController@signup_basic');
+Route::post('/signup-front/{role}', 'GeneralController@createUserFromLanding');
+
 Route::get('/trainerlist', 'UserController@getUsers');
 Route::get('/lang', 'WelcomeController@changeLanguage');
 Route::get('/send_email', 'WelcomeController@send_email');
 
 Route::get('/landing', 'WelcomeController@index');
+
 Route::get('home', 'HomeController@index');
 
 
@@ -87,10 +91,22 @@ Route::put('/dashboard/work-experience/{id}/edit','GeneralController@updateWorkE
 Route::delete('/dashboard/work-experience/{id}','GeneralController@deleteWorkExperience');
 
 Route::get('/dashboard/certification/add', 'GeneralController@addCertification');
+Route::post('/dashboard/certification/add','GeneralController@createCertification');
+Route::get('/dashboard/certification/{id}/edit','GeneralController@editCertification');
+Route::put('/dashboard/certification/{id}/edit','GeneralController@updateCertification');
+Route::delete('/dashboard/certification/{id}','GeneralController@deleteCertification');
 
 Route::get('/dashboard/award/add', 'GeneralController@addAward');
+Route::post('/dashboard/award/add','GeneralController@createAward');
+Route::get('/dashboard/award/{id}/edit','GeneralController@editAward');
+Route::put('/dashboard/award/{id}/edit','GeneralController@updateAward');
+Route::delete('/dashboard/award/{id}','GeneralController@deleteAward');
 
 Route::get('/dashboard/program/add', 'GeneralController@addProgram');
+Route::post('/dashboard/program/add','GeneralController@createProgram');
+Route::get('/dashboard/program/{id}/edit','GeneralController@editProgram');
+Route::put('/dashboard/program/{id}/edit','GeneralController@updateProgram');
+Route::delete('/dashboard/program/{id}','GeneralController@deleteProgram');
 
 Route::get('/dashboard/skill/add', 'GeneralController@addSkill');
 

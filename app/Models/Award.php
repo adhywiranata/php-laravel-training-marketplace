@@ -15,6 +15,7 @@ class Award extends Model
 
     protected $fillable = [
         'owner_id',
+        'owner_role_id',
         'title',
         'description',
         'publisher',
@@ -23,5 +24,5 @@ class Award extends Model
 
     protected $guarded = [];
 
-        
+
 }

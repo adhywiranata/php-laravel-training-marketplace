@@ -1,12 +1,11 @@
 <div class="col-lg-12 profile-section" data-section="programs">
-  <?php $user_id = (isset(Auth::user()->user_id))?Auth::user()->user_id:''; ?>
+  <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
   @if($grids->user_id == $user_id)
   <a href="{{ url('dashboard/program/add') }}" class="btn">
     <i class="fa fa-plus"></i>
     Add New Training Program
   </a>
   @endif
-  <!--for($i=0;$i<2;$i++)-->
   <?php $flag = 1 ?>
   @foreach($trainingProgrammes as $trainingProgramme)
 
@@ -57,5 +56,4 @@
   </div>
   <?php $flag++; ?>
   @endforeach
-  <!--endfor-->
 </div>

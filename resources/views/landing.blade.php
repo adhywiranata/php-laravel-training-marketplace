@@ -101,7 +101,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<p>Lorem <span>ipsum</span> dolor sit amet, consectetur adipiscing elit. Aliquam feugiat et nibh id hendrerit. Sed rhoncus pulvinar ipsum, et commodo nisl sodales vel. Etiam sit amet Duis pellentesque <span>vulputate tortor, ac volutpat</span> in. In ultrices metus purus comot es.</p>
 			-->
 				<ul class="hero-list">
-					<li><a class="slide-bbtn" href="#">{{ trans('content.sign_up_btn') }}</a></li>
+					<li><a class="slide-bbtn" href="{{ url('signup-front/'.trans('content.sign_up_link'.$page_role)) }}">{{ trans('content.sign_up_btn') }}</a></li>
 					<li><a class="slide-bbtn" href="#">{{ trans('content.vendor_btn') }}</a></li>
 				</ul>
 			</div>

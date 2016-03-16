@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class UserRole
  */
-class UserRole extends Model
+class UserRoleNode extends Model
 {
     protected $table = 'user_role_nodes';
 

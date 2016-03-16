@@ -1,12 +1,12 @@
 <div class="col-lg-12 profile-section" data-section="certifications">
-  <?php $user_id = (isset(Auth::user()->user_id))?Auth::user()->user_id:''; ?>
+  <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
   @if($grids->user_id == $user_id)
   <a href="{{ url('dashboard/certification/add') }}" class="btn">
     <i class="fa fa-plus"></i>
     Add New Certication
   </a>
   @endif
-  <!--for($i=0;$i<2;$i++)-->
+
   @foreach($certifications as $certification)
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="row experience-grid">
@@ -15,6 +15,14 @@
         <!--<a href="" class="title">Cisco Certified Network Associate (CCNA)</a>-->
         <br/>
         <a href="">{{$certification->certification_publisher_name}}</a>
+
+        <form action="{{url('/dashboard/certification/'.$certification->certification_id .'/delete')}}" method="post">
+          <input type="hidden" name="_method" value="DELETE" />
+          <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+          <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
+        </form>
+
+        <a href="{{url('/dashboard/certification/'. $certification->certification_id . '/edit') }}" class="btn btn-margin green-back pull-right">Edit</a>
 
         <!--
         <a href="#" class="btn btn-margin red-back pull-right">Delete</a>
@@ -45,5 +53,4 @@
     </div>
   </div>
   @endforeach
-  <!--endfor-->
 </div>
