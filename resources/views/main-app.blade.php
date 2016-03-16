@@ -26,6 +26,9 @@
 	<![endif]-->
 </head>
 <body>
+
+	<input type="hidden" id="base_url" />
+
 	<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -148,6 +151,10 @@
 	@include('general.send-evaluation-popup')
 
 	@include('general.send-testimonial-popup')
+
+	<div id="popup-container">
+		
+	</div>
 
 	<!-- Scripts -->
 	<script src="{{ asset('/js/vendor.js') }}"></script>

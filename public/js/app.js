@@ -1,9 +1,12 @@
 
+var base_url = $('#base_url').val();
+
 $(document).on('click', function(event) {
   if (!$(event.target).closest('.popup').length) {
     if (!$(event.target).closest('.trigger-popup').length) {
       $('.popup').fadeOut(200);
       $('.popup-overlay').fadeOut();
+      $('#popup-container').html('');
       $("video").each(function () { this.pause() });
       /* Reset request section to first section */
       $('.request-section-wrapper').data('section',1);
@@ -245,6 +248,15 @@ $(document).on('click','.skill-tag',function(){
   $("[data-popup='"+ popup +"']").fadeIn(400);
 });
 
+//Video Popup Section
+$(document).on('click','.ajax-popup',function(){
+  $.ajax({
+    url: base_url + 'popup/video/fuck/qnY1OveXY9c',
+    success: function(data){
+      $('#popup-container').append(data);
+    }
+  });
+});
 /*
 * USER EVALUATIONS
 */

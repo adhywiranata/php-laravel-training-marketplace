@@ -1,4 +1,4 @@
-<div class="row box-profile">
+<div class="row box-profile padding-20">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <ul class="profile-tab-list">
       <li class="active" data-trigger="speaking-experiences">Training Experiences</li>
@@ -14,6 +14,7 @@
       <li data-trigger="certifications">Certifications</li>
       <li data-trigger="awards">Awards</li>
       <li data-trigger="skills">Skills and Endorsement</li>
+      <li data-trigger="videos">Videos</li>
     </ul>
   </div>
 
@@ -36,5 +37,7 @@
   @include('profile.tab-partials.awards')
 
   @include('profile.tab-partials.skills')
+
+  @include('profile.tab-partials.videos')
 
 </div>

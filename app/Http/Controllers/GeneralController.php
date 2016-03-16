@@ -19,11 +19,10 @@ use App\Models\WorkExperience as WorkExperience;
 
 //Skills
 use App\Models\Skill as Skill;
-use App\Models\UserSkillNode as UserSkillNode;
 use App\Models\SectionSkill as SectionSkill;
 
 //Photo
-use App\Models\SectionPhotoNode as SectionPhotoNode;
+use App\Models\SectionPhoto as SectionPhoto;
 
 //Training Program
 use App\Models\TrainingProgram as TrainingProgram;
@@ -35,6 +34,9 @@ use App\Models\Certification as Certification;
 //Award
 use App\Models\Award as Award;
 
+//Video
+use App\Models\Video as Video;
+
 //Learning Outcome
 use App\Models\LearningOutcome as LearningOutcome;
 
@@ -44,6 +46,7 @@ use App\Http\Requests\trainingProgramRequest;
 use App\Http\Requests\certificationRequest;
 use App\Http\Requests\awardRequest;
 use App\Http\Requests\skillRequest;
+use App\Http\Requests\videoRequest;
 use App\Http\Requests\SignUpLandingRequest;
 
 
@@ -276,6 +279,45 @@ class GeneralController extends Controller {
 			}
 		}
 
+		$files = [];
+		//$count_files = 0;
+
+		//Section Photos Upload
+		if ( $request->hasFile('training_photos') ):
+
+			$files 				= $request->file('training_photos');
+			//$count_files 	= count($files);
+
+			foreach($files as $file):
+
+				if( $file->isvalid() ):
+
+					$file_name  			= $file->getClientOriginalName();
+					$destinationPath 	= public_path() . '/images/section_photos';
+					$file->move($destinationPath, $file_name);
+					//Resize & Crop | source image started from level public
+					$img = Image::make('images/section_photos/'.$file_name)->fit(200,200)->save('images/section_photos/'.$file_name);
+
+				else:
+
+					$photo_error = $file->getErrorMessage();
+					echo $photo_error;
+
+				endif;
+			endforeach;
+		endif;
+
+		//Section photo create nodes
+		foreach($files as $file):
+			$node_insert = [
+				'section_id' => $section_id,
+				'section_item_id' => $new_training_experience_id,
+				'photo_path' => $file->getClientOriginalName()
+			];
+
+			SectionPhoto::create($node_insert);
+		endforeach;
+
 		return redirect('dashboard');
 	}
 
@@ -492,7 +534,7 @@ class GeneralController extends Controller {
 	}
 
 	/**
-	* Display user training experience form page
+	* Display user award form page
 	*
 	* @return Response
 	*/
@@ -668,6 +710,44 @@ class GeneralController extends Controller {
 
 		echo "<script type='text/javascript'>alert('Insert Success');</script>";exit();
 
+	}
+
+	/**
+	* Display user award form page
+	*
+	* @return Response
+	*/
+	public function addVideo()
+	{
+		return view('profile.forms.add-video');
+	}
+
+	public function createVideo(videoRequest $request)
+	{
+		$input = $request->all();
+		$yt_id = str_replace('https://www.youtube.com/watch?v=','',$input['video_path']);
+		$session_owner_id = 1;
+		$session_owner_role_id = 2;
+
+		$insert_video = [
+			'owner_id' 						=> $session_owner_id,
+			'owner_role_id' 			=> $session_owner_role_id,
+			'video_name' 					=> $input['video_name'],
+			'video_path' 					=> $yt_id,
+			'video_type' 					=> $input['video_type'],
+			'video_description' 	=> $input['video_description']
+		];
+
+		Video::create($insert_video);
+
+		return redirect('dashboard');
+	}
+
+	public function popupSectionVideo($video_title,$video_id)
+	{
+		return view('profile.yt-video-popup')
+			->with('video_title',$video_title)
+			->with('video_id',$video_id);
 	}
 
 	/**

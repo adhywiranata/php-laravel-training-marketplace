@@ -28,9 +28,9 @@
 
         @if(isset($training_experience))
           <form action="{{url('dashboard/training-experience/'.$training_experience->training_experience_id.'/edit')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
-          <input type="hidden" name="_method" value="PUT" />
+          <input type="hidden" name="_method" value="PUT" enctype="multipart/form-data"/>
         @else
-          <form action="{{url('dashboard/training-experience/add')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
+          <form action="{{url('dashboard/training-experience/add')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20" enctype="multipart/form-data">
         @endif
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 
@@ -90,6 +90,7 @@
             data-classes="form-control">
           </div>
 
+          <!--
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
             data-label="Learning Outcome"
@@ -103,6 +104,7 @@
             data-classes="form-control"
             data-multiple-chip="add more learning outcome">
           </div>
+          -->
 
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
@@ -128,7 +130,20 @@
             data-classes="form-control">
           </div>
 
+          <div class="col-xs-12 fg-input"
+            data-type="image"
+            data-label="Training Experience Photos"
+            data-name="training_photos[]"
+            data-validation="required"
+            data-placeholder="insert training photos"
+            data-current=""
+            data-classes="form-control"
+            data-multiple="multiple"
+            >
+          </div>
+
           <div class="col-xs-12 fg-submit" data-value="Insert"></div>
+
         </form>
       </div>
     </div>
