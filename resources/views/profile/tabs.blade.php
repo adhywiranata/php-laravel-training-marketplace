@@ -1,4 +1,4 @@
-<div class="row box-profile padding-20">
+<div class="row box-profile padding-10">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <ul class="profile-tab-list">
       <li class="active" data-trigger="speaking-experiences">Training Experiences</li>

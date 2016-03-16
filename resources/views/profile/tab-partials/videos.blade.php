@@ -23,9 +23,12 @@
           </div>
           <div class="row video-grid">
             <img
-              class="trigger-popup ajax-popup"
+              class="trigger-popup ajax-popup-video"
               src="http://img.youtube.com/vi/{{$video->video_path}}/0.jpg"
-              width="100%;"/>
+              width="100%;"
+              data-title="{{$video->video_name}}"
+              data-url="{{$video->video_path}}"
+              />
             <span class="fa fa-play fa-4x text-white"></span>
           </div>
         </div>

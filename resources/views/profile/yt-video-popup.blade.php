@@ -6,7 +6,7 @@
     </div>
     <div class="">
       <iframe id="player" type="text/html" width="640" height="390"
-  src="http://www.youtube.com/embed/{{ $video_id }}?enablejsapi=1&origin=http://example.com"
+  src="http://www.youtube.com/embed/<?php echo trim($video_id) ?>"?enablejsapi=1&origin=http://cektraining.com"
   frameborder="0"></iframe>
 
       <script>

@@ -10,7 +10,7 @@
 
 </div>
 
-<div class="col-lg-4 col-md-4 col-sm-4 col-xs-5">
+<div class="col-lg-3 col-md-4 col-sm-4 col-xs-5">
   <div class="profile-picture">
 
     @if($grids->profile_picture == 'default.png'):
@@ -105,6 +105,7 @@
       </a>
     @endforeach
   </div>
+  <!--
   <div class="row">
     <b>{{ trans('content.pr_industries') }}</b><br/>
     Consumer Electronics, E-Learning, Design
@@ -117,5 +118,6 @@
     <b>{{ trans('content.pr_job_functions') }}</b><br/>
     Marketing, Information Technology, Education
   </div>
-  <br/>
+  -->
+  <br/><br/><br/>
 </div>

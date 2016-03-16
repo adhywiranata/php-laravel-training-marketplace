@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Session;
+
 //Corporates
 use App\Models\Corporate as Corporate;
 
@@ -207,12 +209,12 @@ class GeneralController extends Controller {
 
 	public function createTrainingExperience(trainingExperienceRequest $request)
 	{
-
 		$section_id = 1; //Section id for Training Experience
 
 		$input = $request->all();
-		$session_owner_id = 1;
-		$session_owner_role_id = 2;
+
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
 
 		//CHECK IF CORPORATE DOES NOT EXIST,CREATE A NEW ONE
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
@@ -377,8 +379,8 @@ class GeneralController extends Controller {
 	public function createWorkExperience(workExperienceRequest $request)
 	{
 		$input = $request->all();
-		$session_owner_id = 1;
-		$session_owner_role_id = 2;
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
 
 		//CHECK IF CORPORATE DOES NOT EXIST,CREATE A NEW ONE
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
@@ -462,8 +464,8 @@ class GeneralController extends Controller {
 		$section_id = 7; //Section id for Certification
 
 		$input = $request->all();
-		$session_owner_id = 1;
-		$session_owner_role_id = 2;
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
 
 		$insert_certification = [
 			'owner_id' 						=> $session_owner_id,
@@ -554,8 +556,8 @@ class GeneralController extends Controller {
 		$section_id = 8; //Section id for Certification
 
 		$input = $request->all();
-		$session_owner_id = 1;
-		$session_owner_role_id = 2;
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
 
 		$insert_award = [
 			'owner_id' 						=> $session_owner_id,
@@ -647,8 +649,8 @@ class GeneralController extends Controller {
 		$section_id = 1; //Section id for Training Experience
 
 		$input = $request->all();
-		$session_owner_id = 1;
-		$session_owner_role_id = 2;
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
 
 		//CHECK IF TRAINING PROGRAM DOES NOT EXIST,CREATE A NEW ONE
 		$training_program = TrainingProgram::where('training_program_name_en',$input['training_program'])->first();
@@ -703,8 +705,8 @@ class GeneralController extends Controller {
 	public function createSkill(skillRequest $request)
 	{
 		$input = $request->all();
-		$session_owner_id = 1;
-		$session_owner_role_id = 2;
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
 
 		//CHECK IF SKILL DOES NOT EXIST,CREATE A NEW ONE
 		$skill = Skill::where('skill_name',$input['skill'])->first();
@@ -739,8 +741,8 @@ class GeneralController extends Controller {
 	{
 		$input = $request->all();
 		$yt_id = str_replace('https://www.youtube.com/watch?v=','',$input['video_path']);
-		$session_owner_id = 1;
-		$session_owner_role_id = 2;
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
 
 		$insert_video = [
 			'owner_id' 						=> $session_owner_id,

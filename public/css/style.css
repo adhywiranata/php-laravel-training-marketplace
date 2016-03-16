@@ -55,6 +55,9 @@ MIXINS
   background: #3b5998 !important; }
 
 .rounded {
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
   border-radius: 8px; }
 
 .smaller {
@@ -189,10 +192,16 @@ a {
   border-radius: 2px;
   padding: 10px 0px;
   margin: 10px 0;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
   transition: 0.5s; }
   .box-grid:nth-child(1) {
     margin: 0px 0 10px 0; }
   .box-grid:hover {
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -ms-transition: 0.5s;
     transition: 0.5s; }
 
 .sidebar {
@@ -206,6 +215,9 @@ a {
   color: #FFFFFF;
   border: 0;
   border-bottom: 3px solid #1E8BC3 !important;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
   border-radius: 3px; }
   .btn:hover, .btn-green:hover, .big-btn:hover, .btn-default:hover {
     background: #1E8BC3;
@@ -256,13 +268,24 @@ textarea {
 .form-control, .form-invisible, .form-like-box {
   outline: none;
   border: 1px solid #DDD !important;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
   border-radius: 0px;
   padding: 0px 10px !important;
   margin: 5px 0;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
   box-shadow: none !important;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
   transition: 0.5s; }
   .form-control:focus, .form-invisible:focus, .form-like-box:focus {
     border-color: #3498DB !important;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -ms-transition: 0.5s;
     transition: 0.5s; }
 
 .form-invisible {
@@ -273,6 +296,9 @@ textarea {
 
 .form-like-box:hover {
   border-color: #3498DB !important;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
   transition: 0.5s; }
 
 form label span {
@@ -364,6 +390,9 @@ LOGIN / REGISTER
   height: auto !important;
   overflow-y: auto !important;
   background: #FFFFFF;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
   border-radius: 8px; }
   .popup .popup-logo {
     margin: 20px auto 10px 0;
@@ -446,6 +475,9 @@ USER PROFILE
   background: #EB9532;
   padding: 2px 5px;
   color: #FFFFFF;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
   border-radius: 3px; }
 
 .user-list-info .row {
@@ -471,6 +503,9 @@ USER PROFILE
   margin: 3px 0;
   font-size: 0.8em;
   text-transform: uppercase;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
   border-radius: 5px;
   color: #999 !important; }
   .tag:hover {
@@ -482,6 +517,9 @@ USER PROFILE
     background: #999 !important;
     border: 1px solid #999;
     color: #FFFFFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
     border-radius: 5px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px; }
@@ -513,6 +551,9 @@ USER PROFILE
   border-radius: 2px;
   padding: 10px 0px;
   margin: 10px 0;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
   transition: 0.5s; }
   .box-profile:nth-child(1) {
     margin: 0px 0 10px 0; }
@@ -528,14 +569,16 @@ USER PROFILE
   height: auto;
   overflow: hidden; }
   .profile-tab-list li {
-    font-size: 1em;
+    font-size: 0.8em;
     color: #222;
     background: #DDD;
     cursor: pointer;
     list-style: none;
     float: left;
-    padding: 10px 20px;
-    margin: 0px 3px; }
+    padding: 10px 10px;
+    margin: 0px 3px;
+    text-transform: uppercase;
+    font-weight: bold; }
   .profile-tab-list li:nth-child(1) {
     margin-left: 0px; }
   .profile-tab-list .active {
@@ -558,7 +601,6 @@ USER PROFILE
       position: absolute;
       top: 50%;
       left: 50%;
-      -webkit-transform: translate(-50%, -50%);
       transform: translate(-50%, -50%); }
 
 .video-grid img {
@@ -708,5 +750,3 @@ MESSAGING
 .tna-section .form-control, .tna-section .form-invisible, .tna-section .form-like-box {
   padding: 10px !important;
   height: auto; }
-
-/*# sourceMappingURL=style.css.map */

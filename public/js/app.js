@@ -249,9 +249,12 @@ $(document).on('click','.skill-tag',function(){
 });
 
 //Video Popup Section
-$(document).on('click','.ajax-popup',function(){
+$(document).on('click','.ajax-popup-video',function(){
+
+  var title = $(this).data('title');
+  var url   = $(this).data('url');
   $.ajax({
-    url: base_url + 'popup/video/fuck/qnY1OveXY9c',
+    url: base_url + 'popup/video/' + title + '/ ' + url,
     success: function(data){
       $('#popup-container').append(data);
     }

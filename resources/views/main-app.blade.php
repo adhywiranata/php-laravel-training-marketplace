@@ -72,6 +72,7 @@
 						<li><a href="{{ url('super-cool-coach/trainings') }}">{{ trans('content.nav_find_my_training') }}</a></li>
 						<li><a href="{{ url('/dashboard') }}">{{ trans('content.nav_dashboard') }}</a></li>
 					-->
+						<!--
 						<li>
 							<a href="{{ url('public-training/add') }}">
 								<span class="btn btn-green bold" style="margin-top:-5px;">
@@ -79,6 +80,7 @@
 								</span>
 							</a>
 						</li>
+						-->
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"  style="background:#222 !important; color:#fff !important;">
 								<img src="http://speaqus.com/img/photos/profile_picture/original/fandyakwka.jpg" height="30px">
@@ -153,7 +155,7 @@
 	@include('general.send-testimonial-popup')
 
 	<div id="popup-container">
-		
+
 	</div>
 
 	<!-- Scripts -->
