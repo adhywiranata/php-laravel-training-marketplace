@@ -54,37 +54,32 @@
 
           <!-- STEP 2 -->
           <div class="tna-section text-center fg-form" id="search-wizard-step-2">
-            <h3 class="roboto-light text-blue">Step 2 of 8<br/>What is Your Detailed Objective?</h3>
+            <h3 class="roboto-light text-blue">Step 2 of 8<br/>What is Your Objective's detail?</h3>
             <br/>
 
             <div class="row">
+
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
-                  data-type="combobox"
-                  data-name="gender"
+                  data-type="text-autocomplete"
+                  data-name="sub_objectives"
                   data-validation=""
-                  data-item-label="-- Choose Detailed Objective Below --,<?php echo implode(',',trans('custom.list_training_objectives')); ?>"
-                  data-item-value="0,<?php echo implode(',',trans('custom.list_training_objectives')); ?>"
+                  data-placeholder="Insert Your Objective's detail"
                   data-current=""
-                  data-classes="form-control">
+                  data-items=""
+                  data-classes="form-control"
+                  data-multiple-chip="Add More Objective's detail">
                 </div>
               </div>
 
-              <div class="col-xs-12 fg-input"
-            data-type="text-autocomplete"
-            data-label="Area of Service"
-            data-name="service_area"
-            data-validation="required"
-            data-placeholder="insert publisher name"
-            data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current="Jakarta"
-            data-classes="form-control">
-          </div>
-              <br/>
-
               <div class="col-md-12">
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('1')">&lt;&lt; Prev</button>
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('3')">Next &gt;&gt;</button>
+                <br/>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('1')">
+                  <span class="lnr lnr-chevron-left-circle"></span> Prev
+                </button>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('3', 'next')">
+                  Next <span class="lnr lnr-chevron-right-circle"></span>
+                </button>
               </div>
             </div>
           </div>
@@ -98,20 +93,26 @@
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
-                  data-type="combobox"
-                  data-name="gender"
+                  data-type="text-autocomplete"
+                  data-name="job_functions"
                   data-validation=""
-                  data-item-label="-- Choose Job Function Below --,<?php echo implode(',',trans('custom.list_job_functions')); ?>"
-                  data-item-value="0,<?php echo implode(',',trans('custom.list_job_functions')); ?>"
+                  data-placeholder="Insert Your Job Functions"
                   data-current=""
-                  data-classes="form-control">
+                  data-items=""
+                  data-classes="form-control"
+                  data-multiple-chip="Add More Job Function">
                 </div>
               </div>
               <br/>
 
               <div class="col-md-12">
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('2')">&lt;&lt; Prev</button>
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('4')">Next &gt;&gt;</button>
+                <br/>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('2')">
+                  <span class="lnr lnr-chevron-left-circle"></span> Prev
+                </button>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('4')">
+                  Next <span class="lnr lnr-chevron-right-circle"></span>
+                </button>
               </div>
             </div>
           </div>
@@ -125,20 +126,27 @@
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
-                  data-type="combobox"
-                  data-name="gender"
+                  data-type="text-autocomplete"
+                  data-name="seniority_levels"
                   data-validation=""
-                  data-item-label="-- Choose Seniority Level Below --,<?php echo implode(',',trans('custom.list_seniority_levels')); ?>"
-                  data-item-value="0,<?php echo implode(',',trans('custom.list_seniority_levels')); ?>"
+                  data-placeholder="Insert participant Seniority Level"
                   data-current=""
-                  data-classes="form-control">
+                  data-get-ajax="{{ url('getautocompletedata/job_seniority_levels/job_seniority_level_name') }}/" 
+                  data-get-ajax-column="job_seniority_level_name"
+                  data-classes="form-control"
+                  data-multiple-chip="Add More Seniority Level">
                 </div>
               </div>
               <br/>
 
               <div class="col-md-12">
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('3')">&lt;&lt; Prev</button>
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('5')">Next &gt;&gt;</button>
+                <br/>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('3')">
+                  <span class="lnr lnr-chevron-left-circle"></span> Prev
+                </button>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('5', 'next')">
+                  Next <span class="lnr lnr-chevron-right-circle"></span>
+                </button>
               </div>
             </div>
           </div>
@@ -152,20 +160,26 @@
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
-                  data-type="combobox"
-                  data-name="gender"
+                  data-type="text-autocomplete"
+                  data-name="seniority_levels"
                   data-validation=""
-                  data-item-label="-- Choose Industry Type Below --,<?php echo implode(',',trans('custom.list_industries')); ?>"
-                  data-item-value="0,<?php echo implode(',',trans('custom.list_industries')); ?>"
+                  data-placeholder="Insert participant Industry Type"
                   data-current=""
-                  data-classes="form-control">
+                  data-items=""
+                  data-classes="form-control"
+                  data-multiple-chip="Add More Industry Type">
                 </div>
               </div>
               <br/>
 
               <div class="col-md-12">
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('4')">&lt;&lt; Prev</button>
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('6')">Next &gt;&gt;</button>
+                <br/>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('4')">
+                  <span class="lnr lnr-chevron-left-circle"></span> Prev
+                </button>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('6', 'next')">
+                  Next <span class="lnr lnr-chevron-right-circle"></span>
+                </button>
               </div>
             </div>
           </div>

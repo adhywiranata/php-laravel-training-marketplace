@@ -146,6 +146,8 @@ Route::get('/training-providers', 'SearchController@find_providers');
 
 Route::get('/training-needs-analysis', 'SearchController@trainingNeedsAnalysisWizard');
 Route::get('/tna/getSubObjectives', 'SearchController@getSubObjectives');
+Route::get('/tna/getJobFunctions', 'SearchController@getJobFunctions');
+Route::get('/tna/getIndustryTypes', 'SearchController@getIndustryTypes');
 
 
 /*

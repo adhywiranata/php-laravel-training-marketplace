@@ -397,16 +397,82 @@ function goToSearchWizard(step, text)
   //set default value for var text
   text = typeof text !== 'undefined' ? text : "";
 
-  if(step == '1'){
+  if(step == '1')
+  {
     if(text != "") $('#search-wizard-step-0 input[type=hidden]').val(text);
-  }else if(step == '2'){
-    $.ajax({
-      url: '{{ url("tna/getSubObjective") }}',
-      data: {objectiveId: text},
-      success: function(data){
+  }
+  else if(step == '2')
+  {
+    if(text != ""){
+      $.ajax({
+        url: base_url+'/tna/getSubObjectives',
+        data: {objectiveId: text},
+        success: function(val){
+          $('#search-wizard-step-2 input[type=text]').attr("data-items", val);
+        }
+      });
+    }
+  }
+  else if(step == '3')
+  {
+    if(text != ""){      
+      var data = "";
 
-      }
-    });
+      if($('#search-wizard-step-2 input[type=text]').val() != "")
+        data = $('#search-wizard-step-2 input[type=text]').val() + '#';
+
+      for (var i = 0; i < $('#search-wizard-step-2 .fg-chip').length; i++) {
+        data = data + $('#search-wizard-step-2 .fg-chip')[i].getAttribute("data-value") + '#';
+      };
+      data = data.slice(0, data.length-1);
+
+      $.ajax({
+        url: base_url+'/tna/getJobFunctions',
+        data: {subObjective: data},
+        success: function(val){
+          $('#search-wizard-step-3 input[type=text]').attr("data-items", val);
+        }
+      });
+    }
+  }
+  else if(step == '5')
+  {
+    if(text != ""){
+      //Stringify Sub Objective Data
+      var subObjectiveData = "";
+
+      if($('#search-wizard-step-2 input[type=text]').val() != "")
+        subObjectiveData = $('#search-wizard-step-2 input[type=text]').val() + '#';
+      
+      for (var i = 0; i < $('#search-wizard-step-2 .fg-chip').length; i++) {
+        subObjectiveData = subObjectiveData + $('#search-wizard-step-2 .fg-chip')[i].getAttribute("data-value") + '#';
+      };
+      subObjectiveData = subObjectiveData.slice(0, subObjectiveData.length-1);
+
+
+      //Stringify Job Function Data
+      var jobFunctionData = "";
+
+      if($('#search-wizard-step-3 input[type=text]').val() != "")
+        jobFunctionData = $('#search-wizard-step-3 input[type=text]').val() + '#';
+      
+      for (var i = 0; i < $('#search-wizard-step-3 .fg-chip').length; i++) {
+        jobFunctionData = jobFunctionData + $('#search-wizard-step-3 .fg-chip')[i].getAttribute("data-value") + '#';
+      };
+      jobFunctionData = jobFunctionData.slice(0, jobFunctionData.length-1);
+
+
+      $.ajax({
+        url: base_url+'/tna/getIndustryTypes',
+        data: {
+          subObjective: subObjectiveData,
+          jobFunction: jobFunctionData
+        },
+        success: function(val){
+          $('#search-wizard-step-5 input[type=text]').attr("data-items", val);
+        }
+      });
+    }
   }
 
   $('html, body').animate({
