@@ -353,11 +353,33 @@ $(document).on('click','.btn-submit',function(){
   }*/
 });
 
+
+
 /*
  * ADVANCED SEARCH
  */
-function goToSearchWizard(step)
+$('#customize-training-button > button:first').click(function(){
+  $('#customize-training-button').hide(700);
+  $('#customize-training-option').show(700);
+});
+
+function goToSearchWizard(step, text)
 {
+  //set default value for var text
+  text = typeof text !== 'undefined' ? text : "";
+
+  if(step == '1'){
+    if(text != "") $('#search-wizard-step-0 input[type=hidden]').val(text);
+  }else if(step == '2'){
+    $.ajax({
+      url: '{{ url("tna/getSubObjective") }}',
+      data: {objectiveId: text},
+      success: function(data){
+
+      }
+    });
+  }
+
   $('html, body').animate({
     scrollTop: $("#search-wizard-step-"+step).offset().top
   }, 700);

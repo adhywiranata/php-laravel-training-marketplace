@@ -63,12 +63,6 @@ Route::get('auth/google/callback', 'AuthController@handleGoogleCallback');
 Route::get('auth/linkedin', 'AuthController@redirectToLinkedin');
 Route::get('auth/linkedin/callback', 'AuthController@handleLinkedinCallback');
 
-/*
-|--------
-| Search
-|--------
-*/
-Route::get('/training-needs-analysis', 'SearchController@trainingNeedsAnalysis');
 
 /*
 |--------
@@ -104,12 +98,14 @@ Route::get('/settings/plan', 'UserController@getPlans');
 | Search
 |--------
 */
-
 //Route::get('/trainers', 'UserController@getUsers');
 //Route::get('/trainers-fandy', 'UserController@getUsersF');
 //Route::get('/training-providers', 'GroupController@getGroups');
 Route::get('/trainers', 'SearchController@find_trainers');
 Route::get('/training-providers', 'SearchController@find_providers');
+
+Route::get('/training-needs-analysis', 'SearchController@trainingNeedsAnalysisWizard');
+Route::get('/tna/getSubObjectives', 'SearchController@getSubObjectives');
 
 
 /*

@@ -5,8 +5,12 @@ use App\Http\Controllers\Controller;
 
 use App\Models\User;
 use App\Models\Provider;
+use App\Models\TrainingObjective;
+use App\Models\ObjectiveSubObjectiveNode;
+
 use Illuminate\Http\Request;
 use DB;
+use Input;
 
 class SearchController extends Controller {
 
@@ -185,9 +189,13 @@ class SearchController extends Controller {
 	 *
 	 * @return View
 	 */
-	public function trainingNeedsAnalysis()
+	public function trainingNeedsAnalysisWizard()
 	{
-		return view('search.training-needs-analysis');
+		$data = array(
+			'training-objective'	=> TrainingObjective::get(),
+		);
+		return view('search.training-needs-analysis')
+			->withData($data);
 	}
 
 
@@ -408,6 +416,17 @@ class SearchController extends Controller {
 	public function destroy($id)
 	{
 		//
+	}
+
+
+	public function getSubObjectives(){
+		$objectiveId = Input::get('objectiveId');
+
+		$sub = ObjectiveSubObjectiveNode::join('training_sub_objectives', 'training_sub_objectives.id', '=', 'objective_sub_objective_nodes.sub_objective_id')
+				->where('objective_id', '=', $objectiveId)
+				->get();
+
+		
 	}
 
 }

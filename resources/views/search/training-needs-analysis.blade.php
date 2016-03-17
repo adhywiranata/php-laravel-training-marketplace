@@ -17,8 +17,17 @@
             <h3 class="roboto-light text-blue">What do you want to search?</h3>
             <br/>
 
-            <button type="button" class="btn btn-default tna-option">Customize Training</button> &nbsp;
-            <button type="button" class="btn btn-default tna-option" onclick="goToSearchWizard('1')">Public Training</button>
+            <input type="hidden" name="type">
+
+            <div id="customize-training-button" hidden>
+              <button type="button" class="btn btn-default tna-option">Customize Training</button> &nbsp;
+              <button type="button" class="btn btn-default tna-option" onclick="goToSearchWizard('1', 'Public Training')">Public Training</button>
+            </div>
+
+            <div id="customize-training-option">
+              <button type="button" class="btn btn-default tna-option" onclick="goToSearchWizard('1', 'Freelance Trainer')">Freelance Trainer</button> &nbsp;
+              <button type="button" class="btn btn-default tna-option" onclick="goToSearchWizard('1', 'Training Provider')">Training Provider</button>
+            </div>
           </div>
 
 
@@ -29,22 +38,16 @@
 
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
-                <div class="fg-input"
-                  data-type="combobox"
-                  data-name="gender"
-                  data-validation=""
-                  data-item-label="-- Choose Objective Category Below --,<?php echo implode(',',trans('custom.list_training_objectives_category')); ?>"
-                  data-item-value="0,<?php echo implode(',',trans('custom.list_training_objectives_category')); ?>"
-                  data-current=""
-                  data-classes="form-control">
-                </div>
+                @foreach($data['training-objective'] as $row)
+                  <button type="button" class="btn btn-default tna-option" style="width: auto;" onclick="goToSearchWizard('2', '{{ $row->id }}')">{{ $row->training_objective }}</button> &nbsp;
+                @endforeach
               </div>
               <br/>
 
-              <div class="col-md-12">
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('0')">&lt;&lt; Prev</button>
+              <!-- <div class="col-md-12">
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('1')">&lt;&lt; Prev</button>
                 <button type="button" class="btn btn-default" onclick="goToSearchWizard('2')">Next &gt;&gt;</button>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -66,6 +69,17 @@
                   data-classes="form-control">
                 </div>
               </div>
+
+              <div class="col-xs-12 fg-input"
+            data-type="text-autocomplete"
+            data-label="Area of Service"
+            data-name="service_area"
+            data-validation="required"
+            data-placeholder="insert publisher name"
+            data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
+            data-current="Jakarta"
+            data-classes="form-control">
+          </div>
               <br/>
 
               <div class="col-md-12">
