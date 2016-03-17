@@ -59,7 +59,7 @@
             data-name="published_date"
             data-validation=""
             data-placeholder="insert training date"
-            data-current=""
+            data-current="<?php if(isset($certification)): echo $certification->published_date; else: echo Input::old('published_date'); endif; ?>"
             data-classes="form-control">
           </div>
 

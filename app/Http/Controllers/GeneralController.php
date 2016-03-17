@@ -520,16 +520,43 @@ class GeneralController extends Controller {
 		$section_id = 7; //Section id for Certification
 
 		$input = $request->all();
-		$session_owner_id = 1;
-		$session_owner_role_id = 2;
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
 
 		$update_certification = [
+			'owner_id' 						=> $session_owner_id,
+			'owner_role_id' 			=> $session_owner_role_id,
 			'title' 							=> $input['title'],
 			'description' 				=> $input['description'],
 			'published_date' 			=> $input['published_date'],
 		];
 
 		$certification = Certification::where('id',$id)->update($update_certification);
+
+		$new_certification_id = Certification::where('id',$id);
+
+		//CHECK IF SKILL DOES NOT EXISTS
+		$skills = explode('|||',$input['skill']);
+		for($i=0;$i<count($skills);$i++)
+		{
+			$skill_name = $skills[$i];
+			if($skill_name != '')
+			{
+				$skill = Skill::where('skill_name',$skill_name)->first();
+				if(count($skill) == 0)
+				{
+					$skill = Skill::create([ 'skill_name' => $skill_name ]);
+				}
+
+				$node_insert = [
+					'section_id' => $section_id,
+					'section_item_id' => $new_certification_id,
+					'skill_id' => $skill->id
+				];
+
+				SectionSkill::create($node_insert);
+			}
+		}
 
 		return redirect('dashboard');
 	}
@@ -612,10 +639,12 @@ class GeneralController extends Controller {
 		$section_id = 8; //Section id for Award
 
 		$input = $request->all();
-		$session_owner_id = 1;
-		$session_owner_role_id = 2;
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
 
 		$update_award = [
+			'owner_id' 						=> $session_owner_id,
+			'owner_role_id' 			=> $session_owner_role_id,
 			'title' 							=> $input['title'],
 			'description' 				=> $input['description'],
 			'published_date' 			=> $input['published_date'],
@@ -851,6 +880,15 @@ class GeneralController extends Controller {
 		}
 
 		echo json_encode($result);
+	}
+
+	public function countFeature($feature_name)
+	{
+		$insert = [
+			'feature_name' 	=> $feature_name,
+			'ip'						=> $_SERVER['REMOTE_ADDR']
+		];
+		$result = DB::table('feature_tracking')->insert($insert);
 	}
 
 }

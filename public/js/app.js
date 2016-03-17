@@ -51,7 +51,19 @@ $(document).on('click','.trigger-collapse',function(e){
   e.preventDefault();
   var collapsible_target = $(this).data('trigger-collapse');
   $("[data-collapse='" + collapsible_target + "']").slideToggle();
-})
+});
+
+//Feature Count
+$(document).on('click','.ajax-count-feature',function(){
+
+  var feature_name = $(this).data('feature-name');
+  $.ajax({
+    url: base_url + '/count_feature' + '/' + feature_name,
+    success: function(data){
+      $('#popup-container').append(data);
+    }
+  });
+});
 
 /*
 * GRID LIST
@@ -260,6 +272,8 @@ $(document).on('click','.ajax-popup-video',function(){
     }
   });
 });
+
+
 /*
 * USER EVALUATIONS
 */

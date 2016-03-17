@@ -59,7 +59,7 @@
             data-name="published_date"
             data-validation=""
             data-placeholder="insert award date"
-            data-current=""
+            data-current="<?php if(isset($award)): echo $award->published_date; else: echo Input::old('published_date'); endif; ?>"
             data-classes="form-control">
           </div>
 

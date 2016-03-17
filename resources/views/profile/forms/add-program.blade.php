@@ -16,7 +16,13 @@
             <span class="lnr lnr-plus-circle bigger-1-5 blue-border circle text-blue" style="padding:15px;"></span>
           </h3>
           <br/>
-          <h3 class="roboto-light text-blue">ADD TRAINING PROGRAM</h3>
+          <h3 class="roboto-light text-blue">
+            @if(isset($program))
+              EDIT TRAINING PROGRAM
+            @else
+              ADD TRAINING PROGRAM
+            @endif
+          </h3>
         </div>
         <br/>
       </div>
@@ -31,7 +37,7 @@
             data-name="training_program"
             data-validation="required"
             data-placeholder="insert training program title"
-            data-current=""
+            data-current="  "
             data-get-ajax="{{ url('getautocompletedata/training_program/training_program_name_en') }}/"
             data-get-ajax-column="training_program_name_en"
             data-classes="form-control">

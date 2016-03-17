@@ -40,6 +40,12 @@ Route::get('/landing', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
 
+/*
+|--------
+| Utility
+|--------
+*/
+Route::get('count_feature/{id}', 'GeneralController@countFeature');
 
 /*
 |--------

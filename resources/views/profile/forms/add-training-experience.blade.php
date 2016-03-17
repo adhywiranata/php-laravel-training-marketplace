@@ -51,8 +51,8 @@
             data-validation="required"
             data-placeholder="insert training provider name"
             data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current=""
-            data-get-ajax="{{ url('getautocompletedata/corporates/corporate_name') }}/"
+            data-current="<?php if(isset($training_experience)): echo $training_experience->corporate_id; else: echo Input::old('corporate_name'); endif; ?>"
+            data-get-ajax="{{ url('getautocompl etedata/corporates/corporate_name') }}/"
             data-get-ajax-column="corporate_name"
             data-classes="form-control">
           </div>
@@ -76,7 +76,7 @@
             data-name="start_date"
             data-validation=""
             data-placeholder="insert training date"
-            data-current=""
+            data-current="<?php if(isset($training_experience)): echo $training_experience->start_date; else: echo Input::old('start_date'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -86,7 +86,7 @@
             data-name="end_date"
             data-validation=""
             data-placeholder="insert training date"
-            data-current=""
+            data-current="<?php if(isset($training_experience)): echo $training_experience->end_date; else: echo Input::old('end_date'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -126,7 +126,7 @@
             data-name="description"
             data-validation=""
             data-placeholder="insert training description"
-            data-current=""
+            data-current="<?php if(isset($training_experience)): echo $training_experience->description; else: echo Input::old('description'); endif; ?>"
             data-classes="form-control">
           </div>
 

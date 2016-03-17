@@ -32,13 +32,12 @@
         <div class="col-lg-12 box-profile">
           <!--
           <div class="row col-lg-1">
-            
+
           </div>-->
           <div class="row col-lg-12" style="padding-left:20px;">
             <!-- user info -->
             @include('profile.basic-info')
             <!-- end of user info -->
-
             <!-- Row Box Profile -->
             @include('profile.tabs')
             <!-- end of Row Box Profile -->

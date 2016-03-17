@@ -1,12 +1,4 @@
 <div class="col-xs-12">
-  <!--
-  <div class="col-xs-2">
-    <a href="{{ url('') }}" class="uppercase btn btn-default grey-back pull-left bold" style="color:#252525 !important;">
-      <i class="fa fa-angle-left"></i>
-      Back to Search
-    </a>
-  </div>
--->
 
 </div>
 
@@ -21,7 +13,15 @@
 
     <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
     @if($grids->user_id != $user_id)
+    <a class="btn full-width trigger-popup ajax-count-feature"
+      data-feature-name="add_to_contact"
+      data-trigger-popup="coming-soon">Add to Contact</a>
+    <a class="btn full-width trigger-popup ajax-count-feature"
+      data-feature-name="send_message"
+      data-trigger-popup="coming-soon">Send Message</a>
+    <!--
     <a class="btn full-width trigger-popup" data-trigger-popup="send-message">Send Message</a>
+    -->
     <a class="btn full-width view_phone"> View Contact Number</a><br/>
 
     <span class="invisible_phone" style="display:none;" >
@@ -119,5 +119,5 @@
     Marketing, Information Technology, Education
   </div>
   -->
-  <br/><br/><br/>
+  <br/><br/><br/><br/><br/>
 </div>
