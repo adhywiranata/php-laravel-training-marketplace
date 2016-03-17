@@ -22,7 +22,8 @@
     <!--
     <a class="btn full-width trigger-popup" data-trigger-popup="send-message">Send Message</a>
     -->
-    <a class="btn full-width view_phone"> View Contact Number</a><br/>
+    <a class="btn full-width view_phone ajax-count-feature"
+      data-feature-name="contact_number"> View Contact Number</a><br/>
 
     <span class="invisible_phone" style="display:none;" >
       <i class="fa fa-whatsapp text-green"></i> {{ $grids->phone_number }} <br/>
@@ -55,7 +56,9 @@
     <br/>
         <span class="user-score bigger-1-5"  title="Overall Evaluation Score: 9.5">{{$grids->score}}</span>
     <!--<span class="user-score bigger-1-5">9.0</span>-->
-    <a href="{{ url('evaluation/s') }}" class=""  title="5 people evaluated this freelance trainer">
+    <a href="{{ url('evaluation/s') }}" class="ajax-count-feature"
+      title="5 people evaluated this freelance trainer"
+      data-feature-name="evaluation">
       (5 evaluation(s))
     </a>
   </div>
