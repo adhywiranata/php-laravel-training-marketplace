@@ -1,12 +1,11 @@
 <div class="col-lg-12 profile-section" data-section="work-experiences">
-  <?php $user_id = (isset(Auth::user()->user_id))?Auth::user()->user_id:''; ?>
+  <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
   @if($grids->user_id == $user_id)
   <a href="{{ url('dashboard/work-experience/add') }}" class="btn">
     <i class="fa fa-plus"></i>
     Add New Work Experience
   </a>
   @endif
-  <!--for($i=0;$i<2;$i++)-->
   @foreach($workExperiences as $workExperience)
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="row experience-grid">
@@ -16,17 +15,17 @@
       </div>
       -->
       <!--<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">-->
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
         <a href="" class="title">{{$workExperience->title}}</a>
         <!--<a href="" class="title">Marketing Manager</a>-->
 
-        <form action="{{url('delete-work-experience/'.$workExperience->work_experience_id)}}" method="post">
-        <input type="hidden" name="_method" value="DELETE" />
-        <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
-        <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
+        <form action="{{url('/dashboard/work-experience/'.$workExperience->work_experience_id .'/delete')}}" method="post">
+          <input type="hidden" name="_method" value="DELETE" />
+          <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+          <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
         </form>
 
-        <a href="{{url('edit-work-experience/'. $workExperience->work_experience_id) }}" class="btn btn-margin green-back pull-right">Edit</a>
+        <a href="{{url('/dashboard/work-experience/'. $workExperience->work_experience_id . '/edit') }}" class="btn btn-margin green-back pull-right">Edit</a>
 
         <br/>
         <a href="#">{{ $workExperience->corporate_name }}</a>
@@ -42,20 +41,11 @@
           them that a good business is not from the initial funding,
           but it is all about the business idea and brilliant strategies.-->
         </p>
-
-        <!--
-        <div class="row">
-          <div class="col-lg-12">
-            <a class="skill-tag tag" title="10 persons endorsed this skill">Entrepreneurship <span class="bold">10</span></a>
-            <a class="skill-tag tag" title="10 persons endorsed this skill">Business <span class="bold">10</span></a>
-            <a class="skill-tag tag" title="10 persons endorsed this skill">Leadership <span class="bold">10</span></a>
-            <a class="skill-tag tag" title="10 persons endorsed this skill">Key Performance Indicator <span class="bold">10</span></a>
-          </div>
-        </div>
-        -->
+      </div>
+      <div class="col-lg-2 col-md-2">
+        <img src="{{ url('images/corporates/'.$workExperience->corporate_profile_picture) }}" width="80%"/>
       </div>
     </div>
   </div>
   @endforeach
-  <!--endfor-->
 </div>

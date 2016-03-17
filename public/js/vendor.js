@@ -12542,11 +12542,21 @@ $('.fg-form .fg-input').each(function(index,value){
   }
 
   var inputSelector = 'input';
+
+  //selector change to textarea instead of finding input
   if(type == 'textarea')
   {
     inputSelector = 'textarea';
   }
 
+  //change the input name of the visible input to <name>_display
+  if(typeof multipleChip !== 'undefined' && multipleChip != '')
+  {
+    var container = $(this).find('.fg-input-container');
+    container.find(inputSelector).attr('name','chipFake');
+  }
+
+  //add id to inputs
   if(typeof ids === 'undefined' || ids == '')
   {
     ids = '';
@@ -12612,6 +12622,7 @@ function Generator(data){
     }
   }
 
+  //Check if multiple chip is used
   if(typeof this.multipleChip !== 'undefined' && this.multipleChip != '')
   {
     if(this.type == 'file' || this.type == 'image')
@@ -12709,7 +12720,11 @@ function generateLabel(label,inputIndex){
   return template;
 }
 
-function generateMonthOptions(){
+function generateMonthOptions(m){
+
+  var selected = 13;
+  selected = parseInt(m);
+
   var months = [
     '00','01','02','03','04',
     '05','06','07','08',
@@ -12720,9 +12735,15 @@ function generateMonthOptions(){
     'August','September','October',
     'November','December'];
   option = '';
-  for(var i=0;i<12;i++)
+  for(var i=0;i<13;i++)
   {
-    option += '<option value="' + months[i] + '">' + monthsLabel[i] + '</option>';
+    option += '<option value="' + months[i] + '" ';
+    if(i == selected)
+    {
+      option += 'selected="selected"';
+    }
+    option += '>';
+    option += monthsLabel[i] + '</option>';
   }
   return option;
 }
@@ -12949,18 +12970,28 @@ function generateSelectOption(ids,classes,name,labelList,valList,currentVal){
 }
 
 function generateDate(ids,classes,name,currentVal){
+
+  var y = currentVal.substring(0,4);
+  var m = currentVal.substring(5,7);
+  var d = currentVal.substring(8,10);
   input = '';
   //Day Input
   input += '<div class="fg-row">';
   input += '<input type="hidden" name="';
   input += name;
-  input += '" class="fg-date-hidden" value=""/>';
+  input += '" class="fg-date-hidden" value="';
+  input += '"/>';
   input += '<div class="three-twelfth">';
   input += '<input type="text" name="';
   input += name + '_day';
   input += '" class="';
   input += classes;
-  input += ' fg-date-d" placeholder="Day" maxlength="2"/>';
+  input += ' fg-date-d" placeholder="Day" maxlength="2" value="';
+  if(d != '00')
+  {
+    input += d;
+  }
+  input += '" />';
   input += '</div>';
 
   //Month Input
@@ -12970,7 +13001,7 @@ function generateDate(ids,classes,name,currentVal){
   input += '" class="';
   input += classes;
   input += ' fg-date-m">';
-  input += generateMonthOptions();
+  input += generateMonthOptions(m);
   input += '</select>';
   input += '</div>';
 
@@ -12980,7 +13011,12 @@ function generateDate(ids,classes,name,currentVal){
   input += name + '_year';
   input += '" class="';
   input += classes;
-  input += ' fg-date-y" placeholder="Year" maxlength="4"/>';
+  input += ' fg-date-y" placeholder="Year" maxlength="4" value="';
+  if(y != '0000')
+  {
+    input += y;
+  }
+  input += '"/>';
   input += '</div>';
 
   return input;

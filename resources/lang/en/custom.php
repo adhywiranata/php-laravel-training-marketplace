@@ -36,6 +36,11 @@ return [
     'Attitude',
   ],
 
+  "list_video_types" => [
+    'Youtube Link',
+    'Upload Video',
+  ],
+
   "list_training_methods" => [
     'Classroom Instruction',
     'Audiovisual Training',

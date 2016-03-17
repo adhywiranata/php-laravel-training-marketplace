@@ -15,7 +15,7 @@
           <h3><span class="lnr lnr-plus-circle bigger-1-5 blue-border circle text-blue" style="padding:15px;"></span></h3>
           <br/>
           <h3 class="roboto-light text-blue">
-            @if($work_experience)
+            @if(isset($work_experience))
               EDIT WORK EXPERIENCE
             @else
               ADD WORK EXPERIENCE
@@ -26,11 +26,11 @@
       </div>
       <div class="col-lg-offset-3 col-lg-6 col-md-12">
 
-        @if($work_experience)
-          <form action="{{url('update-work-experience/'.$work_experience->work_experience_id)}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
+        @if(isset($work_experience))
+          <form action="{{url('dashboard/work-experience/'.$work_experience->work_experience_id.'/edit')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
           <input type="hidden" name="_method" value="PUT" />
         @else
-          <form action="{{url('create-work-experience')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
+          <form action="{{url('dashboard/work-experience/add')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
         @endif
 
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
@@ -41,7 +41,7 @@
             data-name="title"
             data-validation="required"
             data-placeholder="insert work experience title"
-            data-current="<?php if($work_experience): echo $work_experience->title; else: echo Input::old('title'); endif; ?>"
+            data-current="<?php if(isset($work_experience)): echo $work_experience->title; else: echo Input::old('title'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -52,7 +52,9 @@
             data-validation="required"
             data-placeholder="insert company name"
             data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current="<?php if($work_experience): echo $work_experience->corporate_name; else: echo Input::old('company'); endif; ?>"
+            data-current="<?php if(isset($work_experience)): echo $work_experience->corporate_name; else: echo Input::old('company'); endif; ?>"
+            data-get-ajax="{{ url('getautocompletedata/corporates/corporate_name') }}/"
+            data-get-ajax-column="corporate_name"
             data-classes="form-control">
           </div>
 
@@ -62,7 +64,7 @@
             data-name="position"
             data-validation="required"
             data-placeholder="insert position"
-            data-current="<?php if($work_experience): echo $work_experience->position; else: echo Input::old('position'); endif; ?>"
+            data-current="<?php if(isset($work_experience)): echo $work_experience->position; else: echo Input::old('position'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -92,11 +94,11 @@
             data-name="description"
             data-validation=""
             data-placeholder="insert work experience description"
-            data-current="<?php if($work_experience): echo $work_experience->description; else: echo Input::old('description'); endif; ?>"
+            data-current="<?php if(isset($work_experience)): echo $work_experience->description; else: echo Input::old('description'); endif; ?>"
             data-classes="form-control">
           </div>
 
-          @if($work_experience)
+          @if(isset($work_experience))
           <div class="col-xs-12 fg-submit" data-value="Update"></div>
           @else
           <div class="col-xs-12 fg-submit" data-value="Insert"></div>

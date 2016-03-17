@@ -46,11 +46,27 @@ body{
 .logo img{
 	display:block
 }
+.nav-btn{
+	color:#333;
+	margin:5px 0px;
+	padding:5px 9px;
+	border-radius: 10px;
+}
+
+.nav-btn:hover{
+	color:#22A7F0;
+}
+
+.hero-list{
+	margin-top:50px !important;
+}
+
 .top-contact-info{
 	float: right;
 	width: 50%;
 	margin-top: 0.3em;
 	text-align: right;
+	margin-top: 15px;
 }
 .top-social-icons{
 	float: left;
@@ -1272,3 +1288,41 @@ body{
 	}
 }
 /*--//media Quries for 320px-mobiles-*/
+
+.footer-list{
+	width: 16%;
+	float:left;
+	margin:10px 10px;
+}
+
+.footer-list-narrow{
+	width: 10%;
+}
+
+.footer-list-large{
+	width: 20%;
+}
+
+.footer-list-wide{
+	width: 100%;
+	float:left;
+	margin:10px 10px;
+}
+
+.footer-list li a{
+	color:#666;
+	font-size: 0.9em;
+	margin:0 5px;
+}
+
+.footer-list li a:hover{
+	color:#22A7F0;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.bold:hover{
+	color:#666 !important;
+}

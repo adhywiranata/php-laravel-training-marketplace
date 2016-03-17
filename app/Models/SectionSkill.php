@@ -15,10 +15,11 @@ class SectionSkill extends Model
 
     protected $fillable = [
         'section_id',
+        'section_item_id',
         'skill_id'
     ];
 
     protected $guarded = [];
 
-        
+
 }

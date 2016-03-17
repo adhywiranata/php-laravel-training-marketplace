@@ -1,34 +1,40 @@
 <div class="col-xs-12">
-  <!--
-  <div class="col-xs-2">
-    <a href="{{ url('') }}" class="uppercase btn btn-default grey-back pull-left bold" style="color:#252525 !important;">
-      <i class="fa fa-angle-left"></i>
-      Back to Search
-    </a>
-  </div>
--->
 
 </div>
 
-<div class="col-lg-4 col-md-4 col-sm-4 col-xs-5">
+<div class="col-lg-3 col-md-4 col-sm-4 col-xs-5">
   <div class="profile-picture">
 
     @if($grids->profile_picture == 'default.png'):
-      <img src="http://speaqus.com/img/photos/profile_picture/100x100/{{ $grids->profile_picture }}" width="100%">
+      <img src="{{ url('images/users/thumb/'.$grids->profile_picture) }}" width="100%">
     @else
-      <img src="http://speaqus.com/img/photos/profile_picture/original/{{ $grids->profile_picture }}" width="100%">
+      <img src="{{ url('images/users/thumb/'.$grids->profile_picture) }}" width="100%">
     @endif
 
-    <?php $user_id = (isset(Auth::user()->user_id))?Auth::user()->user_id:''; ?>
+    <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
     @if($grids->user_id != $user_id)
+    <a class="btn full-width trigger-popup ajax-count-feature"
+      data-feature-name="add_to_contact"
+      data-trigger-popup="coming-soon">Add to Contact</a>
+    <a class="btn full-width trigger-popup ajax-count-feature"
+      data-feature-name="send_message"
+      data-trigger-popup="coming-soon">Send Message</a>
+    <!--
     <a class="btn full-width trigger-popup" data-trigger-popup="send-message">Send Message</a>
-    <a class="btn full-width view_phone"> View Contact Number</a><br/>
+    -->
+    <a class="btn full-width view_phone ajax-count-feature"
+      data-feature-name="contact_number"> View Contact Number</a><br/>
 
-    <span class="invisible_phone" style="display:none;">
+    <span class="invisible_phone" style="display:none;" >
+      <i class="fa fa-whatsapp text-green"></i> {{ $grids->phone_number }} <br/>
+      <i class="fa fa-envelope-o text-green"></i> {{ $grids->email }} <br/>
+      <i class="fa fa-building text-green"></i> work area: {{ $grids->service_area }} <br/>
+      <!--
       <i class="fa fa-whatsapp text-green"></i> +6281231234 <br/>
       <i class="fa fa-envelope-o text-green"></i> ysubianto@gmail.com <br/>
       <i class="fa fa-whatsapp text-green"></i> office: +6281231234 <br/>
       <i class="fa fa-building text-green"></i> work address: Jalan Satu No. dua <br/>
+      -->
     </span>
     @else
       <a href="{{ url('dashboard/basic-profile') }}" class="btn full-width">Edit Basic Profile</a>
@@ -50,7 +56,9 @@
     <br/>
         <span class="user-score bigger-1-5"  title="Overall Evaluation Score: 9.5">{{$grids->score}}</span>
     <!--<span class="user-score bigger-1-5">9.0</span>-->
-    <a href="{{ url('evaluation/s') }}" class=""  title="5 people evaluated this freelance trainer">
+    <a href="{{ url('evaluation/s') }}" class="ajax-count-feature"
+      title="5 people evaluated this freelance trainer"
+      data-feature-name="evaluation">
       (5 evaluation(s))
     </a>
   </div>
@@ -100,6 +108,7 @@
       </a>
     @endforeach
   </div>
+  <!--
   <div class="row">
     <b>{{ trans('content.pr_industries') }}</b><br/>
     Consumer Electronics, E-Learning, Design
@@ -112,5 +121,6 @@
     <b>{{ trans('content.pr_job_functions') }}</b><br/>
     Marketing, Information Technology, Education
   </div>
-  <br/>
+  -->
+  <br/><br/><br/><br/><br/>
 </div>

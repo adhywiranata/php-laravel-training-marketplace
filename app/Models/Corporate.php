@@ -16,10 +16,10 @@ class Corporate extends Model
     protected $fillable = [
         'corporate_name',
         'corporate_profile_picture',
-        'corporate_description'
+        'corporate_summary'
     ];
 
     protected $guarded = [];
 
-        
+
 }

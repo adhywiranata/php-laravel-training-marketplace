@@ -18,19 +18,6 @@
 */
 Route::get('/hack1','UserController@hack1');
 
-
-
-//<!-- CRUD WORK EXPERIENCE
-Route::post('/create-work-experience','GeneralController@createWorkExperience');
-Route::get('/add-work-experience','GeneralController@addWorkExperience');
-
-Route::get('/edit-work-experience/{id}','GeneralController@editWorkExperience');
-Route::put('/update-work-experience/{id}','GeneralController@updateWorkExperience');
-
-Route::delete('/delete-work-experience/{id}','GeneralController@deleteWorkExperience');
-
-// CRUD WORK EXPERIENCE -->
-
 // <!-- INSERT SKILL USER
 Route::post('/skill/create', 'GeneralController@createSkill');
 Route::get('/skill/add', 'GeneralController@addSkill');
@@ -38,15 +25,27 @@ Route::get('/skill/add', 'GeneralController@addSkill');
 // INSERT SKILL USER -->
 
 
-Route::get('/land', 'GeneralController@index');
+Route::get('/', 'GeneralController@index');
+Route::get('/training-provider', 'GeneralController@provider');
+Route::get('/freelance-trainer', 'GeneralController@freelancer');
 
-Route::get('/', 'UserController@getUsers');
+Route::get('/signup-front/{role}', 'GeneralController@signup_basic');
+Route::post('/signup-front/{role}', 'GeneralController@createUserFromLanding');
+
+Route::get('/trainerlist', 'UserController@getUsers');
 Route::get('/lang', 'WelcomeController@changeLanguage');
 Route::get('/send_email', 'WelcomeController@send_email');
 
 Route::get('/landing', 'WelcomeController@index');
+
 Route::get('home', 'HomeController@index');
 
+/*
+|--------
+| Utility
+|--------
+*/
+Route::get('count_feature/{id}', 'GeneralController@countFeature');
 
 /*
 |--------
@@ -79,17 +78,58 @@ Route::put('dashboard/basic-profile', 'UserController@updateBasicProfile');
 
 Route::get('/dashboard/forgot-password', 'UserController@editForgotPassword');
 
+//Training Experience
 Route::get('/dashboard/training-experience/add', 'GeneralController@addTrainingExperience');
+Route::post('/dashboard/training-experience/add','GeneralController@createTrainingExperience');
+Route::get('/dashboard/training-experience/{id}/edit','GeneralController@editTrainingExperience');
+Route::put('/dashboard/training-experience/{id}/edit','GeneralController@updateTrainingExperience');
+Route::delete('/dashboard/training-experience/{id}','GeneralController@deleteTrainingExperience');
 
-Route::get('/dashboard/work-experience/add', 'GeneralController@addWorkExperience');
+//Work Experience
+Route::get('/dashboard/work-experience/add','GeneralController@addWorkExperience');
+Route::post('/dashboard/work-experience/add','GeneralController@createWorkExperience');
+Route::get('/dashboard/work-experience/{id}/edit','GeneralController@editWorkExperience');
+Route::put('/dashboard/work-experience/{id}/edit','GeneralController@updateWorkExperience');
+Route::delete('/dashboard/work-experience/{id}','GeneralController@deleteWorkExperience');
 
+//Certification
 Route::get('/dashboard/certification/add', 'GeneralController@addCertification');
+Route::post('/dashboard/certification/add','GeneralController@createCertification');
+Route::get('/dashboard/certification/{id}/edit','GeneralController@editCertification');
+Route::put('/dashboard/certification/{id}/edit','GeneralController@updateCertification');
+Route::delete('/dashboard/certification/{id}','GeneralController@deleteCertification');
 
+//Award
 Route::get('/dashboard/award/add', 'GeneralController@addAward');
+Route::post('/dashboard/award/add','GeneralController@createAward');
+Route::get('/dashboard/award/{id}/edit','GeneralController@editAward');
+Route::put('/dashboard/award/{id}/edit','GeneralController@updateAward');
+Route::delete('/dashboard/award/{id}','GeneralController@deleteAward');
 
+//Training Program
 Route::get('/dashboard/program/add', 'GeneralController@addProgram');
+Route::post('/dashboard/program/create','GeneralController@createProgram');
+Route::get('/dashboard/program/{id}/edit','GeneralController@editProgram');
+Route::put('/dashboard/program/{id}/update','GeneralController@updateProgram');
+Route::delete('/dashboard/program/{id}','GeneralController@deleteProgram');
 
+//Skills
 Route::get('/dashboard/skill/add', 'GeneralController@addSkill');
+
+//Video
+Route::get('/dashboard/video/add', 'GeneralController@addVideo');
+Route::post('/dashboard/video/create','GeneralController@createVideo');
+Route::get('/dashboard/video/{id}/edit','GeneralController@editVideo');
+Route::put('/dashboard/video/{id}/update','GeneralController@updateVideo');
+Route::delete('/dashboard/video/{id}','GeneralController@deleteVideo');
+
+/*
+|--------
+| Ajax
+|--------
+*/
+Route::get('/popup/video/{video_title}/{video_id}', 'GeneralController@popupSectionVideo');
+
 
 Route::get('/settings/plan', 'UserController@getPlans');
 

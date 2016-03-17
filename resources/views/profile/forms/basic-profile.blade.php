@@ -32,8 +32,8 @@
             data-label="First Name"
             data-name="first_name"
             data-validation="required"
-            data-placeholder="insert award title"
-            data-current="{{ $user->first_name }}"
+            data-placeholder=""
+            data-current="<?php if(isset($user->first_name)): echo $user->first_name; else: echo Input::old('first_name'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -42,8 +42,8 @@
             data-label="Last Name"
             data-name="last_name"
             data-validation="required"
-            data-placeholder="insert award title"
-            data-current="{{ $user->last_name }}"
+            data-placeholder=""
+            data-current="<?php if(isset($user->last_name)): echo $user->last_name; else: echo Input::old('last_name'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -52,8 +52,8 @@
             data-label="Profile Summary"
             data-name="summary"
             data-validation="required"
-            data-placeholder="insert your brief summary"
-            data-current="{{ $user->summary }}"
+            data-placeholder=""
+            data-current="<?php if(isset($user->summary)): echo $user->summary; else: echo Input::old('summary'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -68,8 +68,8 @@
             data-label="Current Corporate"
             data-name="corporate_name"
             data-validation=""
-            data-placeholder="insert corporate name"
-            data-current="{{ $user->corporate_name }}"
+            data-placeholder=""
+            data-current="<?php if(isset($user->corporate_name)): echo $user->corporate_name; else: echo Input::old('corporate_name'); endif; ?>"
             data-items="Foo, Bar, John, Doe, Hello, World"
             data-classes="form-control"
             data-get-ajax="{{ url('getautocompletedata/corporates/corporate_name') }}/"
@@ -82,8 +82,8 @@
             data-label="Current Job Title"
             data-name="job_title"
             data-validation=""
-            data-placeholder="pick job title name"
-            data-current="{{ $user->job_title }}"
+            data-placeholder=""
+            data-current="<?php if(isset($user->job_title)): echo $user->job_title; else: echo Input::old('job_title'); endif; ?>"
             data-items="Foo, Bar, John, Doe, Hello, World"
             data-classes="form-control"
             data-get-ajax="{{ url('getautocompletedata/job_titles/job_title_name') }}/"
@@ -92,22 +92,12 @@
           </div>
 
           <div class="col-xs-12 fg-input"
-            data-type="text"
-            data-label="Email"
-            data-name="email"
-            data-validation="required|email"
-            data-placeholder="insert email"
-            data-current="{{ $user->email }}"
-            data-classes="form-control">
-          </div>
-
-          <div class="col-xs-12 fg-input"
             data-type="date"
             data-label="Date of Birth"
             data-name="dob"
             data-validation=""
             data-placeholder=""
-            data-current="{{ $user->dob }}"
+            data-current="<?php if(isset($user->dob)): echo $user->dob; else: echo Input::old('dob'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -116,9 +106,9 @@
             data-label="Location"
             data-name="domicle_area"
             data-validation="required"
-            data-placeholder="insert publisher name"
-            data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current="{{ $user->domicle_area }}"
+            data-placeholder=""
+            data-items="<?php echo implode(',',Config('custom.list_locations')); ?>"
+            data-current="<?php if(isset($user->domicle_area)): echo $user->domicle_area; else: echo Input::old('domicle_area'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -127,9 +117,9 @@
             data-label="Area of Service"
             data-name="service_area"
             data-validation="required"
-            data-placeholder="insert publisher name"
+            data-placeholder=""
             data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current="{{ $user->service_area }}"
+            data-current="<?php if(isset($user->service_area)): echo $user->service_area; else: echo Input::old('service_area'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -138,18 +128,18 @@
             data-label="Address"
             data-name="address"
             data-validation=""
-            data-placeholder="insert address"
-            data-current="{{ $user->address }}"
+            data-placeholder=""
+            data-current="<?php if(isset($user->address)): echo $user->address; else: echo Input::old('address'); endif; ?>"
             data-classes="form-control">
           </div>
 
           <div class="col-xs-12 fg-input"
             data-type="text"
             data-label="Phone Number"
-            data-name="phone"
+            data-name="phone_number"
             data-validation=""
-            data-placeholder="insert phone number"
-            data-current="{{ $user->phone_number }}"
+            data-placeholder=""
+            data-current="<?php if(isset($user->phone_number)): echo $user->phone_number; else: echo Input::old('phone_number'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -160,7 +150,7 @@
             data-validation=""
             data-item-label="Male,Female"
             data-item-value="M,F"
-            data-current="{{ $user->gender }}"
+            data-current="<?php if(isset($user->gender)): echo $user->gender; else: echo Input::old('gender'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -171,7 +161,7 @@
             data-validation=""
             data-item-label="-- Choose Training Methods Below --,<?php echo implode(',',trans('custom.list_training_methods')); ?>"
             data-item-value="0,<?php echo implode(',',trans('custom.list_training_methods')); ?>"
-            data-current="{{ $user->training_method }}"
+            data-current="<?php if(isset($user->training_method)): echo $user->training_method; else: echo Input::old('training_method'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -182,7 +172,7 @@
             data-validation=""
             data-item-label="-- Choose Training Styles Below --,<?php echo implode(',',trans('custom.list_training_styles')); ?>"
             data-item-value="0,<?php echo implode(',',trans('custom.list_training_styles')); ?>"
-            data-current="{{ $user->training_style }}"
+            data-current="<?php if(isset($user->training_style)): echo $user->training_style; else: echo Input::old('training_style'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -191,18 +181,18 @@
             data-label="Daily Rate"
             data-name="mandays_fee"
             data-validation="numeric"
-            data-placeholder="insert daily rate"
-            data-current="{{ $user->mandays_fee }}"
+            data-placeholder=""
+            data-current="<?php if(isset($user->mandays_fee)): echo $user->mandays_fee; else: echo Input::old('mandays_fee'); endif; ?>"
             data-classes="form-control">
           </div>
 
           <div class="col-xs-12 fg-input"
             data-type="text"
-            data-label="Slug"
-            data-name="mandays_fee"
+            data-label="Your Custom URL"
+            data-name="slug"
             data-validation="required"
-            data-placeholder="insert daily rate"
-            data-current="{{ $user->mandays_fee }}"
+            data-placeholder=""
+            data-current="<?php if(isset($user->slug)): echo $user->slug; else: echo Input::old('slug'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -211,8 +201,8 @@
             data-label="profile Picture"
             data-name="profile_picture"
             data-validation="required"
-            data-placeholder="insert profile picture"
-            data-current="{{ $user->profile_picture }}"
+            data-placeholder=""
+            data-current="<?php if(isset($user->profile_picture)): echo $user->profile_picture; else: echo Input::old('profile_picture'); endif; ?>"
             data-classes="form-control">
           </div>
           <img src="{{ url('images/users/'.$user->profile_picture) }}" width="200px" />

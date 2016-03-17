@@ -16,25 +16,70 @@
             <span class="lnr lnr-plus-circle bigger-1-5 blue-border circle text-blue" style="padding:15px;"></span>
           </h3>
           <br/>
-          <h3 class="roboto-light text-blue">ADD PROGRAM</h3>
+          <h3 class="roboto-light text-blue">
+            @if(isset($program))
+              EDIT TRAINING PROGRAM
+            @else
+              ADD TRAINING PROGRAM
+            @endif
+          </h3>
         </div>
         <br/>
       </div>
       <div class="col-lg-offset-3 col-lg-6 col-md-12">
-        <form action="{{url('asd/create-training')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
+        <form action="{{url('dashboard/program/add')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
 
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 
           <div class="col-xs-12 fg-input"
-            data-type="text"
+            data-type="text-autocomplete"
             data-label="Program"
-            data-name="title"
+            data-name="training_program"
             data-validation="required"
-            data-placeholder="insert award title"
-            data-current=""
+            data-placeholder="insert training program title"
+            data-current="  "
+            data-get-ajax="{{ url('getautocompletedata/training_program/training_program_name_en') }}/"
+            data-get-ajax-column="training_program_name_en"
             data-classes="form-control">
           </div>
 
+          <div class="col-xs-12 fg-input"
+            data-type="text"
+            data-label="Learning Outcome"
+            data-name="learning_outcomes"
+            data-validation="required"
+            data-placeholder="insert learning outcome"
+            data-current=""
+            data-multiple-chip="Add More Learning Outcome"
+            data-classes="form-control">
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-type="combobox"
+            data-label="Outcome Preferences"
+            data-name="outcome_preferences"
+            data-validation="required"
+            data-placeholder="insert learning outcome"
+            data-current=""
+            data-item-label="Skill, Knowledge, Attitude"
+            data-item-value="S,K,A"
+            data-multiple-chip="Add More Learning Outcome"
+            data-classes="form-control">
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-type="combobox"
+            data-label="Include Certificate?"
+            data-name="is_certification_included"
+            data-validation="required"
+            data-placeholder=""
+            data-current=""
+            data-item-label="Yes, No"
+            data-item-value="1, 0"
+            data-classes="form-control">
+          </div>
+
+          <!--
           <div class="col-xs-12 fg-input"
             data-type="combobox"
             data-label="Objective"
@@ -103,7 +148,7 @@
             data-placeholder="insert award description"
             data-current=""
             data-classes="form-control">
-          </div>
+          </div>-->
 
           <div class="col-xs-12 fg-submit" data-value="Insert"></div>
         </form>

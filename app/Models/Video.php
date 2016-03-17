@@ -15,11 +15,14 @@ class Video extends Model
 
     protected $fillable = [
         'owner_id',
-        'giver_id',
-        'testimony'
+        'owner_role_id',
+        'video_name',
+        'video_path',
+        'video_description',
+        'video_type',
     ];
 
     protected $guarded = [];
 
-        
+
 }

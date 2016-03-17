@@ -1,19 +1,29 @@
-<div class="row box-profile">
+<div class="row box-profile padding-10">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <ul class="profile-tab-list">
-      <li class="active" data-trigger="speaking-experiences">Training Experiences</li>
+      <li class="active ajax-count-feature"
+        data-trigger="speaking-experiences"
+        data-feature-name="training_experience">Training Experiences</li>
       @if($role == 2)
       <li data-trigger="trainers">Trainers</li>
       @endif
       @if($role == 1)
-      <li data-trigger="work-experiences">Work Experiences</li>
-      <li data-trigger="work-experiences">Education</li>
+      <li data-trigger="work-experiences" class="ajax-count-feature"
+        data-feature-name="work_experience">Work Experiences</li>
+      <!--<li data-trigger="work-experiences">Education</li>-->
       @endif
-      <li data-trigger="programs">Training Programs</li>
-      <li data-trigger="testimonials">Testimonials</li>
-      <li data-trigger="certifications">Certifications</li>
-      <li data-trigger="awards">Awards</li>
-      <li data-trigger="skills">Skills and Endorsement</li>
+      <li data-trigger="programs" class="ajax-count-feature"
+        data-feature-name="training_program">Training Programs</li>
+      <li data-trigger="testimonials" class="ajax-count-feature"
+        data-feature-name="testimonial">Testimonials</li>
+      <li data-trigger="certifications" class="ajax-count-feature"
+        data-feature-name="certification">Certifications</li>
+      <li data-trigger="awards" class="ajax-count-feature"
+        data-feature-name="awards">Awards</li>
+      <li data-trigger="skills" class="ajax-count-feature"
+        data-feature-name="skill">Skills and Endorsement</li>
+      <li data-trigger="videos" class="ajax-count-feature"
+        data-feature-name="video">Videos</li>
     </ul>
   </div>
 
@@ -36,5 +46,7 @@
   @include('profile.tab-partials.awards')
 
   @include('profile.tab-partials.skills')
+
+  @include('profile.tab-partials.videos')
 
 </div>

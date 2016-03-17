@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\updateBasicProfileRequest;
 use Illuminate\Http\Request;
+
 use Auth;
 use DB;
 
@@ -13,6 +14,7 @@ use App\Models\Corporate as Corporate;
 use App\Models\JobTitle as JobTitle;
 use App\Models\JobSeniorityLevel as JobSeniorityLevel;
 use App\Models\JobFunction as JobFunction;
+use App\Models\Video as Video;
 use App\Models\JobNode as JobNode;
 use App\Models\Provider as Provider;
 
@@ -69,43 +71,45 @@ class UserController extends Controller {
 		 $id = Auth::user()->id;
 
 		 //CHECK IF CORPORATE DOES NOT EXIST,CREATE A NEW ONE
-		 $corp_exist = Corporate::where('corporate_name',$input['corporate_name'])
- 											->count();
-		 if($corp_exist == 0)
-		 {
-			 Corporate::create(['corporate_name' => $input['corporate_name']]);
-		 }
+		 if($input['corporate_name'] != NULL || $input['corporate_name'] != ""):
+			 $corp_exist = Corporate::where('corporate_name',$input['corporate_name'])
+	 											->count();
+			 if($corp_exist == 0)
+			 {
+				 Corporate::create(['corporate_name' => $input['corporate_name']]);
+			 }
+		 endif;
 
 		 //CHECK IF JOB TITLE DOES NOT EXIST,CREATE A NEW ONE
-		 $title_exist = JobTitle::where('job_title_name',$input['job_title'])
- 											->count();
+		 if($input['job_title'] != NULL || $input['job_title'] != ""):
+			 $title_exist = JobTitle::where('job_title_name',$input['job_title'])
+	 											->count();
 
-		 if($title_exist == 0)
-		 {
-			 JobTitle::create(['job_title_name' => $input['job_title']]);
-		 }
+			 if($title_exist == 0):
+				 JobTitle::create(['job_title_name' => $input['job_title']]);
+			 endif;
 
-		 $job_title_id = JobTitle::where('job_title_name',$input['job_title'])
-		 									->first()->id;
+			 $job_title_id = JobTitle::where('job_title_name',$input['job_title'])
+			 									->first()->id;
 
-		 //Fetch the right JobNode or create new
-		 $job_node_exist = JobNode::where('job_title_id',$job_title_id)->count();
+			 //Fetch the right JobNode or create new
+			 $job_node_exist = JobNode::where('job_title_id',$job_title_id)->count();
 
-		 if($job_node_exist == 0)
-		 {
-			 JobNode::create([
-				 'job_title_id' => $job_title_id,
-				 'job_seniority_level_id' => 999999999,
-				 'job_function_id' => 999999999,
-			 ]);
-		 }
+			 $job_seniority_level = '';
+			 $job_function = '';
 
-		 $job_node = JobNode::where('job_title_id',$job_title_id)->first();
-
-		 $job_seniority_level = JobSeniorityLevel::where('id',$job_node->job_seniority_level_id)
-		 														->first();
-
-		$job_function = JobFunction::where('id',$job_node->job_function_id)->first();
+			 if($job_node_exist == 0):
+				 $job_node = JobNode::where('job_title_id',$job_title_id)->first();
+				 $job_seniority_level = JobSeniorityLevel::where('id',$job_node->job_seniority_level_id)
+				 														->first()->job_seniority_level_name;
+				 $job_function = JobFunction::where('id',$job_node->job_function_id)
+	 													->first()->job_function_name;
+			 endif;
+		 else:
+			   $job_node = "";
+				 $job_seniority_level = "";
+				 $job_function = "";
+		 endif;
 
 		if ( $request->hasFile('profile_picture') )
 		{
@@ -117,7 +121,14 @@ class UserController extends Controller {
 				$destinationPath = public_path() . '/images/users';
 	    	$request->file('profile_picture')->move($destinationPath, $file_name);
 				//Resize & Crop | source image started from level public
-				$img = Image::make('images/users/'.$file_name)->fit(200,200)->save('images/users/thumb/'.$file_name);
+				$img = Image::make('images/users/'.$file_name)->fit(400,400)->save('images/users/thumb/'.$file_name);
+
+
+				$update = [
+					'profile_picture' 			=> (isset($file_name))?$file_name:'',
+				];
+				$user = User::find($id)->update($update);
+
 			else:
 				$photo_error = $request->file('profile_picture')->getErrorMessage();
 				echo $photo_error;
@@ -131,25 +142,30 @@ class UserController extends Controller {
 			'corporate_name' 				=> $input['corporate_name'],
 			'job_title' 						=> $input['job_title'],
 
-			'job_seniority_level' 	=> $job_seniority_level->job_seniority_level_name,
-			'job_function' 					=> $job_function->job_function_name,
+			'job_seniority_level' 	=> $job_seniority_level,
+			'job_function' 					=> $job_function,
 
-			'email' 								=> $input['email'],
 			'summary' 							=> $input['summary'],
 			'domicle_area' 					=> $input['domicle_area'],
 			'service_area' 					=> $input['service_area'],
+
+			'address'								=> $input['address'],
+			'phone_number'					=> $input['phone_number'],
+			'mandays_fee'						=> $input['mandays_fee'],
+			'slug'									=> $input['slug'],
 
 			'gender' 								=> $input['gender'],
 			'dob' 									=> $input['dob'],
 
 			'training_method' 			=> $input['training_method'],
 			'training_style' 				=> $input['training_style'],
-			'profile_picture' 			=> (isset($file_name))?$file_name:'',
 		];
+
 
 		$user = User::find($id)->update($update);
 
 		$user = User::where('id',$id)->first();
+
 		return view('profile.forms.basic-profile')->with('user',$user);
 
 
@@ -309,232 +325,6 @@ class UserController extends Controller {
 	     ->with('gridType',1);
 	 }
 
-	 public function getUsersF()
-	 {
-		 $users_query =
-		 [
-			 "table"			=> "user",
-			 "condition"	=>
-									 [
-										 "0"		=>
-													 [
-														 "column"				=>  "user.role_id",
-														 "comparison"		=>	"=",
-														 "value"				=>	3,
-													 ],
-										 "1"		=>
-													 [
-														 "column"			=>  "user.user_id",
-														 "comparison"	=>	"=",
-														 "value"				=>	265,
-													 ],
-										 "2"		=>
-													 [
-														 "column"				=>  "user.first_name",
-														 "comparison"		=>	"!=",
-														 "value"				=>	"",
-													 ],
-										 /*"3"		=>
-														[
-															"column"			=>  "user.profile_image",
-															"comparison"	=>	"!=",
-															"value"				=>	"default.png",
-														],*/
-											"4"	 =>
-														 [
-															 "column"				=>  "user.user_slug",
-															 "comparison"		=>	"!=",
-															 "value"				=>	"",
-														 ],
-									 ],
-		 ];
-		 $users = General::Selects($users_query)->get();
-
-		 $users_data = array();
-		 foreach($users as $user):
-				 // <!-- USER EXPERTISES
-				 // Get Expertises Data
-				 $user_expertises_query =
-				 [
-					 "table"			=> "tr_user_expertise",
-					 "join"				=>
-												 [
-													 "expertise"	=>
-																	 [
-																		 "statement"	=> "expertise.expertise_id = tr_user_expertise.expertise_id",
-																		 "type"				=> "join",
-																	 ],
-												 ],
-					 "condition"	=>
-												 [
-													 "0"		=>
-																 [
-																	 "column"				=>  "tr_user_expertise.user_id",
-																	 "comparison"		=>	"=",
-																	 "value"				=>	$user->user_id,
-																 ],
-
-												 ],
-				 ];
-				 $user_expertises = General::Selects($user_expertises_query)->get();
-
-				 $user_expertises_data  = array();
-				 foreach($user_expertises as $user_expertise):
-					 // Get Endorse Data
-					 $user_endorses_query =
-					 [
-						 "table"			=> "tr_endorse",
-						 "condition"	=>
-													 [
-														 "0"		=>
-																	 [
-																		 "column"			=>  "tr_endorse.tr_user_expertise_id",
-																		 "comparison"	=>	"=",
-																		 "value"				=>	$user_expertise->tr_user_expertise_id,
-																	 ],
-													 ],
-					 ];
-					 $user_endorses = General::Selects($user_endorses_query)->get();
-
-					 $user_expertise_data  = array(
-						 "expertise_name"			=> $user_expertise->expertise_name,
-						 "total_endorse"			=> count($user_endorses),
-					 );
-					 array_push($user_expertises_data,$user_expertise_data);
-				 endforeach;
-				 // USER EXPERTISES -->
-
-				 //<!-- SPEAKING EXPERIENCE
-				 $user_speaking_experience_query =
-				 [
-					 "table"		 	=> "tr_speaking_experience",
-					 "condition"	=>
-												[
-												 "0"		=>
-															 [
-																 "column"			  =>  "tr_speaking_experience.user_id",
-																 "comparison"	  =>	"=",
-																 "value"				=>	$user->user_id,
-															 ],
-												],
-				 ];
-				 $user_speaking_experience = General::Selects($user_speaking_experience_query)->get();
-				 $total_user_speaking_experience_data = count($user_speaking_experience);
-				 // SPEAKING EXPERIENCE -->
-
-				 //<!-- LANGUAGE PROFIECIENCY
-				 $user_languages_query =
-				 [
-					 "table"			=> "tr_language",
-					 "condition"	=>
-											 [
-												 "0"		=>
-															 [
-																 "column"			=>  "tr_language.user_id",
-																 "comparison"	=>	"=",
-																 "value"				=>	$user->user_id,
-															 ],
-											 ],
-				 ];
-				 $user_languages = General::Selects($user_languages_query)->get();
-
-				 $user_languages_data = array();
-				 foreach($user_languages as $user_language):
-					 $user_language_data = array(
-						 "language_name"		=> $user_language->language_code,
-					 );
-					 array_push($user_languages_data,$user_language_data);
-				 endforeach;
-				 // LANGUAGE PROFIECIENCY -->
-
-				 //<!-- REVIEW
-				 $user_reviews_query =
-				 [
-					 "table"		 => "tr_review",
-					 "join"			 =>
-											 [
-												 "user"	=>
-																 [
-																	 "statement"	=> "tr_review.reviewer_id = user.user_id",
-																	 "type"				=> "join",
-																 ],
-												],
-					 "condition"	=>
-												[
-												 "0"		=>
-															 [
-																 "column"				=> "tr_review.user_id",
-																 "comparison"		=> "=",
-																 "value"				=> $user->user_id,
-															 ],
-												],
-				 ];
-				 $user_reviews = General::Selects($user_reviews_query)->get();
-
-				 $score 	= 0;
-				 $flag 	= 0;
-				 foreach($user_reviews as $user_review):
-						if($user_review->delivery_score > 0):
-							$score = $score + $user_review->delivery_score;
-							$flag++;
-						endif;
-				 endforeach;
-				 if($flag > 0):
-					 $score = round((float)$score / $flag,1);
-				 endif;
-
-				 $total_user_review_data = count($user_reviews);
-				 if($score == 0):
-					 $average_user_review_score_data 			= "-"; //N/A
-				 else:
-					 $average_user_review_score_data 			= $score;
-				 endif;
-				 // REVIEW -->
-
-				 //CONNECTION
-				 $user_connections_query =
-				 [
-					 "table"			=> "tr_connect",
-					 "condition"	=>
-											 [
-												 "0"		=>
-															 [
-																 "column"			=>  "tr_connect.user_id",
-																 "comparison"	=>	"=",
-																 "value"				=>	$user->user_id,
-															 ],
-											 ],
-				 ];
-				 $user_connections 					= General::Selects($user_reviews_query)->get();
-				 $total_user_connection_data = count($user_connections);
-
-				 //ALL TRAINER DATA
-				 $user_data = array(
-					 "user_id"													=> $user->user_id,
-					 "name"															=> $user->first_name . ' ' . $user->last_name,
-					 "email"														=> $user->email,
-					 "profile_picture"									=> $user->profile_image,
-					 "summary"													=> $user->summary,
-					 "area"															=> $user->area,
-					 "slug"												  		=> $user->user_slug,
-					 "language"													=> $user_languages_data,
-					 "score"														=> $average_user_review_score_data,
-					 "expertises"												=> $user_expertises_data,
-					 "connection"												=> $total_user_connection_data,
-					 "training"													=> $total_user_speaking_experience_data,
-					 "review"														=> $total_user_review_data,
-					 "view"															=> $user->is_view,
-				 );
-				 array_push($users_data,$user_data);
-		 endforeach;
-
-		 $users_data_object = json_decode(json_encode($users_data), FALSE);
-
-		 return view('search.grid-list')
-			 ->withGrids($users_data_object)
-			 ->with('gridType',1);
-	 }
-
 	 /**
  	 * Display user profile page
  	 *
@@ -544,13 +334,12 @@ class UserController extends Controller {
 	 {
 		 if($user_slug == '')
 		 {
-			 $user_slug = Auth::user()->user_slug;
+			 $user_slug = Auth::user()->slug;
 		 }
 
 		 $user =	DB::table('user_role_nodes')
 							->join('roles', 'user_role_nodes.role_id', '=', 'roles.id')
 							->join('users', 'user_role_nodes.user_id', '=', 'users.id')
-							->where('role_id', '=', 2)
 							->where('users.is_verified', '=', 1)
 							->where('users.slug', '=', $user_slug)
 							->first();
@@ -664,6 +453,7 @@ class UserController extends Controller {
 			///////////////////
 			//<!--TRAINING EXPERIENCES
 			$user_speaking_experiences =	DB::table('training_experience_program_nodes')
+												  				 ->select('*','training_experiences.id AS training_experience_id')
 																	 ->join('training_experiences','training_experience_program_nodes.training_experience_id','=','training_experiences.id')
 																	 ->join('training_program','training_experience_program_nodes.training_program_id','=','training_program.id')
 																	 ->join('providers','training_experiences.provider_id','=','providers.id')
@@ -728,7 +518,7 @@ class UserController extends Controller {
 
 				//SUMMARY TRAINING EXPERIENCES VARIABLE
 				$user_speaking_experience_data  = array(
-					"speaking_experience_id"					  	=>		$user_speaking_experience->id,
+					"speaking_experience_id"					  	=>		$user_speaking_experience->training_experience_id,
 					"speaking_experience_title"					  =>		$user_speaking_experience->training_experience,
 					"speaking_experience_description"			=>		$user_speaking_experience->description,
 					"speaking_experience_start_date"		  =>		$user_speaking_experience->start_date,
@@ -760,6 +550,7 @@ class UserController extends Controller {
 
 			//<!--TRAINING PROGRAMME
 			$user_training_programs =	DB::table('user_training_program_nodes')
+																 	 ->select('*','training_program.id AS training_program_id')
 																	 ->join('training_program','user_training_program_nodes.training_program_id','=','training_program.id')
 																	 ->where('user_training_program_nodes.owner_id', '=', $user->id)
 																	 ->where('user_training_program_nodes.owner_role_id', '=', 2)
@@ -804,7 +595,7 @@ class UserController extends Controller {
 
 
 				$user_training_program_data = array(
-						"training_program_id"					=> $user_training_program->id,
+						"training_program_id"					=> $user_training_program->training_program_id,
 						"training_program_name_id"		=> $user_training_program->training_program_name_id,
 						"learning_outcome_names"			=> $user_training_programs_learning_outcomes_data,
 				);
@@ -964,6 +755,9 @@ class UserController extends Controller {
 				"user_id"														=> $user->id,
 				"name"															=> $user->first_name .' '. $user->last_name,
 				"email"															=> $user->email,
+				"phone_number"											=> $user->phone_number,
+				"email"															=> $user->email,
+				"service_area"											=> $user->service_area,
 				"profile_picture"										=> $user->profile_picture,
 				"summary"														=> $user->summary,
 				"area"															=> $user->service_area,
@@ -983,6 +777,10 @@ class UserController extends Controller {
 			$user_awards													= json_decode(json_encode($user_awards_data), FALSE); // ARRAY DATA
 			$user_expertises											= json_decode(json_encode($user_expertises_data),FALSE);
 
+			// VIDEOS
+			$user_videos =	Video::where('owner_id',$user->id)->where('owner_role_id',2)->get();
+			// VIDEOS -->
+
 			return view('profile/profile-page')
 								->with('grids',$user_data)
 								->with('trainingExperiences',$user_training_experiences)
@@ -992,6 +790,7 @@ class UserController extends Controller {
 								->with('certifications',$user_certifications)
 								->with('awards',$user_awards)
 								->with('expertises',$user_expertises)
+								->with('videos',$user_videos)
 								->with('gridType',1)
 								->with('role',1);
 		endif;

@@ -8,7 +8,9 @@ use Request;
 use Redirect;
 use Socialize;
 use App\Models\User;
+use App\Models\UserRoleNode;
 
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller {
 
@@ -40,6 +42,9 @@ class AuthController extends Controller {
 			{
 				//Login Success, Set User Data to Auth
 				Auth::login($user);
+				//Set Session
+				Session::set('owner_id', $user->id);
+				Session::set('owner_role_id', 2);
 				return Redirect::to('/');
 			}
 			else
@@ -52,13 +57,29 @@ class AuthController extends Controller {
 		else
 		{
 			//Hasn't Registered
-			$user = new User();
-			$user->email 		= $data['email'];
-			$user->password 	= $data['password'];
+			$user 									= new User();
+			$user->email 						= $data['email'];
+			$user->password 				= $data['password'];
+			$user->is_verified 			= 1;
+			$user->profile_picture 	= 'default.png';
 			$user->save();
 
+
+			$update = [
+				'slug' 			=> $user->id,
+			];
+			User::find($user->id)->update($update);
+
+
+			$create_node = [
+	 		 'user_id' => $user->id,
+	 		 'role_id' => 2, // BASIC ROLE
+	 	 	];
+	 	 $userRoleNode = UserRoleNode::create($create_node);
+
+
 			Auth::login($user);
-			return Redirect::to('/');
+			return Redirect::to('/dashboard');
 		}
 	}
 
@@ -71,6 +92,7 @@ class AuthController extends Controller {
 	public function logout()
 	{
 		Auth::logout();
+		Session::flush();
 		return Redirect::to('/');
 	}
 
