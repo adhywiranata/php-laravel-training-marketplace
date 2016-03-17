@@ -340,7 +340,6 @@ class UserController extends Controller {
 		 $user =	DB::table('user_role_nodes')
 							->join('roles', 'user_role_nodes.role_id', '=', 'roles.id')
 							->join('users', 'user_role_nodes.user_id', '=', 'users.id')
-							->where('role_id', '=', 2)
 							->where('users.is_verified', '=', 1)
 							->where('users.slug', '=', $user_slug)
 							->first();

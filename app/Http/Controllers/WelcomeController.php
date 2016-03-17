@@ -205,6 +205,11 @@ class WelcomeController extends Controller {
 		 	echo $errors->first('title');
 		endif;
 
+		echo $errors->first('training_experience');
+		foreach ($errors->all() as $error => $value):
+			echo $error ."=>".$value
+		endforeach
+
 		//
 	}
 

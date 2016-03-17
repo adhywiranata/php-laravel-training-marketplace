@@ -20,6 +20,7 @@
             @else
               ADD TRAINING EXPERIENCE
             @endif
+
           </h3>
         </div>
         <br/>
@@ -27,8 +28,8 @@
       <div class="col-lg-offset-3 col-lg-6 col-md-12">
 
         @if(isset($training_experience))
-          <form action="{{url('dashboard/training-experience/'.$training_experience->training_experience_id.'/edit')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20">
-          <input type="hidden" name="_method" value="PUT" enctype="multipart/form-data"/>
+          <form action="{{url('dashboard/training-experience/'.$training_experience->speaking_experience_id.'/edit')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20" enctype="multipart/form-data">
+          <input type="hidden" name="_method" value="PUT" />
         @else
           <form action="{{url('dashboard/training-experience/add')}}" method="POST" id="fg-form-1" class="fg-form box-grid padding-20" enctype="multipart/form-data">
         @endif
@@ -36,11 +37,11 @@
 
           <div class="col-xs-12 fg-input"
             data-type="text"
-            data-label="Training title"
+            data-label="Training title {{$errors->first('training_experience')}}"
             data-name="training_experience"
             data-validation="required"
             data-placeholder="insert training title"
-            data-current="<?php if(isset($training_experience)): echo $training_experience->training_experience; else: echo Input::old('training_experience'); endif; ?>"
+            data-current="<?php if(isset($training_experience)): echo $training_experience->speaking_experience_title; else: echo Input::old('training_experience'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -48,25 +49,25 @@
             data-type="text-autocomplete"
             data-label="Corporate"
             data-name="company"
-            data-validation="required"
-            data-placeholder="insert training provider name"
+            data-validation=""
+            data-placeholder="insert Corporate name"
             data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current="<?php if(isset($training_experience)): echo $training_experience->corporate_id; else: echo Input::old('corporate_name'); endif; ?>"
-            data-get-ajax="{{ url('getautocompl etedata/corporates/corporate_name') }}/"
+            data-current="<?php if(isset($training_experience)): echo $training_experience->company_name; else: echo Input::old('corporate_name'); endif; ?>"
+            data-get-ajax="{{ url('getautocompletedata/corporates/corporate_name') }}/"
             data-get-ajax-column="corporate_name"
             data-classes="form-control">
           </div>
 
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
-            data-label="Training Program"
+            data-label="Training Program {{$errors->first('training_experience')}}"
             data-name="training_program"
             data-validation="required"
-            data-placeholder="insert training provider name"
+            data-placeholder="insert training program name"
             data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current=""
-            data-get-ajax="{{ url('getautocompletedata/training_program/training_program_name_en') }}/"
-            data-get-ajax-column="training_program_name_en"
+            data-current="<?php if(isset($training_experience)): echo $training_experience->training_programme_title; else: echo Input::old('training_program'); endif; ?>"
+            data-get-ajax="{{ url('getautocompletedata/training_program/training_program_name_id') }}/"
+            data-get-ajax-column="training_program_name_id"
             data-classes="form-control">
           </div>
 
@@ -76,7 +77,7 @@
             data-name="start_date"
             data-validation=""
             data-placeholder="insert training date"
-            data-current="<?php if(isset($training_experience)): echo $training_experience->start_date; else: echo Input::old('start_date'); endif; ?>"
+            data-current="<?php if(isset($training_experience)): echo $training_experience->speaking_experience_start_date; else: echo Input::old('start_date'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -86,7 +87,7 @@
             data-name="end_date"
             data-validation=""
             data-placeholder="insert training date"
-            data-current="<?php if(isset($training_experience)): echo $training_experience->end_date; else: echo Input::old('end_date'); endif; ?>"
+            data-current="<?php if(isset($training_experience)): echo $training_experience->speaking_experience_end_date; else: echo Input::old('end_date'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -113,7 +114,7 @@
             data-validation=""
             data-placeholder="insert training provider name"
             data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current=""
+            data-current="<?php if(isset($training_experience)): $speaking_experience_expertises; else: echo Input::old('skill'); endif; ?>"
             data-get-ajax="{{ url('getautocompletedata/skills/skill_name') }}/"
             data-get-ajax-column="skill_name"
             data-classes="form-control"
@@ -126,7 +127,7 @@
             data-name="description"
             data-validation=""
             data-placeholder="insert training description"
-            data-current="<?php if(isset($training_experience)): echo $training_experience->description; else: echo Input::old('description'); endif; ?>"
+            data-current="<?php if(isset($training_experience)): echo $training_experience->speaking_experience_description; else: echo Input::old('description'); endif; ?>"
             data-classes="form-control">
           </div>
 
@@ -134,9 +135,9 @@
             data-type="image"
             data-label="Training Experience Photos"
             data-name="training_photos[]"
-            data-validation="required"
+            data-validation=""
             data-placeholder="insert training photos"
-            data-current=""
+            data-current="<?php if(isset($training_experience)): $training_experience->speaking_experience_photos; else: echo Input::old('training_photos[]'); endif; ?>"
             data-classes="form-control"
             data-multiple="multiple"
             >

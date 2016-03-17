@@ -32,7 +32,7 @@
             data-label="First Name"
             data-name="first_name"
             data-validation="required"
-            data-placeholder="insert First Name"
+            data-placeholder=""
             data-current="<?php if(isset($user->first_name)): echo $user->first_name; else: echo Input::old('first_name'); endif; ?>"
             data-classes="form-control">
           </div>
@@ -42,7 +42,7 @@
             data-label="Last Name"
             data-name="last_name"
             data-validation="required"
-            data-placeholder="insert Last Name"
+            data-placeholder=""
             data-current="<?php if(isset($user->last_name)): echo $user->last_name; else: echo Input::old('last_name'); endif; ?>"
             data-classes="form-control">
           </div>
@@ -52,7 +52,7 @@
             data-label="Profile Summary"
             data-name="summary"
             data-validation="required"
-            data-placeholder="insert your brief summary"
+            data-placeholder=""
             data-current="<?php if(isset($user->summary)): echo $user->summary; else: echo Input::old('summary'); endif; ?>"
             data-classes="form-control">
           </div>
@@ -68,7 +68,7 @@
             data-label="Current Corporate"
             data-name="corporate_name"
             data-validation=""
-            data-placeholder="insert corporate name"
+            data-placeholder=""
             data-current="<?php if(isset($user->corporate_name)): echo $user->corporate_name; else: echo Input::old('corporate_name'); endif; ?>"
             data-items="Foo, Bar, John, Doe, Hello, World"
             data-classes="form-control"
@@ -82,7 +82,7 @@
             data-label="Current Job Title"
             data-name="job_title"
             data-validation=""
-            data-placeholder="pick job title name"
+            data-placeholder=""
             data-current="<?php if(isset($user->job_title)): echo $user->job_title; else: echo Input::old('job_title'); endif; ?>"
             data-items="Foo, Bar, John, Doe, Hello, World"
             data-classes="form-control"
@@ -106,7 +106,7 @@
             data-label="Location"
             data-name="domicle_area"
             data-validation="required"
-            data-placeholder="insert publisher name"
+            data-placeholder=""
             data-items="<?php echo implode(',',Config('custom.list_locations')); ?>"
             data-current="<?php if(isset($user->domicle_area)): echo $user->domicle_area; else: echo Input::old('domicle_area'); endif; ?>"
             data-classes="form-control">
@@ -117,7 +117,7 @@
             data-label="Area of Service"
             data-name="service_area"
             data-validation="required"
-            data-placeholder="insert publisher name"
+            data-placeholder=""
             data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
             data-current="<?php if(isset($user->service_area)): echo $user->service_area; else: echo Input::old('service_area'); endif; ?>"
             data-classes="form-control">
@@ -128,7 +128,7 @@
             data-label="Address"
             data-name="address"
             data-validation=""
-            data-placeholder="insert address"
+            data-placeholder=""
             data-current="<?php if(isset($user->address)): echo $user->address; else: echo Input::old('address'); endif; ?>"
             data-classes="form-control">
           </div>
@@ -138,7 +138,7 @@
             data-label="Phone Number"
             data-name="phone_number"
             data-validation=""
-            data-placeholder="insert phone number"
+            data-placeholder=""
             data-current="<?php if(isset($user->phone_number)): echo $user->phone_number; else: echo Input::old('phone_number'); endif; ?>"
             data-classes="form-control">
           </div>
@@ -181,17 +181,17 @@
             data-label="Daily Rate"
             data-name="mandays_fee"
             data-validation="numeric"
-            data-placeholder="insert daily rate"
+            data-placeholder=""
             data-current="<?php if(isset($user->mandays_fee)): echo $user->mandays_fee; else: echo Input::old('mandays_fee'); endif; ?>"
             data-classes="form-control">
           </div>
 
           <div class="col-xs-12 fg-input"
             data-type="text"
-            data-label="Slug"
+            data-label="Your Custom URL"
             data-name="slug"
             data-validation="required"
-            data-placeholder="insert Slug"
+            data-placeholder=""
             data-current="<?php if(isset($user->slug)): echo $user->slug; else: echo Input::old('slug'); endif; ?>"
             data-classes="form-control">
           </div>
@@ -201,7 +201,7 @@
             data-label="profile Picture"
             data-name="profile_picture"
             data-validation="required"
-            data-placeholder="insert profile picture"
+            data-placeholder=""
             data-current="<?php if(isset($user->profile_picture)): echo $user->profile_picture; else: echo Input::old('profile_picture'); endif; ?>"
             data-classes="form-control">
           </div>

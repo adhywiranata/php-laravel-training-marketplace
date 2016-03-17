@@ -41,8 +41,8 @@ class trainingExperienceRequest extends Request {
 			{
 				return [
 					//
-					//"training_experience"	=>		"required",
-					//"company"	=> "required",
+					"training_experience"		=>		"required",
+					"training_program"			=>		"required",
 				];
 			}
 
@@ -50,8 +50,8 @@ class trainingExperienceRequest extends Request {
 			{
 				return [
 					//
-					"training_experience"	=>		"required",
-					"corporate_id"	=> "required",
+					"training_experience"		=>		"required",
+					"training_program"			=>		"required",
 				];
 			}
 

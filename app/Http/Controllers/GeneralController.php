@@ -224,10 +224,10 @@ class GeneralController extends Controller {
 		}
 
 		//CHECK IF TRAINING PROGRAM DOES NOT EXIST,CREATE A NEW ONE
-		$training_program = TrainingProgram::where('training_program_name_en',$input['training_program'])->first();
+		$training_program = TrainingProgram::where('training_program_name_id',$input['training_program'])->first();
 		if(count($training_program) == 0)
 		{
-			$training_program_in = TrainingProgram::create([ 'training_program_name_en' => $input['training_program'] ]);
+			$training_program_in = TrainingProgram::create([ 'training_program_name_id' => $input['training_program'] ]);
 			$tp_id = $training_program_in->id;
 		}
 		else
@@ -310,6 +310,8 @@ class GeneralController extends Controller {
 
 		//Section photo create nodes
 		foreach($files as $file):
+
+
 			$node_insert = [
 				'section_id' => $section_id,
 				'section_item_id' => $new_training_experience_id,
@@ -324,19 +326,95 @@ class GeneralController extends Controller {
 
 	public function editTrainingExperience($id)
 	{
-		$training_experience	=		DB::table('training_experiences')
-												  ->select('*','training_experiences.id AS training_experience_id')
-												  ->join('corporates','training_experiences.corporate_id','=','corporates.id')
-												  ->where('training_experiences.id', '=', $id)
-												  ->first();
+		$training_experience =	DB::table('training_experience_program_nodes')
+									  				 ->select('*','training_experiences.id AS training_experience_id')
+														 ->join('training_experiences','training_experience_program_nodes.training_experience_id','=','training_experiences.id')
+														 ->join('training_program','training_experience_program_nodes.training_program_id','=','training_program.id')
+														 ->join('providers','training_experiences.provider_id','=','providers.id')
+														 ->join('corporates','training_experiences.corporate_id','=','corporates.id')
+														 ->where('training_experiences.id', '=', $id)
+														 ->first();
+
+		//SKILL TRAINING EXPERIENCE
+		$training_experience_expertises =	DB::table('section_skills')
+																			 ->join('skills','section_skills.skill_id','=','skills.id')
+																			 ->where('section_skills.section_id', '=', 1)
+																			 ->where('section_skills.section_item_id', '=', $training_experience->training_experience_id)
+																			 ->get();
+
+		$training_experience_expertises_data = array();
+		foreach($training_experience_expertises as $training_experience_expertise):
+			$training_experience_expertise_data = array(
+				"expertise_name"		=>	$training_experience_expertise->skill_name,
+			);
+			array_push($training_experience_expertises_data,$training_experience_expertise_data);
+		endforeach;
+
+
+		//PHOTO TRAINING EXPERIENCE
+		$training_experience_photos = DB::table('section_photos')
+																			 ->where('section_photos.section_id', '=', 1)
+																			 ->where('section_photos.section_item_id', '=', $training_experience->training_experience_id)
+																			 ->get();
+
+		$training_experience_photos_data = array();
+		foreach($training_experience_photos as $training_experience_photo):
+			$training_experience_photo_data = array(
+				"photo_name"					=>	$training_experience_photo->photo_name,
+				"photo_path"					=>	$training_experience_photo->photo_path,
+				"photo_description"		=>	$training_experience_photo->photo_description,
+			);
+			array_push($training_experience_photos_data,$training_experience_photo_data);
+		endforeach;
+
+		//VIDEO TRAINING EXPERIENCE
+		$training_experience_videos = DB::table('section_videos')
+																 ->where('section_videos.section_id', '=', 1)
+																 ->where('section_videos.section_item_id', '=', $training_experience->training_experience_id)
+																 ->where('section_videos.video_type', '=', "youtube")
+																 ->get();
+
+		$training_experience_videos_data = array();
+		foreach($training_experience_videos as $training_experience_video):
+			$training_experience_video_data = array(
+				"video_name"					=>	$training_experience_video->video_name,
+				"video_path"					=>	$training_experience_video->video_path,
+				"video_description"		=>	$training_experience_video->video_description,
+			);
+			array_push($training_experience_videos_data,$training_experience_video_data);
+		endforeach;
+
+		//SUMMARY TRAINING EXPERIENCES VARIABLE
+		$training_experience_data  = array(
+			"speaking_experience_id"					  	=>		$training_experience->training_experience_id,
+			"speaking_experience_title"					  =>		$training_experience->training_experience,
+			"speaking_experience_description"			=>		$training_experience->description,
+			"speaking_experience_start_date"		  =>		$training_experience->start_date,
+			"speaking_experience_end_date"				=>		$training_experience->end_date,
+			"company_profile_picture"					  	=>		$training_experience->corporate_profile_picture,
+			"company_name"											  =>		$training_experience->corporate_name,
+			"provider_profile_picture"					  =>		$training_experience->profile_picture,
+			"provider_name"											  =>		$training_experience->provider_name,
+			"speaking_experience_expertises"			=>		$training_experience_expertises_data,
+			"speaking_experience_photos"					=>		$training_experience_photos_data,
+			"speaking_experience_videos"					=>		$training_experience_videos_data,
+			"training_programme_title"						=>		$training_experience->training_program_name_id,
+		);
+
+		$training_experience_data = json_decode(json_encode($training_experience_data), FALSE);
 
 		return view('profile.forms.add-training-experience')
-								->with('training_experience',$training_experience);
+								->with('training_experience',$training_experience_data);
 	}
 
-	public function updateTrainingExperience($id , workExperienceRequest $request)
+	public function updateTrainingExperience($id , trainingExperienceRequest $request)
 	{
+		$section_id = 1; //Section id for Training Experience
+
 		$input = $request->all();
+
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
 
 		//CHECK IF CORPORATE DOES NOT EXIST,CREATE A NEW ONE
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
@@ -345,23 +423,143 @@ class GeneralController extends Controller {
 			$corporate = Corporate::create([ 'corporate_name' => $input['company'] ]);
 		}
 
-		$update_work_experience = [
-			'corporate_id' 				=> $corporate->id,
-			'title' 							=> $input['title'],
-			'position' 						=> $input['position'],
-			'description' 				=> $input['description'],
-			'start_date' 					=> $input['start_date_year']."-".$input['start_date_month']."-".$input['start_date_day'],
-			'end_date' 						=> $input['end_date_year']."-".$input['end_date_month']."-".$input['end_date_day'],
-		];
-		WorkExperience::find($id)->update($update_work_experience);
+		//CHECK IF TRAINING PROGRAM DOES NOT EXIST,CREATE A NEW ONE
+		$training_program = TrainingProgram::where('training_program_name_id',$input['training_program'])->first();
+		if(count($training_program) == 0)
+		{
+			$training_program_in = TrainingProgram::create([ 'training_program_name_id' => $input['training_program'] ]);
+			$tp_id = $training_program_in->id;
+		}
+		else
+		{
+			$tp_id = $training_program->id;
+		}
 
+
+		$update_training_experience = [
+			'owner_id' 						=> $session_owner_id,
+			'owner_role_id' 			=> $session_owner_role_id,
+			'provider_id' 				=> 1,
+			'corporate_id' 				=> $corporate->id,
+			'training_experience' => $input['training_experience'],
+			'description' 				=> $input['description'],
+			'start_date' 					=> $input['start_date'],
+			'end_date' 						=> $input['end_date'],
+		];
+		TrainingExperience::find($id)->update($update_training_experience);
+		//CREATE TRAINING EXPERIENCE - TRAINING PROGRAM NODE
+
+
+		//VALIDATION TRAINING EXPERIENCE AND PROGRAM NODE
+		$training_experience_program_node = DB::table('training_experience_program_nodes')
+																			 ->where('training_experience_program_nodes.training_experience_id', '=', $id)
+																			 ->where('training_experience_program_nodes.training_program_id', '=', $tp_id)
+																			 ->first();
+
+		if(count($training_experience_program_node) == 0):
+
+				TrainingExperienceProgramNode::where('training_experience_id','=',$id)->delete();
+				$tep_node = [
+					'training_experience_id' 	=> $id,
+					'training_program_id' 		=> $tp_id
+				];
+				$training_experience_program_node = TrainingExperienceProgramNode::create($tep_node);
+
+		endif;
+
+
+
+		//CHECK IF SKILL DOES NOT EXISTS
+		$skills = explode('|||',$input['skill']);
+		for($i=0;$i<count($skills);$i++)
+		{
+			$skill_name = $skills[$i];
+			if($skill_name != '')
+			{
+				$skill = Skill::where('skill_name',$skill_name)->first();
+				if(count($skill) == 0)
+				{
+					$skill = Skill::create([ 'skill_name' => $skill_name ]);
+				}
+
+
+				$section_skill_node = DB::table('section_skills')
+															 ->where('section_skills.section_id', '=', $section_id)
+															 ->where('section_skills.section_item_id', '=', $id)
+															 ->where('section_skills.skill_id', '=', $skill->id)
+															 ->first();
+
+				if(count($section_skill_node) == 0):
+					$node_insert = [
+						'section_id' 			=> $section_id,
+						'section_item_id' => $id,
+						'skill_id' 				=> $skill->id
+					];
+					SectionSkill::create($node_insert);
+				endif;
+
+			}
+		}
+
+		$files = [];
+		//$count_files = 0;
+
+		//Section Photos Upload
+		if ( $request->hasFile('training_photos') ):
+
+			$files 				= $request->file('training_photos');
+			//$count_files 	= count($files);
+
+			foreach($files as $file):
+
+				if( $file->isvalid() ):
+
+					$file_name  			= $file->getClientOriginalName();
+					$destinationPath 	= public_path() . '/images/section_photos';
+					$file->move($destinationPath, $file_name);
+					//Resize & Crop | source image started from level public
+					$img = Image::make('images/section_photos/'.$file_name)->fit(200,200)->save('images/section_photos/'.$file_name);
+
+				else:
+
+					$photo_error = $file->getErrorMessage();
+					echo $photo_error;
+
+				endif;
+			endforeach;
+		endif;
+
+		//Section photo create nodes
+		foreach($files as $file):
+
+
+			$section_photo_node = DB::table('section_photos')
+														 ->where('section_photos.section_id', '=', $section_id)
+														 ->where('section_photos.section_item_id', '=', $id)
+														 ->where('section_photos.photo_path', '=', $file->getClientOriginalName())
+														 ->first();
+      if(count($section_photo_node) == 0):
+
+			$node_insert = [
+				'section_id' 				=> $section_id,
+				'section_item_id' 	=> $id,
+				'photo_path' 				=> $file->getClientOriginalName()
+			];
+			SectionPhoto::create($node_insert);
+
+			endif;
+
+		endforeach;
 
 		return redirect('dashboard');
 	}
 
 	public function deleteTrainingExperience($id)
 	{
-		WorkExperience::find($id)->delete();
+		TrainingExperience::find($id)->delete();
+		TrainingExperienceProgramNode::where('training_experience_id','=',$id)->delete();
+		SectionSkill::where('section_item_id','=',$id)->delete();
+		SectionPhoto::where('section_item_id','=',$id)->delete();
 
 		return redirect('dashboard');
 	}

@@ -14,7 +14,7 @@ class TrainingProgram extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'program'
+        'training_program_name_id'
     ];
 
     protected $guarded = [];

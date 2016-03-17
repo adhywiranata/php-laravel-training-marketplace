@@ -73,7 +73,7 @@ class AuthController extends Controller {
 
 			$create_node = [
 	 		 'user_id' => $user->id,
-	 		 'role_id' => 1, // BASIC ROLE
+	 		 'role_id' => 2, // BASIC ROLE
 	 	 	];
 	 	 $userRoleNode = UserRoleNode::create($create_node);
 

@@ -15,7 +15,7 @@
           {{$trainingExperience->speaking_experience_title}}
         </a>
 
-        <form action="{{url('/dashboard/training-experience/'.$trainingExperience->speaking_experience_id .'/delete')}}" method="post">
+        <form action="{{url('/dashboard/training-experience/'.$trainingExperience->speaking_experience_id )}}" method="post">
           <input type="hidden" name="_method" value="DELETE" />
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
           <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
@@ -23,7 +23,7 @@
 
         <a href="{{url('/dashboard/training-experience/'. $trainingExperience->speaking_experience_id . '/edit') }}" class="btn btn-margin green-back pull-right">Edit</a>
 
-        <br/>
+        <p>{{$trainingExperience->training_programme_title}}</p>
         <a href="#">{{$trainingExperience->company_name}}</a>
         <p>Jakarta, {{ date("F jS Y",strtotime($trainingExperience->speaking_experience_start_date)) }}</p>
 
