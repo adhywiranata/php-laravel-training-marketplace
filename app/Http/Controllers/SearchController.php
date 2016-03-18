@@ -5,8 +5,13 @@ use App\Http\Controllers\Controller;
 
 use App\Models\User;
 use App\Models\Provider;
+use App\Models\TrainingObjective;
+use App\Models\ObjectiveSubObjectiveNode;
+use App\Models\SubObjectiveJobFunctionSubCategoryNode;
+
 use Illuminate\Http\Request;
 use DB;
+use Input;
 
 class SearchController extends Controller {
 
@@ -185,9 +190,13 @@ class SearchController extends Controller {
 	 *
 	 * @return View
 	 */
-	public function trainingNeedsAnalysis()
+	public function trainingNeedsAnalysisWizard()
 	{
-		return view('search.training-needs-analysis');
+		$data = array(
+			'training-objective'	=> TrainingObjective::get(),
+		);
+		return view('search.training-needs-analysis')
+			->withData($data);
 	}
 
 
@@ -408,6 +417,73 @@ class SearchController extends Controller {
 	public function destroy($id)
 	{
 		//
+	}
+
+
+	public function getSubObjectives()
+	{
+		$objectiveId = Input::get('objectiveId');
+
+		$sub = ObjectiveSubObjectiveNode::select('training_sub_objective')
+				->join('training_sub_objectives', 'training_sub_objectives.id', '=', 'objective_sub_objective_nodes.sub_objective_id')
+				->where('objective_id', '=', $objectiveId)
+				->get();
+
+		$value = "";
+		foreach ($sub as $row) {
+			$value .= $row->training_sub_objective.',';
+		}
+		echo $value;
+	}
+
+	public function getJobFunctions()
+	{
+		$subObjective = explode('#', Input::get('subObjective'));
+
+		$jobfunc = SubObjectiveJobFunctionSubCategoryNode::select(DB::raw('distinct job_function_name'))
+				->join('job_functions', 'job_functions.id', '=', 'sub_objective_job_function_sub_category_nodes.job_function_id')
+				->join('training_sub_objectives', 'training_sub_objectives.id', '=', 'sub_objective_job_function_sub_category_nodes.sub_objective_id')
+				->where(function($query) use ($subObjective) {
+					foreach ($subObjective as $row) {
+						$query->orWhere('training_sub_objective', '=', $row);
+					}
+				})
+				->get();
+
+		$value = "";
+		foreach ($jobfunc as $row) {
+			$value .= $row->job_function_name.',';
+		}
+		echo $value;
+	}
+
+	public function getIndustryTypes()
+	{
+		$subObjective = explode('#', "Improve People Management#Improve Self Management");
+		$jobFunction = explode('#', "Product & Operations (Purchasing and Quality Assurance)#Support");
+
+		$indType = SubObjectiveJobFunctionSubCategoryNode::select(DB::raw('distinct industry_name'))
+				->join('job_functions', 'job_functions.id', '=', 'sub_objective_job_function_sub_category_nodes.job_function_id')
+				->join('training_sub_objectives', 'training_sub_objectives.id', '=', 'sub_objective_job_function_sub_category_nodes.sub_objective_id')
+				->join('industry_sub_category_nodes', 'industry_sub_category_nodes.sub_category_id', '=', 'sub_objective_job_function_sub_category_nodes.sub_category_id')
+				->join('industries', 'industries.id', '=', 'industry_sub_category_nodes.industry_id')
+				->where(function($query) use ($subObjective) {
+					foreach ($subObjective as $row) {
+						$query->orWhere('training_sub_objective', '=', $row);
+					}
+				})
+				->where(function($query) use ($jobFunction) {
+					foreach ($jobFunction as $row) {
+						$query->orWhere('job_function_name', '=', $row);
+					}
+				})
+				->get();
+
+		$value = "";
+		foreach ($indType as $row) {
+			$value .= $row->industry_name.',';
+		}
+		echo $value;
 	}
 
 }
