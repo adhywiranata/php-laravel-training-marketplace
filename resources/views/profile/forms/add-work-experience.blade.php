@@ -36,13 +36,17 @@
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 
           <div class="col-xs-12 fg-input"
-            data-type="text"
-            data-label="Title"
+            data-type="text-autocomplete"
+            data-label="Job Title"
             data-name="title"
             data-validation="required"
             data-placeholder="insert work experience title"
             data-current="<?php if(isset($work_experience)): echo $work_experience->title; else: echo Input::old('title'); endif; ?>"
-            data-classes="form-control">
+            data-classes="form-control"
+            data-get-ajax="{{ url('getautocompletedata/job_titles/job_title_name') }}/"
+            data-get-ajax-column="job_title_name"
+
+            >
           </div>
 
           <div class="col-xs-12 fg-input"
@@ -58,6 +62,7 @@
             data-classes="form-control">
           </div>
 
+<!--
           <div class="col-xs-12 fg-input"
             data-type="text"
             data-label="Position"
@@ -67,6 +72,7 @@
             data-current="<?php if(isset($work_experience)): echo $work_experience->position; else: echo Input::old('position'); endif; ?>"
             data-classes="form-control">
           </div>
+-->
 
           <div class="col-xs-12 fg-input"
             data-type="date"

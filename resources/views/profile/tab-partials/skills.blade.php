@@ -1,5 +1,5 @@
 <div class="col-lg-12 profile-section" data-section="skills">
-  <?php $user_id = (isset(Auth::user()->user_id))?Auth::user()->user_id:''; ?>
+  <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
   @if($grids->user_id == $user_id)
   <a href="{{ url('dashboard/skill/add') }}" class="btn">
     <i class="fa fa-plus"></i>

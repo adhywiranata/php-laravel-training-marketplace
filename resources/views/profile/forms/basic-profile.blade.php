@@ -83,7 +83,7 @@
             data-name="job_title"
             data-validation=""
             data-placeholder=""
-            data-current="<?php if(isset($user->job_title)): echo $user->job_title; else: echo Input::old('job_title'); endif; ?>"
+            data-current="<?php if(isset($user->title)): echo $user->title; else: echo Input::old('job_title'); endif; ?>"
             data-items="Foo, Bar, John, Doe, Hello, World"
             data-classes="form-control"
             data-get-ajax="{{ url('getautocompletedata/job_titles/job_title_name') }}/"

@@ -23,15 +23,18 @@
 
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 
+
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
             data-label="Skills"
             data-name="skill"
             data-validation="required"
-            data-placeholder="insert skill"
-            data-current=""
+            data-placeholder=""
+            data-current="<?php echo Input::old('skill'); ?>"
+            data-get-ajax="{{ url('getautocompletedata/skills/skill_name') }}/"
+            data-get-ajax-column="skill_name"
             data-classes="form-control"
-            data-items="{{ implode(',',trans('custom.list_expertises')) }}">
+            data-multiple-chip="add more skill">
           </div>
 
           <div class="col-xs-12 fg-submit" data-value="Insert"></div>

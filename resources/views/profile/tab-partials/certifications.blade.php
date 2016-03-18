@@ -16,7 +16,7 @@
         <br/>
         <a href="">{{$certification->certification_publisher_name}}</a>
 
-        <form action="{{url('/dashboard/certification/'.$certification->certification_id .'/delete')}}" method="post">
+        <form action="{{url('/dashboard/certification/'.$certification->certification_id)}}" method="post">
           <input type="hidden" name="_method" value="DELETE" />
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
           <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
@@ -46,6 +46,16 @@
             <a class="skill-tag tag" title="10 persons endorsed this skill">Leadership <span class="bold">10</span></a>
             <a class="skill-tag tag" title="10 persons endorsed this skill">Key Performance Indicator <span class="bold">10</span></a>
             -->
+
+            @if(count($certification->certification_photos) != 0)
+            <br/>
+            <span class="bold">Photos: <span><br/>
+            @endif
+
+            @foreach($certification->certification_photos as $certification_photo)
+              <img src="{{ url('images/section_photos/'.$certification_photo->photo_path) }}" height="50px">
+            @endforeach
+
           </div>
         </div>
 
