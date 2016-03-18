@@ -293,10 +293,10 @@ $(document).on('click','.remove-contact',function(){
 //Video Popup Section
 $(document).on('click','.ajax-popup-video',function(){
 
-  var title = $(this).data('title');
-  var url   = $(this).data('url');
+  var title = $(this).data('title').trim();
+  var url   = $(this).data('url').trim();
   $.ajax({
-    url: base_url + 'popup/video/' + title + '/ ' + url,
+    url: base_url + '/popup/video/' + title + '/' + url,
     success: function(data){
       $('#popup-container').append(data);
     }
@@ -445,7 +445,7 @@ function goToSearchWizard(step, text)
   }
   else if(step == '3')
   {
-    if(text != ""){      
+    if(text != ""){
       var data = "";
 
       if($('#search-wizard-step-2 input[type=text]').val() != "")
@@ -473,7 +473,7 @@ function goToSearchWizard(step, text)
 
       if($('#search-wizard-step-2 input[type=text]').val() != "")
         subObjectiveData = $('#search-wizard-step-2 input[type=text]').val() + '#';
-      
+
       for (var i = 0; i < $('#search-wizard-step-2 .fg-chip').length; i++) {
         subObjectiveData = subObjectiveData + $('#search-wizard-step-2 .fg-chip')[i].getAttribute("data-value") + '#';
       };
@@ -485,7 +485,7 @@ function goToSearchWizard(step, text)
 
       if($('#search-wizard-step-3 input[type=text]').val() != "")
         jobFunctionData = $('#search-wizard-step-3 input[type=text]').val() + '#';
-      
+
       for (var i = 0; i < $('#search-wizard-step-3 .fg-chip').length; i++) {
         jobFunctionData = jobFunctionData + $('#search-wizard-step-3 .fg-chip')[i].getAttribute("data-value") + '#';
       };
