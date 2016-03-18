@@ -19,16 +19,16 @@
   "ignore": [
     "README.md"
   ],
-  "version": "2.0.4",
+  "version": "2.0.5",
   "_source": "git://github.com/adhywiranata/fg-formgenerator.git",
   "_target": "*",
   "_originalSource": "fg-formgenerator",
   "_direct": true,
   "homepage": "https://github.com/adhywiranata/fg-formgenerator",
-  "_release": "2.0.4",
+  "_release": "2.0.5",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.4",
-    "commit": "26720efebf8a8dd7d051a5480b662b899d0b4587"
+    "tag": "v2.0.5",
+    "commit": "2754884361941a8e055413b012e90fc8f2d9d0ac"
   }
 }
