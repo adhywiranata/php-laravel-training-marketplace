@@ -93,7 +93,7 @@
 						-->
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"  style="background:#222 !important; color:#fff !important;">
-								<img src="http://speaqus.com/img/photos/profile_picture/original/fandyakwka.jpg" height="30px">
+								<img src="{{ url('images/users/thumb/'.Auth::user()->profile_picture) }}" height="30px">
 								@if(Auth::user()->first_name != '')
 									{{ Auth::user()->first_name }}
 									{{ Auth::user()->last_name }}
