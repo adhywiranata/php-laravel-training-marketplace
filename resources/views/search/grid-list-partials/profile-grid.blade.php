@@ -1,7 +1,7 @@
 <div class="col-lg-12 box-grid">
   <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
     <div class="profile-picture">
-      <img src="http://speaqus.com/img/photos/profile_picture/100x100/{{ $grid->profile_picture }}" width="100%">
+      <img src="{{ url('images/users/thumb/'.$grid->profile_picture) }}" width="100%">
 
 
       @if($gridType == 1)
@@ -90,6 +90,8 @@
         @endif
       </div>
     </div>
+
+  <!--
     <div class="row">
       <div class="col-lg-12">
         <b>{{ trans('content.pr_industries') }}</b><br/>
@@ -108,6 +110,9 @@
         Marketing, Information Technology, Education
       </div>
     </div>
+  -->
+
+
     <div class="row">
       <div class="col-lg-6">
         <i class="fa fa-thumb-up"></i>

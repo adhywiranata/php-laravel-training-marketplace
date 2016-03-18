@@ -21,9 +21,48 @@ class certificationRequest extends Request {
 	 */
 	public function rules()
 	{
-		return [
-			//
-		];
-	}
+		switch($this->method())
+		{
+			case 'GET':
+			{
+				return [
+					//
+				];
+			}
 
+			case 'DELETE':
+			{
+				return [
+					//
+				];
+			}
+
+			case 'POST':
+			{
+				return [
+					//
+					"title"					=>		"required",
+					"publisher"			=>		"required",
+				];
+			}
+
+			case 'PUT':
+			{
+				return [
+					//
+					"title"					=>		"required",
+					"publisher"			=>		"required",
+				];
+			}
+
+			case 'PATCH':
+			{
+				return [
+					//
+				];
+			}
+			default:break;
+		}
+
+	}
 }

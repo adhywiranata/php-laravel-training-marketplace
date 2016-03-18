@@ -43,10 +43,10 @@ class workExperienceRequest extends Request {
 					//
 					"title"				=>		"required",
 					"company"			=>		"required",
-					"position"		=>		"required",
-					"start_date"	=>		"required",
-					"end_date"		=>		"required",
-					"description"	=>		"required",
+//					"position"		=>		"required",
+//					"start_date"	=>		"required",
+//					"end_date"		=>		"required",
+//					"description"	=>		"required",
 				];
 			}
 
@@ -56,10 +56,10 @@ class workExperienceRequest extends Request {
 					//
 					"title"				=>		"required",
 					"company"			=>		"required",
-					"position"		=>		"required",
-					"start_date"	=>		"required",
-					"end_date"		=>		"required",
-					"description"	=>		"required",
+//					"position"		=>		"required",
+//					"start_date"	=>		"required",
+//					"end_date"		=>		"required",
+//					"description"	=>		"required",
 				];
 			}
 

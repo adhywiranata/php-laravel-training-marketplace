@@ -36,6 +36,9 @@ use App\Models\Certification as Certification;
 //Award
 use App\Models\Award as Award;
 
+//Skill and Edorsement
+use App\Models\userskillnode as UserSkillNode;
+
 //Video
 use App\Models\Video as Video;
 
@@ -467,8 +470,6 @@ class GeneralController extends Controller {
 
 		endif;
 
-
-
 		//CHECK IF SKILL DOES NOT EXISTS
 		$skills = explode('|||',$input['skill']);
 		for($i=0;$i<count($skills);$i++)
@@ -593,7 +594,6 @@ class GeneralController extends Controller {
 			'owner_role_id' 			=> $session_owner_role_id,
 			'corporate_id' 				=> $corporate->id,
 			'title' 							=> $input['title'],
-			'position' 						=> $input['position'],
 			'description' 				=> $input['description'],
 			'start_date' 					=> $input['start_date_year']."-".$input['start_date_month']."-".$input['start_date_day'],
 			'end_date' 						=> $input['end_date_year']."-".$input['end_date_month']."-".$input['end_date_day'],
@@ -629,7 +629,6 @@ class GeneralController extends Controller {
 		$update_work_experience = [
 			'corporate_id' 				=> $corporate->id,
 			'title' 							=> $input['title'],
-			'position' 						=> $input['position'],
 			'description' 				=> $input['description'],
 			'start_date' 					=> $input['start_date_year']."-".$input['start_date_month']."-".$input['start_date_day'],
 			'end_date' 						=> $input['end_date_year']."-".$input['end_date_month']."-".$input['end_date_day'],
@@ -643,6 +642,8 @@ class GeneralController extends Controller {
 	public function deleteWorkExperience($id)
 	{
 		WorkExperience::find($id)->delete();
+		SectionSkill::where('section_item_id','=',$id)->delete();
+
 
 		return redirect('dashboard');
 	}
@@ -669,6 +670,7 @@ class GeneralController extends Controller {
 			'owner_id' 						=> $session_owner_id,
 			'owner_role_id' 			=> $session_owner_role_id,
 			'title' 							=> $input['title'],
+			'publisher' 					=> $input['publisher'],
 			'description' 				=> $input['description'],
 			'published_date' 			=> $input['published_date'],
 		];
@@ -691,26 +693,127 @@ class GeneralController extends Controller {
 				}
 
 				$node_insert = [
-					'section_id' => $section_id,
+					'section_id' 			=> $section_id,
 					'section_item_id' => $new_certification_id,
-					'skill_id' => $skill->id
+					'skill_id' 				=> $skill->id
 				];
 
 				SectionSkill::create($node_insert);
 			}
 		}
 
+		$files = [];
+		//$count_files = 0;
+
+		//Section Photos Upload
+		if ( $request->hasFile('certification_photos') ):
+
+			$files 				= $request->file('certification_photos');
+			//$count_files 	= count($files);
+
+			foreach($files as $file):
+
+				if( $file->isvalid() ):
+
+					$file_name  			= $file->getClientOriginalName();
+					$destinationPath 	= public_path() . '/images/section_photos';
+					$file->move($destinationPath, $file_name);
+					//Resize & Crop | source image started from level public
+					$img = Image::make('images/section_photos/'.$file_name)->fit(200,200)->save('images/section_photos/'.$file_name);
+
+				else:
+
+					$photo_error = $file->getErrorMessage();
+					echo $photo_error;
+
+				endif;
+			endforeach;
+		endif;
+
+		//Section photo create nodes
+		foreach($files as $file):
+
+			$node_insert = [
+				'section_id' 			=> $section_id,
+				'section_item_id' => $new_certification_id,
+				'photo_path' 			=> $file->getClientOriginalName()
+			];
+
+			SectionPhoto::create($node_insert);
+		endforeach;
+
 		return redirect('dashboard');
 	}
 
 	public function editCertification($id)
 	{
-		$certification	=		DB::table('certifications')
-												  ->where('certifications.id', '=', $id)
-												  ->first();
+		$certification =	DB::table('certifications')
+											->where('certifications.id', '=', $id)
+											->first();
+
+		//SKILL CERTIFICATION
+		$certification_expertises =	DB::table('section_skills')
+															 ->join('skills','section_skills.skill_id','=','skills.id')
+															 ->where('section_skills.section_id', '=', 7)
+															 ->where('section_skills.section_item_id', '=', $certification->id)
+															 ->get();
+
+		$certification_expertises_data = array();
+		foreach($certification_expertises as $certification_expertise):
+			$certification_expertise_data = array(
+				"expertise_name"		=>	$certification_expertise->skill_name,
+			);
+			array_push($certification_expertises_data,$certification_expertise_data);
+		endforeach;
+
+		//PHOTO CERTIFICATION
+		$certification_photos = DB::table('section_photos')
+													 ->where('section_photos.section_id', '=', 7)
+													 ->where('section_photos.section_item_id', '=', $certification->id)
+													 ->get();
+
+		$certification_photos_data = array();
+		foreach($certification_photos as $certification_photo):
+			$certification_photo_data = array(
+				"photo_name"					=>	$certification_photo->photo_name,
+				"photo_path"					=>	$certification_photo->photo_path,
+				"photo_description"		=>	$certification_photo->photo_description,
+			);
+			array_push($certification_photos_data,$certification_photo_data);
+		endforeach;
+
+		//VIDEO CERTIFICATION
+		$certification_videos = DB::table('section_videos')
+																 ->where('section_videos.section_id', '=', 7)
+																 ->where('section_videos.section_item_id', '=', $certification->id)
+																 ->get();
+
+		$certification_videos_data = array();
+		foreach($certification_videos as $certification_video):
+			$certification_video_data = array(
+				"video_name"					=>	$certification_video->video_name,
+				"video_path"					=>	$certification_video->video_path,
+				"video_description"		=>	$certification_video->video_description,
+			);
+			array_push($certification_videos_data,$certification_video_data);
+		endforeach;
+
+		//SUMMARY CERTIFICATION VARIABLE
+		$certification_data  = array(
+			"id"					  								=>		$certification->id,
+			"title"					  							=>		$certification->title,
+			"description"										=>		$certification->description,
+			"publisher"											=>		$certification->publisher,
+			"published_date"					  		=>		$certification->published_date,
+			"certification_expertises"			=>		$certification_expertises_data,
+			"certification_photos"					=>		$certification_photos_data,
+			"certification_videos"					=>		$certification_videos_data
+		);
+
+		$certification_data = json_decode(json_encode($certification_data), FALSE);
 
 		return view('profile.forms.add-certification')
-								->with('certification',$certification);
+								->with('certification',$certification_data);
 	}
 
 	public function updateCertification(certificationRequest $request, $id)
@@ -725,6 +828,7 @@ class GeneralController extends Controller {
 			'owner_id' 						=> $session_owner_id,
 			'owner_role_id' 			=> $session_owner_role_id,
 			'title' 							=> $input['title'],
+			'publisher' 					=> $input['publisher'],
 			'description' 				=> $input['description'],
 			'published_date' 			=> $input['published_date'],
 		];
@@ -746,15 +850,77 @@ class GeneralController extends Controller {
 					$skill = Skill::create([ 'skill_name' => $skill_name ]);
 				}
 
-				$node_insert = [
-					'section_id' => $section_id,
-					'section_item_id' => $new_certification_id,
-					'skill_id' => $skill->id
-				];
 
-				SectionSkill::create($node_insert);
+				$section_skill_node = DB::table('section_skills')
+															 ->where('section_skills.section_id', '=', $section_id)
+															 ->where('section_skills.section_item_id', '=', $id)
+															 ->where('section_skills.skill_id', '=', $skill->id)
+															 ->first();
+
+				if(count($section_skill_node) == 0):
+					$node_insert = [
+						'section_id' 			=> $section_id,
+						'section_item_id' => $id,
+						'skill_id' 				=> $skill->id
+					];
+					SectionSkill::create($node_insert);
+				endif;
+
+
+
 			}
 		}
+
+		$files = [];
+		//$count_files = 0;
+
+		//Section Photos Upload
+		if ( $request->hasFile('certification_photos') ):
+
+			$files 				= $request->file('certification_photos');
+			//$count_files 	= count($files);
+
+			foreach($files as $file):
+
+				if( $file->isvalid() ):
+
+					$file_name  			= $file->getClientOriginalName();
+					$destinationPath 	= public_path() . '/images/section_photos';
+					$file->move($destinationPath, $file_name);
+					//Resize & Crop | source image started from level public
+					$img = Image::make('images/section_photos/'.$file_name)->fit(200,200)->save('images/section_photos/'.$file_name);
+
+				else:
+
+					$photo_error = $file->getErrorMessage();
+					echo $photo_error;
+
+				endif;
+			endforeach;
+		endif;
+
+
+		//Section photo create nodes
+		foreach($files as $file):
+
+
+			$section_photo_node = DB::table('section_photos')
+														 ->where('section_photos.section_id', '=', $section_id)
+														 ->where('section_photos.section_item_id', '=', $id)
+														 ->where('section_photos.photo_path', '=', $file->getClientOriginalName())
+														 ->first();
+      if(count($section_photo_node) == 0):
+
+			$node_insert = [
+				'section_id' 				=> $section_id,
+				'section_item_id' 	=> $id,
+				'photo_path' 				=> $file->getClientOriginalName()
+			];
+			SectionPhoto::create($node_insert);
+
+			endif;
+
+		endforeach;
 
 		return redirect('dashboard');
 	}
@@ -762,6 +928,8 @@ class GeneralController extends Controller {
 	public function deleteCertification($id)
 	{
 		Certification::find($id)->delete();
+		SectionSkill::where('section_item_id','=',$id)->delete();
+		SectionPhoto::where('section_item_id','=',$id)->delete();
 
 		return redirect('dashboard');
 	}
@@ -931,6 +1099,8 @@ class GeneralController extends Controller {
 
 	public function createSkill(skillRequest $request)
 	{
+
+
 		$input = $request->all();
 		$session_owner_id = Session::get('owner_id');
 		$session_owner_role_id = Session::get('owner_role_id');
