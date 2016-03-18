@@ -22,7 +22,7 @@ class ContactController extends Controller {
 	public function index()
 	{
 		$users =	DB::table('contacts')
-						 ->join('users', 'contacts.owner_id', '=', 'users.id')
+						 ->join('users', 'contacts.contact_owner_id', '=', 'users.id')
 						 ->get();
 
 		$users_data = array();
