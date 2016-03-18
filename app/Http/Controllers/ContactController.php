@@ -27,6 +27,7 @@ class ContactController extends Controller {
 						 ->where('role_id', '=', 2)
 						 ->where('users.is_verified', '=', 1)
 						 ->where('users.first_name', '!=', '')
+						 ->where('users.id','!=',Auth::user()->id)
 						 ->where('users.slug', '!=', '')
 						 ->get();
 
