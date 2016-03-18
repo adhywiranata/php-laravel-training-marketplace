@@ -21,7 +21,7 @@
   ],
   "version": "2.0.4",
   "_source": "git://github.com/adhywiranata/fg-formgenerator.git",
-  "_target": "~2.0.2",
+  "_target": "*",
   "_originalSource": "fg-formgenerator",
   "_direct": true,
   "homepage": "https://github.com/adhywiranata/fg-formgenerator",

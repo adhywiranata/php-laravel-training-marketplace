@@ -17,6 +17,7 @@ use App\Models\JobFunction as JobFunction;
 use App\Models\Video as Video;
 use App\Models\JobNode as JobNode;
 use App\Models\Provider as Provider;
+use App\Models\Contact as Contact;
 
 use Intervention\Image\Facades\Image;
 
@@ -30,11 +31,6 @@ class UserController extends Controller {
 	public function index()
 	{
 		//
-	}
-
-	public function hack1()
-	{
-		echo 'hey fuck';
 	}
 
 	/**
@@ -296,7 +292,7 @@ class UserController extends Controller {
                           ->get();
 
 	       $total_user_connection_data = count($user_contact);
-
+				 // CONTACT -->
 
 	       //ALL TRAINER DATA
 	       $user_data = array(
@@ -345,7 +341,7 @@ class UserController extends Controller {
 							->first();
 
 		 if(count($user) == 0 ):
-			  echo "Not Found";
+			  echo "<b>Not Found</b>";
 				exit();
 		 else:
 				// <!-- USER EXPERTISES
@@ -781,6 +777,10 @@ class UserController extends Controller {
 			$user_videos =	Video::where('owner_id',$user->id)->where('owner_role_id',2)->get();
 			// VIDEOS -->
 
+			// IS A CONTACT
+			$is_contact =	Contact::where('owner_id',Auth::user()->id)->where('contact_owner_id',$user->id)->count();
+			// IS A CONTACT -->
+
 			return view('profile/profile-page')
 								->with('grids',$user_data)
 								->with('trainingExperiences',$user_training_experiences)
@@ -791,6 +791,7 @@ class UserController extends Controller {
 								->with('awards',$user_awards)
 								->with('expertises',$user_expertises)
 								->with('videos',$user_videos)
+								->with('is_contact',$is_contact)
 								->with('gridType',1)
 								->with('role',1);
 		endif;

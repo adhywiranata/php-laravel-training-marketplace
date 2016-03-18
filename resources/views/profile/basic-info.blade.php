@@ -13,17 +13,50 @@
 
     <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
     @if($grids->user_id != $user_id)
-    <a class="btn full-width trigger-popup ajax-count-feature"
-      data-feature-name="add_to_contact"
-      data-trigger-popup="coming-soon">Add to Contact</a>
-    <a class="btn full-width trigger-popup ajax-count-feature"
-      data-feature-name="send_message"
-      data-trigger-popup="coming-soon">Send Message</a>
+    @if(Auth::check())
+
+    <?php
+      $remove_contact_hidden = 'block';
+      $add_contact_hidden = 'block';
+      if($is_contact == 1)
+      {
+        $add_contact_hidden='none';
+      }
+      else
+      {
+        $remove_contact_hidden='none';
+      }
+     ?>
+        <a class="btn red-back trigger-connect full-width remove-contact"
+          style="display:{{ $remove_contact_hidden }}"
+          data-owner="{{ $grids->user_id }}"
+          data-owner-role="2"
+          data-trigger-name="{{ $grids->name }}"
+          data-trigger-action="added to">Remove from Contact</a>
+
+        <a class="btn trigger-connect full-width add-contact"
+          style="display:{{ $add_contact_hidden }}"
+          data-owner="{{ $grids->user_id }}"
+          data-owner-role="2"
+          data-trigger-name="{{ $grids->name }}"
+          data-trigger-action="removed from">
+          Add to Contact</a>
+
+      <a class="btn full-width trigger-popup ajax-count-feature"
+        data-feature-name="send_message"
+        data-trigger-popup="coming-soon">Send Message</a>
+
+      <a class="btn full-width view_phone ajax-count-feature"
+        data-feature-name="contact_number"> View Contact Number</a><br/>
+    @else
+      <a class="btn full-width trigger-popup trigger-sign-in" data-owner="{{ $grids->user_id }}" data-owner-role="2">Add to Contact</a>
+      <a class="btn full-width trigger-popup trigger-sign-in"
+        data-feature-name="contact_number"> View Contact Number</a><br/>
+    @endif
+
     <!--
     <a class="btn full-width trigger-popup" data-trigger-popup="send-message">Send Message</a>
     -->
-    <a class="btn full-width view_phone ajax-count-feature"
-      data-feature-name="contact_number"> View Contact Number</a><br/>
 
     <span class="invisible_phone" style="display:none;" >
       <i class="fa fa-whatsapp text-green"></i> {{ $grids->phone_number }} <br/>

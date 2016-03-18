@@ -114,11 +114,12 @@
             data-validation=""
             data-placeholder=""
             data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
-            data-current="<?php if(isset($training_experience)): $speaking_experience_expertises; else: echo Input::old('skill'); endif; ?>"
+            data-current="<?php //if(isset($training_experience)): echo $training_experience_expertises; else: echo Input::old('skill'); endif; ?>"
             data-get-ajax="{{ url('getautocompletedata/skills/skill_name') }}/"
             data-get-ajax-column="skill_name"
             data-classes="form-control"
-            data-multiple-chip="add more skill">
+            data-multiple-chip="add more skill"
+            data-multiple-separator=",">
           </div>
 
           <div class="col-xs-12 fg-input"
@@ -140,6 +141,8 @@
             data-current="<?php if(isset($training_experience)): $training_experience->speaking_experience_photos; else: echo Input::old('training_photos[]'); endif; ?>"
             data-classes="form-control"
             data-multiple="multiple"
+            data-multiple-separator=","
+            data-image-path="{{ url('images/section_photos') }}/"
             >
           </div>
 

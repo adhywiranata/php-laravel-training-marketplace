@@ -404,6 +404,8 @@ class GeneralController extends Controller {
 			"training_programme_title"						=>		$training_experience->training_program_name_id,
 		);
 
+
+
 		$training_experience_data = json_decode(json_encode($training_experience_data), FALSE);
 
 		return view('profile.forms.add-training-experience')
