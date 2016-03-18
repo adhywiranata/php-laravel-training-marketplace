@@ -21,9 +21,51 @@ class videoRequest extends Request {
 	 */
 	public function rules()
 	{
-		return [
-			//
-		];
+
+		switch($this->method())
+		{
+			case 'GET':
+			{
+				return [
+					//
+				];
+			}
+
+			case 'DELETE':
+			{
+				return [
+					//
+				];
+			}
+
+			case 'POST':
+			{
+				return [
+					//
+					"video_type"			=>		"required",
+					"video_path"			=>		"required",
+					"video_name"			=>		"required",
+				];
+			}
+
+			case 'PUT':
+			{
+				return [
+					//
+					"title"					=>		"required",
+					"publisher"			=>		"required",
+				];
+			}
+
+			case 'PATCH':
+			{
+				return [
+					//
+				];
+			}
+			default:break;
+		}
+
 	}
 
 }

@@ -22,6 +22,8 @@ use App\Models\WorkExperience as WorkExperience;
 //Skills
 use App\Models\Skill as Skill;
 use App\Models\SectionSkill as SectionSkill;
+use App\Models\UserSkillNode as UserSkillNode;
+
 
 //Photo
 use App\Models\SectionPhoto as SectionPhoto;
@@ -35,9 +37,6 @@ use App\Models\Certification as Certification;
 
 //Award
 use App\Models\Award as Award;
-
-//Skill and Edorsement
-use App\Models\userskillnode as UserSkillNode;
 
 //Video
 use App\Models\Video as Video;
@@ -989,20 +988,121 @@ class GeneralController extends Controller {
 			}
 		}
 
+		$files = [];
+		//$count_files = 0;
+
+		//Section Photos Upload
+		if ( $request->hasFile('award_photos') ):
+
+		  $files 				= $request->file('award_photos');
+		  //$count_files 	= count($files);
+
+		  foreach($files as $file):
+
+		    if( $file->isvalid() ):
+
+		      $file_name  			= $file->getClientOriginalName();
+		      $destinationPath 	= public_path() . '/images/section_photos';
+		      $file->move($destinationPath, $file_name);
+		      //Resize & Crop | source image started from level public
+		      $img = Image::make('images/section_photos/'.$file_name)->fit(200,200)->save('images/section_photos/'.$file_name);
+
+		    else:
+
+		      $photo_error = $file->getErrorMessage();
+		      echo $photo_error;
+
+		    endif;
+		  endforeach;
+		endif;
+
+		//Section photo create nodes
+		foreach($files as $file):
+
+		  $node_insert = [
+		    'section_id' 			=> $section_id,
+		    'section_item_id' => $new_award_id,
+		    'photo_path' 			=> $file->getClientOriginalName()
+		  ];
+
+		  SectionPhoto::create($node_insert);
+		endforeach;
+
 		return redirect('dashboard');
 	}
 
 	public function editAward($id)
 	{
-		$award	=	DB::table('awards')
-												  ->where('awards.id', '=', $id)
-												  ->first();
+		$award =	DB::table('awards')
+              ->where('awards.id', '=', $id)
+              ->first();
+
+		//SKILL award
+		$award_expertises =	DB::table('section_skills')
+                       ->join('skills','section_skills.skill_id','=','skills.id')
+                       ->where('section_skills.section_id', '=', 8)
+                       ->where('section_skills.section_item_id', '=', $award->id)
+                       ->get();
+
+		$award_expertises_data = array();
+		foreach($award_expertises as $award_expertise):
+		  $award_expertise_data = array(
+		    "expertise_name"		=>	$award_expertise->skill_name,
+		  );
+		  array_push($award_expertises_data,$award_expertise_data);
+		endforeach;
+
+		//PHOTO award
+		$award_photos = DB::table('section_photos')
+                   ->where('section_photos.section_id', '=', 8)
+                   ->where('section_photos.section_item_id', '=', $award->id)
+                   ->get();
+
+		$award_photos_data = array();
+		foreach($award_photos as $award_photo):
+		  $award_photo_data = array(
+		    "photo_name"					=>	$award_photo->photo_name,
+		    "photo_path"					=>	$award_photo->photo_path,
+		    "photo_description"		=>	$award_photo->photo_description,
+		  );
+		  array_push($award_photos_data,$award_photo_data);
+		endforeach;
+
+		//VIDEO award
+		$award_videos = DB::table('section_videos')
+                   ->where('section_videos.section_id', '=', 8)
+                   ->where('section_videos.section_item_id', '=', $award->id)
+                   ->get();
+
+		$award_videos_data = array();
+		foreach($award_videos as $award_video):
+		  $award_video_data = array(
+		    "video_name"					=>	$award_video->video_name,
+		    "video_path"					=>	$award_video->video_path,
+		    "video_description"		=>	$award_video->video_description,
+		  );
+		  array_push($award_videos_data,$award_video_data);
+		endforeach;
+
+		//SUMMARY award VARIABLE
+		$award_data  = array(
+		  "id"					  								=>		$award->id,
+		  "title"					  							=>		$award->title,
+		  "description"										=>		$award->description,
+		  "publisher"											=>		$award->publisher,
+		  "published_date"					  		=>		$award->published_date,
+		  "award_expertises"							=>		$award_expertises_data,
+		  "award_photos"									=>		$award_photos_data,
+		  "award_videos"									=>		$award_videos_data
+		);
+
+		$award_data = json_decode(json_encode($award_data), FALSE);
 
 		return view('profile.forms.add-award')
-								->with('award',$award);
+								->with('award',$award_data);
 	}
 
-	public function updateAward(certificationRequest $request, $id)
+	public function updateAward(awardRequest $request, $id)
 	{
 		$section_id = 8; //Section id for Award
 
@@ -1019,6 +1119,90 @@ class GeneralController extends Controller {
 		];
 
 		$award = Award::where('id',$id)->update($update_award);
+
+		$new_award_id = Award::where('id',$id);
+
+		//CHECK IF SKILL DOES NOT EXISTS
+		$skills = explode('|||',$input['skill']);
+		for($i=0;$i<count($skills);$i++)
+		{
+		  $skill_name = $skills[$i];
+		  if($skill_name != '')
+		  {
+		    $skill = Skill::where('skill_name',$skill_name)->first();
+		    if(count($skill) == 0)
+		    {
+		      $skill = Skill::create([ 'skill_name' => $skill_name ]);
+		    }
+
+
+		    $section_skill_node = DB::table('section_skills')
+		                           ->where('section_skills.section_id', '=', $section_id)
+		                           ->where('section_skills.section_item_id', '=', $id)
+		                           ->where('section_skills.skill_id', '=', $skill->id)
+		                           ->first();
+
+		    if(count($section_skill_node) == 0):
+		      $node_insert = [
+		        'section_id' 			=> $section_id,
+		        'section_item_id' => $id,
+		        'skill_id' 				=> $skill->id
+		      ];
+		      SectionSkill::create($node_insert);
+		    endif;
+
+		  }
+		}
+
+		$files = [];
+		//$count_files = 0;
+
+		//Section Photos Upload
+		if ( $request->hasFile('award_photos') ):
+
+		  $files 				= $request->file('award_photos');
+		  //$count_files 	= count($files);
+
+		  foreach($files as $file):
+
+		    if( $file->isvalid() ):
+
+		      $file_name  			= $file->getClientOriginalName();
+		      $destinationPath 	= public_path() . '/images/section_photos';
+		      $file->move($destinationPath, $file_name);
+		      //Resize & Crop | source image started from level public
+		      $img = Image::make('images/section_photos/'.$file_name)->fit(200,200)->save('images/section_photos/'.$file_name);
+
+		    else:
+
+		      $photo_error = $file->getErrorMessage();
+		      echo $photo_error;
+
+		    endif;
+		  endforeach;
+		endif;
+
+
+		//Section photo create nodes
+		foreach($files as $file):
+
+		  $section_photo_node = DB::table('section_photos')
+		                         ->where('section_photos.section_id', '=', $section_id)
+		                         ->where('section_photos.section_item_id', '=', $id)
+		                         ->where('section_photos.photo_path', '=', $file->getClientOriginalName())
+		                         ->first();
+		  if(count($section_photo_node) == 0):
+
+		  $node_insert = [
+		    'section_id' 				=> $section_id,
+		    'section_item_id' 	=> $id,
+		    'photo_path' 				=> $file->getClientOriginalName()
+		  ];
+		  SectionPhoto::create($node_insert);
+
+		  endif;
+
+		endforeach;
 
 		return redirect('dashboard');
 	}
@@ -1102,28 +1286,42 @@ class GeneralController extends Controller {
 	public function createSkill(skillRequest $request)
 	{
 
-
 		$input = $request->all();
 		$session_owner_id = Session::get('owner_id');
 		$session_owner_role_id = Session::get('owner_role_id');
 
-		//CHECK IF SKILL DOES NOT EXIST,CREATE A NEW ONE
-		$skill = Skill::where('skill_name',$input['skill'])->first();
-		if(count($skill) == 0)
+		$skills = explode('|||',$input['skill']);
+		for($i=0;$i<count($skills);$i++)
 		{
-			$skill = Skill::create([ 'skill_name' => $input['skill'] ]);
+			$skill_name = $skills[$i];
+			if($skill_name != '')
+			{
+				$skill = Skill::where('skill_name',$skill_name)->first();
+				if(count($skill) == 0)
+				{
+					$skill = Skill::create([ 'skill_name' => $skill_name ]);
+				}
+
+				$user_skill_node = DB::table('user_skill_nodes')
+													 ->where('user_skill_nodes.owner_id', '=', $session_owner_id)
+													 ->where('user_skill_nodes.owner_role_id', '=', $session_owner_role_id)
+													 ->where('user_skill_nodes.skill_id', '=', $skill->id)
+													 ->first();
+
+				if(count($user_skill_node) == 0):
+					$insert_skill = [
+						'owner_id' 						=> $session_owner_id,
+						'owner_role_id' 			=> $session_owner_role_id,
+						'skill_id' 						=> $skill->id,
+					];
+					UserSkillNode::create($insert_skill);
+				endif;
+
+			}
 		}
 
-
-		$insert_skill = [
-			'owner_id' 						=> $session_owner_id,
-			'owner_role_id' 			=> $session_owner_role_id,
-			'skill_id' 						=> $skill->id,
-		];
-		UserSkillNode::create($insert_skill);
-
-		echo "<script type='text/javascript'>alert('Insert Success');</script>";exit();
-
+		//echo "<script type='text/javascript'>alert('Insert Success');</script>";exit();
+		return redirect('dashboard');
 	}
 
 	/**
@@ -1143,16 +1341,26 @@ class GeneralController extends Controller {
 		$session_owner_id = Session::get('owner_id');
 		$session_owner_role_id = Session::get('owner_role_id');
 
-		$insert_video = [
-			'owner_id' 						=> $session_owner_id,
-			'owner_role_id' 			=> $session_owner_role_id,
-			'video_name' 					=> $input['video_name'],
-			'video_path' 					=> $yt_id,
-			'video_type' 					=> $input['video_type'],
-			'video_description' 	=> $input['video_description']
-		];
 
-		Video::create($insert_video);
+		$video = DB::table('videos')
+						 ->where('videos.owner_id', '=', $session_owner_id)
+						 ->where('videos.owner_role_id', '=', $session_owner_role_id)
+						 ->where('videos.video_path', '=', $yt_id)
+						 ->first();
+
+		if(count($video) == 0):
+			$insert_video = [
+				'owner_id' 						=> $session_owner_id,
+				'owner_role_id' 			=> $session_owner_role_id,
+				'video_name' 					=> $input['video_name'],
+				'video_path' 					=> $yt_id,
+				'video_type' 					=> $input['video_type'],
+				'video_description' 	=> $input['video_description']
+			];
+
+			Video::create($insert_video);
+		endif;
+
 
 		return redirect('dashboard');
 	}

@@ -47,6 +47,16 @@
             <a class="skill-tag tag" title="10 persons endorsed this skill">Leadership <span class="bold">10</span></a>
             <a class="skill-tag tag" title="10 persons endorsed this skill">Key Performance Indicator <span class="bold">10</span></a>
             -->
+
+            @if(count($award->award_photos) != 0)
+            <br/>
+            <span class="bold">Photos: <span><br/>
+            @endif
+
+            @foreach($award->award_photos as $award_photo)
+              <img src="{{ url('images/section_photos/'.$award_photo->photo_path) }}" height="50px">
+            @endforeach
+
           </div>
         </div>
 

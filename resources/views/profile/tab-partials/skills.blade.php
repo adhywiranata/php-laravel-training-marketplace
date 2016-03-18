@@ -25,11 +25,11 @@
         </a>
       </div>
       <div class="col-lg-5">
-        @if(count($expertise->endorse_users) > 0):
+        @if(count($expertise->endorse_users) > 0)
         <a href="">
           <i class="fa fa-caret-right fa-2x pull-right"></i>
         </a>
-        @endif;
+        @endif
         @foreach($expertise->endorse_users as $endorse_user)
         <img class="pull-right" style="margin:0 2px;" src="{{ url('images/users/$endorse_user->profile_picture') }}" height="30px" />
         @endforeach
