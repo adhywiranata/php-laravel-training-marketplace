@@ -29,7 +29,11 @@ $(document).on('click','.trigger-sign-in',function(e){
 
 $(document).on('click','.trigger-connect',function(e){
   e.preventDefault();
+  var name = $(this).data('trigger-name');
+  var action = $(this).data('trigger-action');
   $('.flash-message').slideDown();
+  $('.flash-message-name').html(name);
+  $('.flash-message-action').html(action);
   setTimeout("$('.flash-message').slideUp()", 2000);
 });
 
@@ -258,6 +262,32 @@ $(document).on('click','.skill-tag',function(){
   var popup = 'skill';
   $('.popup-overlay').fadeIn();
   $("[data-popup='"+ popup +"']").fadeIn(400);
+});
+
+$(document).on('click','.add-contact',function(){
+  var this_selector = $(this);
+  var contact_owner_id = $(this).data('owner');
+  var contact_owner_role_id = $(this).data('owner-role');
+  $.ajax({
+    url:base_url + '/create-contact/' + contact_owner_id + '/' + contact_owner_role_id,
+    success: function(){
+      this_selector.parent().find('.remove-contact').show();
+      this_selector.hide();
+    }
+  });
+});
+
+$(document).on('click','.remove-contact',function(){
+  var this_selector = $(this);
+  var contact_owner_id = $(this).data('owner');
+  var contact_owner_role_id = $(this).data('owner-role');
+  $.ajax({
+    url:base_url + '/remove-contact/' + contact_owner_id + '/' + contact_owner_role_id,
+    success: function(){
+      this_selector.parent().find('.add-contact').show();
+      this_selector.hide();
+    }
+  });
 });
 
 //Video Popup Section

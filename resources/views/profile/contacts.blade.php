@@ -82,11 +82,11 @@
         @if($gridType == 1 || $gridType == 2)
           <?php $loopflag = 1; ?>
           @foreach($grids as $grid)
-            @if($loopflag%2!=0)
+            @if($loopflag%3!=0)
               <div class="row">
             @endif
             @include('profile.contact-grid')
-            @if($loopflag%2==0)
+            @if($loopflag%3==0)
               </div>
             @endif
             <?php $loopflag++ ?>

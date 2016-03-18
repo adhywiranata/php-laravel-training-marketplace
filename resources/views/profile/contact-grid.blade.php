@@ -1,12 +1,12 @@
 
-<div class="col-lg-6">
+<div class="col-lg-4">
   <div class="col-lg-12 box-grid">
-    <div class="col-lg-3 col-md-2 col-sm-2 col-xs-3">
+    <div class="col-lg-4 col-md-2 col-sm-2 col-xs-3">
       <div class="" style="width:100%;">
-        <img src="http://speaqus.com/img/photos/profile_picture/100x100/{{ $grid->profile_picture }}" width="80%">
+        <img src="{{ url('images/users/thumb/'.$grid->profile_picture) }}" width="80%">
       </div>
     </div>
-    <div class="col-lg-9 col-md-7 col-sm-7 col-xs-6 user-list-info">
+    <div class="col-lg-8 col-md-7 col-sm-7 col-xs-6 user-list-info">
       <div class="row pointer" title="Verified User">
         @if($gridType == 1)
         <a href="{{url('/u/'.$grid->slug)}}" class="user-name capitalize" style="font-size:1.2em !important;">
@@ -30,8 +30,16 @@
           {{ $grid->area }}
         @endif
         <br/>
-        <i class="fa fa-whatsapp text-green"></i> +6281231234 <br/>
-        <i class="fa fa-envelope-o text-green"></i> ysubianto@gmail.com
+        @if($grid->phone_number != '')
+          <i class="fa fa-whatsapp text-green"></i> {{ $grid->phone_number }} <br/>
+        @else
+          <br/>
+        @endif
+        @if($grid->email != '')
+          <i class="fa fa-envelope-o text-green"></i> {{ $grid->email }}
+        @else
+          <br/>
+        @endif
         <!--
         <i class="fa fa-map-marker"></i>
         Jakarta, Indonesia

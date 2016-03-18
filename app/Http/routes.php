@@ -75,7 +75,7 @@ Route::get('/training-needs-analysis', 'SearchController@trainingNeedsAnalysis')
 |--------
 */
 Route::get('/dashboard', 'UserController@getUser');
-Route::get('/dashboard/contacts', 'UserController@getContacts');
+Route::get('/dashboard/contacts', 'ContactController@index');
 Route::get('/dashboard/messages', 'MessageController@index');
 Route::get('/dashboard/group', 'GroupController@getGroupProfile');
 
@@ -136,6 +136,8 @@ Route::delete('/dashboard/video/{id}','GeneralController@deleteVideo');
 */
 Route::get('/popup/video/{video_title}/{video_id}', 'GeneralController@popupSectionVideo');
 
+Route::get('/create-contact/{owner_id}/{owner_role_id}', 'ContactController@createContact');
+Route::get('/remove-contact/{owner_id}/{owner_role_id}', 'ContactController@deleteContact');
 
 Route::get('/settings/plan', 'UserController@getPlans');
 
