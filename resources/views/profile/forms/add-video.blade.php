@@ -25,7 +25,7 @@
 
           <div class="col-xs-12 fg-input"
             data-type="combobox"
-            data-label="Video"
+            data-label="Video {{ $errors->first('video_type') }}"
             data-name="video_type"
             data-validation="required"
             data-placeholder=""
@@ -37,7 +37,7 @@
 
           <div class="col-xs-12 fg-input"
             data-type="text"
-            data-label="Youtube Video Link"
+            data-label="Youtube Video Link {{ $errors->first('video_path') }}"
             data-name="video_path"
             data-validation="required"
             data-placeholder=""
@@ -47,7 +47,7 @@
 
           <div class="col-xs-12 fg-input"
             data-type="text"
-            data-label="Video Name"
+            data-label="Video Name {{ $errors->first('video_name') }}"
             data-name="video_name"
             data-validation="required"
             data-placeholder=""

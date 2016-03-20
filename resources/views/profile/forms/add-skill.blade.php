@@ -26,7 +26,7 @@
 
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
-            data-label="Skills"
+            data-label="Skills {{ $errors->first('skill')}}"
             data-name="skill"
             data-validation="required"
             data-placeholder=""

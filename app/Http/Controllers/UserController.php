@@ -778,7 +778,10 @@ class UserController extends Controller {
 			// VIDEOS -->
 
 			// IS A CONTACT
-			$is_contact =	Contact::where('owner_id',Auth::user()->id)->where('contact_owner_id',$user->id)->count();
+				$is_contact = '';
+			if(Auth::check()):
+				$is_contact =	Contact::where('owner_id',Auth::user()->id)->where('contact_owner_id',$user->id)->count();
+			endif;
 			// IS A CONTACT -->
 
 			return view('profile/profile-page')
