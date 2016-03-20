@@ -412,10 +412,10 @@ $(document).on('click','.btn-submit',function(){
   }*/
 });
 
-
-
 /*
- * ADVANCED SEARCH
+===================
+  ADVANCED SEARCH
+===================
  */
 $('#customize-training-button > button:first').click(function(){
   $('#customize-training-button').hide(700);
@@ -509,3 +509,34 @@ function goToSearchWizard(step, text)
     scrollTop: $("#search-wizard-step-"+step).offset().top
   }, 700);
 }
+
+/*
+=============
+  CONTACTS
+=============
+*/
+$(document).on('keyup','.contact-search',function(){
+  $('#ajax-contact-list').html('');
+  $('#ajax-contact-spinner').show();
+  var thisVal = $(this).val();
+  $.ajax({
+    url:base_url + '/get-contacts/'+ thisVal +'/first_name/asc/a/a',
+    success: function(data){
+      $('#ajax-contact-list').html(data);
+      $('#ajax-contact-spinner').hide();
+    }
+  });
+});
+
+$(document).on('change','.contact-sort',function(){
+  $('#ajax-contact-list').html('');
+  $('#ajax-contact-spinner').show();
+  var thisVal = $(this).val();
+  $.ajax({
+    url:base_url + '/get-contacts/a/'+ thisVal +'/asc/a/a',
+    success: function(data){
+      $('#ajax-contact-list').html(data);
+      $('#ajax-contact-spinner').hide();
+    }
+  });
+});

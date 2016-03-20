@@ -19,7 +19,7 @@
 
     </div>
   </div>
-  <div class="col-lg-6 col-md-7 col-sm-7 col-xs-6 user-list-info">
+  <div class="col-lg-10 col-md-7 col-sm-7 col-xs-6 user-list-info">
     <div class="row pointer" title="Verified User">
       @if($gridType == 1)
       <a href="{{url('/u/'.$grid->slug)}}" class="user-name capitalize">
@@ -74,45 +74,14 @@
 
     <br/>
   </div>
+
+  <!--
   <div class="col-lg-4 col-md-3 col-sm-3 col-xs-3 user-side-info">
     <div class="row">
       <div class="col-lg-12">
-        @if(Auth::guest())
-          <a class="btn full-width trigger-popup trigger-sign-in">
-            <i class="fa fa-plus"></i>
-            Add to Contacts
-          </a>
-        @else
-          <a class="btn full-width trigger-connect">
-            <i class="fa fa-plus"></i>
-            Add to Contacts
-          </a>
-        @endif
+        + ADD TO CONTACT
       </div>
     </div>
-
-  <!--
-    <div class="row">
-      <div class="col-lg-12">
-        <b>{{ trans('content.pr_industries') }}</b><br/>
-        Consumer Electronics, E-Learning, Design
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <b>{{ trans('content.pr_audience') }}</b><br/>
-        Senior, Manager
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <b>{{ trans('content.pr_job_functions') }}</b><br/>
-        Marketing, Information Technology, Education
-      </div>
-    </div>
-  -->
-
-
     <div class="row">
       <div class="col-lg-6">
         <i class="fa fa-thumb-up"></i>
@@ -131,17 +100,9 @@
         <b>{{$grid->view}}</b> views
       </div>
     </div>
-    <!--
-    <div class="row">
-      <div class="col-lg-12">
-        Price Range <br/>
-        <b>Rp 15.000.000 </b>
-        -
-        <b>Rp 30.000.000 </b>
-      </div>
-    </div>
-    -->
   </div>
+  -->
+
   <!-- Training Info! -->
   <!--
   <div class="col-lg-12" style="border-top:1px solid rgba(0,0,0, .1); position:absolute; bottom:0; height:auto; overflow:hidden; padding:10px; z-index:+1; background:#f5f5f5">

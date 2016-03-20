@@ -14,7 +14,10 @@
       <div class="row experience-grid">
         <div class="col-lg-12 col-md-10 col-sm-10 col-xs-10">
           <div class="row">
-            <a href="" class="title" style="font-size:1.2em;">
+            <a class="title trigger-popup ajax-popup-video"
+                style="font-size:1.2em;"
+                data-title="{{$video->video_name}}"
+                data-url="{{$video->video_path}}">
               {{$video->video_name}}
             </a>
             <p class="description">

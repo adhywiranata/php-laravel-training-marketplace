@@ -125,18 +125,6 @@ Route::delete('/dashboard/video/{id}','GeneralController@deleteVideo');
 
 /*
 |--------
-| Ajax
-|--------
-*/
-Route::get('/popup/video/{video_title}/{video_id}', 'GeneralController@popupSectionVideo');
-
-Route::get('/create-contact/{owner_id}/{owner_role_id}', 'ContactController@createContact');
-Route::get('/remove-contact/{owner_id}/{owner_role_id}', 'ContactController@deleteContact');
-
-Route::get('/settings/plan', 'UserController@getPlans');
-
-/*
-|--------
 | Search
 |--------
 */
@@ -192,6 +180,15 @@ Route::post('{group}/training/{name}/add-evaluation','TrainingController@insertE
 |--------
 */
 Route::get('getautocompletedata/{table}/{columnName}/{key}','GeneralController@getAutoCompleteData');
+
+Route::get('/popup/video/{video_title}/{video_id}', 'GeneralController@popupSectionVideo');
+
+Route::get('/create-contact/{owner_id}/{owner_role_id}', 'ContactController@createContact');
+Route::get('/remove-contact/{owner_id}/{owner_role_id}', 'ContactController@deleteContact');
+Route::get('/get-contacts/{search}/{sort_by}/{sort_order}/{filter_by}/{filter_param}','ContactController@indexAjax');
+
+Route::get('/settings/plan', 'UserController@getPlans');
+
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

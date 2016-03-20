@@ -27,7 +27,7 @@
               <i class="fa fa-search padding-10"></i>
             </div>
             <div class="col-xs-10">
-              <input type="text" class="form-control" placeholder="Search..." />
+              <input type="text" class="form-control contact-search" placeholder="Search..." />
             </div>
           </div>
         </div>
@@ -40,10 +40,10 @@
               </span>
             </div>
             <div class="col-xs-8">
-              <select class="form-control">
-                <option>First Name</option>
-                <option>Last Name</option>
-                <option>Newly Added</option>
+              <select class="form-control contact-sort">
+                <option value="first_name">First Name</option>
+                <option value="last_name">Last Name</option>
+                <option value="created_at">Newly Added</option>
               </select>
             </div>
           </div>
@@ -78,23 +78,13 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 box-profile padding-20">
-        @if($gridType == 1 || $gridType == 2)
-          <?php $loopflag = 1; ?>
-          @foreach($grids as $grid)
-            @if($loopflag%3!=0)
-              <div class="row">
-            @endif
-            @include('profile.contact-grid')
-            @if($loopflag%3==0)
-              </div>
-            @endif
-            <?php $loopflag++ ?>
-          @endforeach
-        @endif
-        @if($gridType == 3)
+      <div id="ajax-contact-spinner" class="col-lg-12 padding-20" style="display:none">
+        <center>
+          <i class="fa fa-circle-o-notch fa-spin bigger-2 blue-border circle text-blue" style="padding:15px;"></i>
+        </center>
+      </div>
+      <div id="ajax-contact-list" class="col-md-12 box-profile padding-20">
           @include('profile.contact-grid')
-        @endif
       </div>
 
     </div>
