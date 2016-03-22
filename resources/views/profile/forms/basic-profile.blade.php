@@ -3,7 +3,6 @@
 @section('title', 'SPEAQUS')
 
 @section('content')
-  <br/><br/><br/><br/>
   <div class="container">
     <a href="{{ url('dashboard') }}" class="btn">
       <i class="fa fa-angle-left"></i> Go back
@@ -203,9 +202,9 @@
             data-validation="required"
             data-placeholder=""
             data-current="<?php if(isset($user->profile_picture)): echo $user->profile_picture; else: echo Input::old('profile_picture'); endif; ?>"
+            data-image-path="{{ url('users/thumb') }}"
             data-classes="form-control">
           </div>
-          <img src="{{ url('images/users/'.$user->profile_picture) }}" width="200px" />
 
           <div class="col-xs-12 fg-submit" data-value="Update Profile"></div>
         </form>

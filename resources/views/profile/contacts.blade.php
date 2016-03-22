@@ -3,19 +3,16 @@
 @section('title', 'SPEAQUS')
 
 @section('content')
-  <br/><br/><br/><br/>
 
   <div class="container">
     <!-- BREADCRUMB -->
     <div class="row">
-      <div class="col-xs-12">
-        <ul class="breadcrumb pull-left full-width">
-          <li><a href="{{ url('u/Fandy-Limardi') }}">Dashboard</a></li>
-          <li>
-            <a href="">Contacts</a>
-          </li>
-        </ul>
-      </div>
+      <ul class="breadcrumb pull-left full-width">
+        <li><a href="{{ url('u/Fandy-Limardi') }}">Dashboard</a></li>
+        <li>
+          <a href="">Contacts</a>
+        </li>
+      </ul>
     </div>
     <!-- END OF BREADCRUMB -->
 
@@ -32,23 +29,30 @@
           </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-5">
           <div class="row border-left">
-            <div class="col-xs-4 padding-10">
+            <div class="col-xs-2 padding-10">
               <span class="bold uppercase">
                 Sort By
               </span>
             </div>
-            <div class="col-xs-8">
+            <div class="col-xs-4">
               <select class="form-control contact-sort">
                 <option value="first_name">First Name</option>
                 <option value="last_name">Last Name</option>
-                <option value="created_at">Newly Added</option>
+                <option value="contacts.created_at">Newly Added</option>
+              </select>
+            </div>
+            <div class="col-xs-4">
+              <select class="form-control contact-sort-order">
+                <option value="asc" selected="selected">Ascending</option>
+                <option value="desc">Descending</option>
               </select>
             </div>
           </div>
         </div>
 
+      <!--
         <div class="col-md-6">
           <div class="row border-left">
             <div class="col-xs-2 padding-10">
@@ -74,6 +78,7 @@
 
           </div>
         </div>
+      -->
 
       </div>
     </div>

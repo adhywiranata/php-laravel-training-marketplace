@@ -3,7 +3,6 @@
 @section('title', 'SPEAQUS')
 
 @section('content')
-  <br/><br/><br/><br/>
   <div class="container">
     <a href="{{ url('') }}" class="btn">
       <i class="fa fa-angle-left"></i> Go back
@@ -25,8 +24,36 @@
 
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 
-          <div class="col-xs-12 fg-input" data-label="Email" data-classes="form-control" data-type="text" data-label="" data-name="email" data-validation="required,email" data-placeholder="insert your email" data-current=""></div>
-          <div class="col-xs-12 fg-input" data-label="Password" data-classes="form-control" data-type="password" data-label="" data-name="password" data-validation="required" data-placeholder="insert your password" data-current=""></div>
+          <div class="row col-xs-12">
+            <h4 class="text-center">User Profile</h4>
+            <hr/>
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-label="Email"
+            data-classes="form-control"
+            data-type="text"
+            data-label=""
+            data-name="email"
+            data-validation="required,email"
+            data-placeholder="insert your email"
+            data-current="">
+          </div>
+
+          <span class="fg-error">{{$errors->first('email')}}</span>
+
+          <div class="col-xs-12 fg-input"
+            data-label="Password"
+            data-classes="form-control"
+            data-type="password"
+            data-label=""
+            data-name="password"
+            data-validation="required"
+            data-placeholder="insert your password"
+            data-current="">
+          </div>
+
+          <span class="fg-error">{{$errors->first('password')}}</span>
 
           <div class="col-xs-6 fg-input"
             data-type="text"
@@ -38,6 +65,8 @@
             data-classes="form-control">
           </div>
 
+          <span class="fg-error">{{$errors->first('first_name')}}</span>
+
           <div class="col-xs-6 fg-input"
             data-type="text"
             data-label="Last Name"
@@ -47,6 +76,8 @@
             data-current=""
             data-classes="form-control">
           </div>
+
+          <span class="fg-error">{{$errors->first('last_name')}}</span>
 
           <div class="col-xs-6 fg-input"
             data-type="textarea"
@@ -68,8 +99,7 @@
             data-items="Foo, Bar, John, Doe, Hello, World"
             data-classes="form-control"
             data-get-ajax="{{ url('getautocompletedata/corporates/corporate_name') }}/"
-            data-get-ajax-column="corporate_name"
-            >
+            data-get-ajax-column="corporate_name">
           </div>
 
           <div class="col-xs-12 fg-input"
@@ -82,10 +112,10 @@
             data-items="Foo, Bar, John, Doe, Hello, World"
             data-classes="form-control"
             data-get-ajax="{{ url('getautocompletedata/job_titles/job_title_name') }}/"
-            data-get-ajax-column="job_title_name"
-            >
+            data-get-ajax-column="job_title_name">
           </div>
 
+          <!--
           <div class="col-xs-12 fg-input"
             data-type="date"
             data-label="Date of Birth"
@@ -95,7 +125,9 @@
             data-current=""
             data-classes="form-control">
           </div>
+          -->
 
+          <!--
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
             data-label="Location"
@@ -106,18 +138,20 @@
             data-current=""
             data-classes="form-control">
           </div>
+          -->
 
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
             data-label="Area of Service"
             data-name="service_area"
             data-validation="required"
-            data-placeholder="insert publisher name"
-            data-items="Dunamis,Super Coach,Binus Creates,Binus Center"
+            data-placeholder="insert area of service"
+            data-items="<?php echo implode(',',trans('custom.list_locations')); ?>"
             data-current=""
             data-classes="form-control">
           </div>
 
+          <!--
           <div class="col-xs-12 fg-input"
             data-type="textarea"
             data-label="Address"
@@ -127,6 +161,7 @@
             data-current=""
             data-classes="form-control">
           </div>
+          -->
 
           <div class="col-xs-12 fg-input"
             data-type="text"
@@ -138,6 +173,7 @@
             data-classes="form-control">
           </div>
 
+          <!--
           <div class="col-xs-12 fg-input"
             data-type="combobox"
             data-label="Gender"
@@ -148,7 +184,9 @@
             data-current=""
             data-classes="form-control">
           </div>
+          -->
 
+          <!--
           <div class="col-xs-12 fg-input"
             data-type="combobox"
             data-label="Training Method"
@@ -159,7 +197,8 @@
             data-current=""
             data-classes="form-control">
           </div>
-
+        -->
+        <!--
           <div class="col-xs-12 fg-input"
             data-type="combobox"
             data-label="Training Style"
@@ -170,7 +209,9 @@
             data-current=""
             data-classes="form-control">
           </div>
+          -->
 
+          <!--
           <div class="col-xs-12 fg-input"
             data-type="text"
             data-label="Daily Rate"
@@ -180,7 +221,8 @@
             data-current=""
             data-classes="form-control">
           </div>
-
+        -->
+        <!--
           <div class="col-xs-12 fg-input"
             data-type="text"
             data-label="Slug"
@@ -190,7 +232,7 @@
             data-current=""
             data-classes="form-control">
           </div>
-
+        -->
           <div class="col-xs-12 fg-input"
             data-type="image"
             data-label="profile Picture"
@@ -200,6 +242,56 @@
             data-current=""
             data-classes="form-control">
           </div>
+
+          @if($role == 'training-provider')
+          <div class="row col-xs-12">
+            <h4 class="text-center">Provider Profile</h4>
+            <hr/>
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-label="Provider Name"
+            data-classes="form-control"
+            data-type="text"
+            data-label=""
+            data-name="provider_name"
+            data-validation="required"
+            data-placeholder="insert training provider name"
+            data-current="">
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-label="Provider Email"
+            data-classes="form-control"
+            data-type="text"
+            data-label=""
+            data-name="provider_email"
+            data-validation="required,email"
+            data-placeholder="insert training provider email"
+            data-current="">
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-type="text"
+            data-label="Provider Contact Number"
+            data-name="provider_phone"
+            data-validation=""
+            data-placeholder="insert phone number"
+            data-current=""
+            data-classes="form-control">
+          </div>
+
+          <div class="col-xs-12 fg-input"
+            data-type="image"
+            data-label="Training Provider Logo"
+            data-name="provider_profile_picture"
+            data-validation="required"
+            data-placeholder="insert profile picture"
+            data-current=""
+            data-classes="form-control">
+          </div>
+
+          @endif
 
           <div class="col-xs-12 fg-submit" data-value="Update Profile"></div>
         </form>

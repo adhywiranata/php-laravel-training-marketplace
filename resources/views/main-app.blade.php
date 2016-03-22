@@ -145,9 +145,23 @@
 				@include('general.action-flash')
 			</div>
 		</div>
+		@if(Auth::check())
+			@if(Auth::user()->first_name == '')
+			<div class="row orange-back text-white text-center padding-10">
+			  <span class="">
+					<i class="fa fa-info-circle"></i>
+					Please Complete Your
+					<a href="{{ url('dashboard/basic-profile') }}" class="text-white bold underline">Basic Profile Information</a>
+				</span>
+				<i class="fa fa-close pull-right text-white" style="margin-right:20px;"></i>
+			</div>
+			@endif
+		@endif
 	</nav>
 
+	<div class="row" style="padding:0;margin:0;padding-top:80px; ">
 	@yield('content')
+	</div>
 
   <div class="popup-overlay">
   </div>

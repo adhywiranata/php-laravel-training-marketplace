@@ -3,17 +3,7 @@
 @section('title', 'SPEAQUS')
 
 @section('content')
-  <!--
-  <div class="row heading">
-    <div class="col-lg-12" style="background:rgba(0,0,0, .6); padding:130px 0px 0 0px;">
-      <div class="col-lg-6 col-md-offset-1">
-      </div>
-    </div>
-  </div>
--->
 
-
-  <br/><br/><br/><br/>
   <div class="container">
     <!-- BREADCRUMB -->
     <div class="row">
@@ -27,6 +17,7 @@
       </div>
     </div>
     <!-- END OF BREADCRUMB -->
+
     <div class="row">
       <div class="col-md-12 box-section">
         <div class="col-lg-12 box-profile">

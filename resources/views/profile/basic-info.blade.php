@@ -5,7 +5,7 @@
 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-5">
   <div class="profile-picture">
 
-    @if($grids->profile_picture == 'default.png'):
+    @if($grids->profile_picture == 'default.png')
       <img src="{{ url('images/users/thumb/'.$grids->profile_picture) }}" width="100%">
     @else
       <img src="{{ url('images/users/thumb/'.$grids->profile_picture) }}" width="100%">
@@ -33,7 +33,7 @@
     <a class="btn full-width trigger-popup" data-trigger-popup="send-message">Send Message</a>
     -->
 
-    <span class="invisible_phone" style="display:none;" >
+    <div class="invisible_phone" style="display:none; padding:10px 0;" >
       <i class="fa fa-whatsapp text-green"></i> {{ $grids->phone_number }} <br/>
       <i class="fa fa-envelope-o text-green"></i> {{ $grids->email }} <br/>
       <i class="fa fa-building text-green"></i> work area: {{ $grids->service_area }} <br/>
@@ -43,7 +43,7 @@
       <i class="fa fa-whatsapp text-green"></i> office: +6281231234 <br/>
       <i class="fa fa-building text-green"></i> work address: Jalan Satu No. dua <br/>
       -->
-    </span>
+    </div>
     @else
       <a href="{{ url('dashboard/basic-profile') }}" class="btn full-width">Edit Basic Profile</a>
       <a href="{{ url('dashboard/group') }}" class="btn full-width">Manage Training Provider</a>
@@ -56,7 +56,13 @@
 </div>
 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7 user-list-info" style="padding-right:30px;">
   <div class="row">
-    <a class="user-name">{{ $grids->name }}</a>
+    <a class="user-name">
+      @if($grids->name !== ' ')
+        {{ $grids->name }}
+      @else
+        {{ $grids->email }}
+      @endif
+    </a>
 
     <!--<a class="user-name">Mulyono Sephiaques</a>-->
 
@@ -109,6 +115,11 @@
 
     <br/>
     <b>{{ trans('content.pr_expertises') }}</b><br/>
+
+    @if(count($grids->expertises) == 0)
+    You currently have no Skills added.
+    <a href="{{ url('dashboard/skill/add') }}">Add expertise</a>
+    @endif
     @foreach($grids->expertises as $expertise)
       <a class="skill-tag trigger-popup tag" title="{{$expertise->total_endorse}} persons endorsed this skill">
         <span class="bold">{{$expertise->total_endorse}}</span>
@@ -116,19 +127,4 @@
       </a>
     @endforeach
   </div>
-  <!--
-  <div class="row">
-    <b>{{ trans('content.pr_industries') }}</b><br/>
-    Consumer Electronics, E-Learning, Design
-  </div>
-  <div class="row">
-    <b>{{ trans('content.pr_audience') }}</b><br/>
-    Senior, Manager
-  </div>
-  <div class="row">
-    <b>{{ trans('content.pr_job_functions') }}</b><br/>
-    Marketing, Information Technology, Education
-  </div>
-  -->
-  <br/><br/><br/><br/><br/>
 </div>

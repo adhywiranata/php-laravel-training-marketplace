@@ -3,7 +3,6 @@
 @section('title', 'SPEAQUS')
 
 @section('content')
-  <br/><br/><br/><br/>
   <div class="container">
     <!-- HIDDEN FIELD TO HIGHLIGHT SEARCH TAGS -->
     <input id="hidden-tag-highlighter"

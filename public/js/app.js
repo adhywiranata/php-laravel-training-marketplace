@@ -243,14 +243,35 @@ $('.profile-section').hide();
 $('.box-profile').find("[data-section='speaking-experiences']").show();
 $('.box-profile').find("[data-section='evaluation-summary']").show();
 
+/* TABS */
 $(document).on('click','.profile-tab-list > li',function(){
   var list = $(this);
   var section = list.data('trigger');
+  location.hash = '#'+section;
   $('.profile-section').fadeOut(400);
   $('.box-profile').find("[data-section='" + section + "']").fadeIn(400);
   $('.profile-tab-list > li').removeClass('active');
   $('.box-profile').find("[data-trigger='" + section + "']").addClass('active');
 });
+
+//check hashes
+if(window.location.hash) {
+  // Fragment exists
+  section = window.location.hash;
+  section = section.replace("#","");
+  $('.profile-section').fadeOut(400);
+  $('.box-profile').find("[data-section='" + section + "']").fadeIn(400);
+  $('.profile-tab-list > li').removeClass('active');
+  $('.box-profile').find("[data-trigger='" + section + "']").addClass('active');
+} else {
+  // Fragment doesn't exist
+  section = 'training-experiences';
+  $('.profile-section').fadeOut(400);
+  $('.box-profile').find("[data-section='" + section + "']").fadeIn(400);
+  $('.profile-tab-list > li').removeClass('active');
+  $('.box-profile').find("[data-trigger='" + section + "']").addClass('active');
+}
+/*END OF TABS */
 
 $(document).on('click','.trigger-popup',function(){
   var popup = $(this).data('trigger-popup');
@@ -515,28 +536,36 @@ function goToSearchWizard(step, text)
   CONTACTS
 =============
 */
-$(document).on('keyup','.contact-search',function(){
-  $('#ajax-contact-list').html('');
-  $('#ajax-contact-spinner').show();
-  var thisVal = $(this).val();
+
+function reloadContacts()
+{
+  var search = $('.contact-search').val();
+  var sort = $('.contact-sort').val();
+  var order = $('.contact-sort-order').val();
+
   $.ajax({
-    url:base_url + '/get-contacts/'+ thisVal +'/first_name/asc/a/a',
+    url:base_url + '/get-contacts/'+ search +'/' + sort + '/' + order + '/a/a',
     success: function(data){
       $('#ajax-contact-list').html(data);
       $('#ajax-contact-spinner').hide();
     }
   });
+}
+
+$(document).on('keyup','.contact-search',function(){
+  $('#ajax-contact-list').html('');
+  $('#ajax-contact-spinner').show();
+  reloadContacts();
 });
 
 $(document).on('change','.contact-sort',function(){
   $('#ajax-contact-list').html('');
   $('#ajax-contact-spinner').show();
-  var thisVal = $(this).val();
-  $.ajax({
-    url:base_url + '/get-contacts/a/'+ thisVal +'/asc/a/a',
-    success: function(data){
-      $('#ajax-contact-list').html(data);
-      $('#ajax-contact-spinner').hide();
-    }
-  });
+  reloadContacts();
+});
+
+$(document).on('change','.contact-sort-order',function(){
+  $('#ajax-contact-list').html('');
+  $('#ajax-contact-spinner').show();
+  reloadContacts();
 });

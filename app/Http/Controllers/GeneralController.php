@@ -55,7 +55,9 @@ use App\Http\Requests\SignUpLandingRequest;
 
 
 use App\Models\UserRoleNode as UserRoleNode;
+use App\Models\UserProviderCorporateNode as UserProviderCorporateNode;
 
+use Auth;
 
 use App\Models\JobTitle as JobTitle;
 use App\Models\JobSeniorityLevel as JobSeniorityLevel;
@@ -74,6 +76,11 @@ class GeneralController extends Controller {
 	 */
 	public function index()
 	{
+		if(Auth::check())
+		{
+			return redirect('/users');
+		}
+
 		$page_role = '';
 		return view('landing')->with('page_role',$page_role);
 	}
@@ -90,15 +97,34 @@ class GeneralController extends Controller {
 		return view('landing')->with('page_role',$page_role);
 	}
 
-	public function signup_basic($role)
+	public function loginLanding()
 	{
+		return view('landing.login');
+	}
+
+	public function signupLanding($role)
+	{
+		//role 1 = basic , role 2 = provider
 		return view('landing.signup')->with('role',$role);
 	}
 
 	public function createUserFromLanding(SignUpLandingRequest $request,$role)
 	{
 
-		// role 1 for basic, 2 for freelance, 3 for provider
+		// roles: basic, freelance-trainer, training-provider
+		if($role == 'basic')
+		{
+			$role_code = 2;
+		}
+		if($role == 'freelance-trainer')
+		{
+			$role_code = 2;
+		}
+		if($role == 'training-provider')
+		{
+			$role_code = 3;
+		}
+		//BASIC REGISTRATION
 		$input = $request->all();
 		//CHECK IF CORPORATE DOES NOT EXIST,CREATE A NEW ONE
 		$corp_exist = Corporate::where('corporate_name',$input['corporate_name'])
@@ -167,26 +193,78 @@ class GeneralController extends Controller {
 
 		 'email' 								=> $input['email'],
 		 'summary' 							=> $input['summary'],
-		 'domicle_area' 				=> $input['domicle_area'],
+		 //'domicle_area' 				=> $input['domicle_area'],
 		 'service_area' 				=> $input['service_area'],
 
-		 'gender' 							=> $input['gender'],
-		 'dob' 									=> $input['dob'],
+		 //'gender' 							=> $input['gender'],
+		 //'dob' 									=> $input['dob'],
 
-		 'training_method' 			=> $input['training_method'],
-		 'training_style' 			=> $input['training_style'],
+		 //'training_method' 			=> $input['training_method'],
+		 //'training_style' 			=> $input['training_style'],
 		 'profile_picture' 			=> (isset($file_name))?$file_name:'',
 	 ];
 
 	 $user = User::create($create);
 
+	 $update = [
+		 'slug' => $user->id,
+		 'is_verified' => 1
+	 ];
+	 User::where('id',$user->id)->update($update);
+
 	 $create_node = [
 		 'user_id' => $user->id,
-		 'role_id' => $role
+		 'role_id' => $role_code
 	 ];
 	 $userRoleNode = UserRoleNode::create($create_node);
 
-	 redirect('');
+	 //CHECK IF role is a Training Provider ($role_code = 3)
+	 if($role_code == 3)
+	 {
+
+		 if ( $request->hasFile('provider_profile_picture') )
+		 {
+			 if( $request->file('provider_profile_picture')->isvalid() ):
+
+				 $file  						= $request->file('provider_profile_picture');
+				 $file_name  			= $request->file('provider_profile_picture')->getClientOriginalName();
+
+				 $destinationPath = public_path() . '/images/users';
+				 $request->file('provider_profile_picture')->move($destinationPath, $file_name);
+				 //Resize & Crop | source image started from level public
+				 $img = Image::make('images/users/'.$file_name)->fit(200,200)->save('images/users/thumb/'.$file_name);
+			 else:
+				 $photo_error = $request->file('provider_profile_picture')->getErrorMessage();
+				 echo $photo_error;
+			 endif;
+		 }
+
+		 $create_provider = [
+			 'provider_name' 		=> $input['provider_name'],
+			 'phone_number' 		=> $input['provider_phone'],
+		 	 'email' 						=> $input['provider_email'],
+		 	 'profile_picture' 	=> $input['provider_email'],
+		 ];
+
+		 $provider = Provider::create($create_provider);
+
+		 $update_provider = [
+			 'slug'	=> $provider->id,
+			 'is_verified' => 1
+		 ];
+
+		 $create_node = [
+			 'user_id' => $user->id,
+			 'group_id' => $provider->id,
+			 'group_role_id' => 1,
+			 'group_position_id' => 1
+		 ];
+		 UserProviderCorporateNode::create($create_node);
+
+	 } //ENDIF for Role 3 (provider) checking
+
+
+	 return redirect('/');
 
 	}
 	/**
@@ -323,7 +401,7 @@ class GeneralController extends Controller {
 			SectionPhoto::create($node_insert);
 		endforeach;
 
-		return redirect('dashboard');
+		return redirect('dashboard#training-experiences');
 	}
 
 	public function editTrainingExperience($id)
@@ -553,7 +631,7 @@ class GeneralController extends Controller {
 
 		endforeach;
 
-		return redirect('dashboard');
+		return redirect('dashboard#training-experiences');
 	}
 
 	public function deleteTrainingExperience($id)
@@ -563,7 +641,7 @@ class GeneralController extends Controller {
 		SectionSkill::where('section_item_id','=',$id)->delete();
 		SectionPhoto::where('section_item_id','=',$id)->delete();
 
-		return redirect('dashboard');
+		return redirect('dashboard#training-experiences');
 	}
 
 	/**
@@ -601,7 +679,7 @@ class GeneralController extends Controller {
 		];
 		WorkExperience::create($insert_work_experience);
 
-		return redirect('dashboard');
+		return redirect('dashboard#work-experiences');
 	}
 
 	public function editWorkExperience($id)
@@ -637,7 +715,7 @@ class GeneralController extends Controller {
 		WorkExperience::find($id)->update($update_work_experience);
 
 
-		return redirect('dashboard');
+		return redirect('dashboard#work-experiences');
 	}
 
 	public function deleteWorkExperience($id)
@@ -646,7 +724,7 @@ class GeneralController extends Controller {
 		SectionSkill::where('section_item_id','=',$id)->delete();
 
 
-		return redirect('dashboard');
+		return redirect('dashboard#work-experiences');
 	}
 
 	/**
@@ -743,7 +821,7 @@ class GeneralController extends Controller {
 			SectionPhoto::create($node_insert);
 		endforeach;
 
-		return redirect('dashboard');
+		return redirect('dashboard#certifications');
 	}
 
 	public function editCertification($id)
@@ -923,7 +1001,7 @@ class GeneralController extends Controller {
 
 		endforeach;
 
-		return redirect('dashboard');
+		return redirect('dashboard#certifications');
 	}
 
 	public function deleteCertification($id)
@@ -932,7 +1010,7 @@ class GeneralController extends Controller {
 		SectionSkill::where('section_item_id','=',$id)->delete();
 		SectionPhoto::where('section_item_id','=',$id)->delete();
 
-		return redirect('dashboard');
+		return redirect('dashboard#certifications');
 	}
 
 	/**
@@ -1028,7 +1106,7 @@ class GeneralController extends Controller {
 		  SectionPhoto::create($node_insert);
 		endforeach;
 
-		return redirect('dashboard');
+		return redirect('dashboard#awards');
 	}
 
 	public function editAward($id)
@@ -1204,14 +1282,14 @@ class GeneralController extends Controller {
 
 		endforeach;
 
-		return redirect('dashboard');
+		return redirect('dashboard#awards');
 	}
 
 	public function deleteAward($id)
 	{
 		Award::find($id)->delete();
 
-		return redirect('dashboard');
+		return redirect('dashboard#awards');
 	}
 
 	/**
@@ -1270,7 +1348,7 @@ class GeneralController extends Controller {
 			}
 		}
 
-		return redirect('dashboard');
+		return redirect('dashboard#programs');
 	}
 
 	/**
@@ -1321,7 +1399,7 @@ class GeneralController extends Controller {
 		}
 
 		//echo "<script type='text/javascript'>alert('Insert Success');</script>";exit();
-		return redirect('dashboard');
+		return redirect('dashboard#programs');
 	}
 
 	/**
@@ -1362,7 +1440,7 @@ class GeneralController extends Controller {
 		endif;
 
 
-		return redirect('dashboard');
+		return redirect('dashboard#videos');
 	}
 
 	public function popupSectionVideo($video_title,$video_id)
@@ -1467,6 +1545,11 @@ class GeneralController extends Controller {
 			'ip'						=> $_SERVER['REMOTE_ADDR']
 		];
 		$result = DB::table('feature_tracking')->insert($insert);
+	}
+
+	public function about()
+	{
+		return view('landing.about');
 	}
 
 }

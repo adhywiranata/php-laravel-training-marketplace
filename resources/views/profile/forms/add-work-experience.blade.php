@@ -3,7 +3,6 @@
 @section('title', 'SPEAQUS')
 
 @section('content')
-  <br/><br/><br/><br/>
   <div class="container">
     <a href="{{ url('dashboard') }}" class="btn">
       <i class="fa fa-angle-left"></i>

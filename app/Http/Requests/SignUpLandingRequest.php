@@ -22,7 +22,11 @@ class SignUpLandingRequest extends Request {
 	public function rules()
 	{
 		return [
-			//
+			'email' => 'required|email',
+			'password' => 'required',
+			'first_name' => 'required',
+			'last_name' => 'required',
+			'profile_picture' => 'required'
 		];
 	}
 

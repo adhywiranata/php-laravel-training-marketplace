@@ -1,4 +1,4 @@
-<div class="col-lg-12 profile-section" data-section="speaking-experiences">
+<div class="col-lg-12 profile-section" data-section="training-experiences">
   <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
   @if($grids->user_id == $user_id)
   <a href="{{ url('dashboard/training-experience/add') }}" class="btn">
@@ -11,26 +11,35 @@
     <div class="row experience-grid">
 
       <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+
         <a href="" class="title">
           {{$trainingExperience->speaking_experience_title}}
         </a>
 
-        <form action="{{url('/dashboard/training-experience/'.$trainingExperience->speaking_experience_id )}}" method="post">
-          <input type="hidden" name="_method" value="DELETE" />
-          <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
-          <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
-        </form>
-
-        <a href="{{url('/dashboard/training-experience/'. $trainingExperience->speaking_experience_id . '/edit') }}" class="btn btn-margin green-back pull-right">Edit</a>
-
-        <p>{{$trainingExperience->training_programme_title}}</p>
-        <a href="#">{{$trainingExperience->company_name}}</a>
-        <p>Jakarta, {{ date("F jS Y",strtotime($trainingExperience->speaking_experience_start_date)) }}</p>
+        <p class="description">
+          {{$trainingExperience->training_programme_title}}
+          <br/>
+          <a href="#">{{$trainingExperience->company_name}}</a>
+          <br/>
+          Jakarta
+          @if($trainingExperience->speaking_experience_start_date != '0000-00-00')
+          , {{ date("F jS Y",strtotime($trainingExperience->speaking_experience_start_date)) }}
+          @endif
+        </p>
 
         <p class="description">
           {{ $trainingExperience->speaking_experience_description }}
         </p>
 
+        <div class="row">
+          <a href="{{url('/dashboard/training-experience/'. $trainingExperience->speaking_experience_id . '/edit') }}" class="btn btn-margin green-back pull-left">Edit</a>
+          <form class="pull-left" action="{{url('/dashboard/training-experience/'.$trainingExperience->speaking_experience_id )}}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+            <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
+          </form>
+
+        </div>
         <div class="row">
           <div class="col-lg-12">
             @if(count($trainingExperience->speaking_experience_expertises) != 0)

@@ -3,7 +3,6 @@
 @section('title', 'SPEAQUS')
 
 @section('content')
-  <br/><br/><br/><br/>
   <div class="container">
     <a href="{{ url('dashboard') }}" class="btn">
       <i class="fa fa-angle-left"></i>
@@ -37,13 +36,15 @@
 
           <div class="col-xs-12 fg-input"
             data-type="text"
-            data-label="Training title {{$errors->first('training_experience')}}"
+            data-label="Training title"
             data-name="training_experience"
             data-validation="required"
             data-placeholder=""
             data-current="<?php if(isset($training_experience)): echo $training_experience->speaking_experience_title; else: echo Input::old('training_experience'); endif; ?>"
             data-classes="form-control">
           </div>
+
+          <span class="fg-error">{{$errors->first('training_experience')}}</span>
 
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"

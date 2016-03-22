@@ -2,7 +2,7 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <ul class="profile-tab-list">
       <li class="active ajax-count-feature"
-        data-trigger="speaking-experiences"
+        data-trigger="training-experiences"
         data-feature-name="training_experience">Training Experiences</li>
       @if($role == 2)
       <li data-trigger="trainers">Trainers</li>

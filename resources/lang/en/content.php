@@ -24,9 +24,9 @@ return [
     'headline_description' => 'CekTraining is an inspiring and resourceful online global training directory and marketplace
 that helps to connect professionals training organizer and students with the right training services around the world.',
 
-    'sign_up_link' => '1',
-    'sign_up_link_provider' => '3',
-    'sign_up_link_freelancer' => '2',
+    'sign_up_link' => 'basic',
+    'sign_up_link_provider' => 'training-provider',
+    'sign_up_link_freelancer' => 'freelance-trainer',
 
     'sign_up_btn'   => 'SIGN UP FREE',
     'vendor_btn'    => 'SIGN UP AS VENDOR',

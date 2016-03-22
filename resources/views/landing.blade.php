@@ -102,7 +102,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			-->
 				<ul class="hero-list">
 					<li><a class="slide-bbtn" href="{{ url('signup-front/'.trans('content.sign_up_link'.$page_role)) }}">{{ trans('content.sign_up_btn') }}</a></li>
-					<li><a class="slide-bbtn" href="#">{{ trans('content.vendor_btn') }}</a></li>
+					<!--
+						<li><a class="slide-bbtn" href="{{ url('signup-front/'.trans('content.sign_up_link'.$page_role)) }}">{{ trans('content.vendor_btn') }}</a></li>
+					-->
 				</ul>
 			</div>
 			<div class="clear"> </div>

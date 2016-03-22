@@ -24,12 +24,21 @@ Route::get('/skill/add', 'GeneralController@addSkill');
 
 // INSERT SKILL USER -->
 
+/*
+|-----------------------
+| LANDING PAGE AND HOME
+|-----------------------
+*/
 
 Route::get('/', 'GeneralController@index');
 Route::get('/training-provider', 'GeneralController@provider');
 Route::get('/freelance-trainer', 'GeneralController@freelancer');
 
-Route::get('/signup-front/{role}', 'GeneralController@signup_basic');
+Route::get('/about', 'GeneralController@about');
+
+Route::get('/login', 'GeneralController@loginLanding');
+
+Route::get('/signup-front/{role}', 'GeneralController@signupLanding');
 Route::post('/signup-front/{role}', 'GeneralController@createUserFromLanding');
 
 Route::get('/trainerlist', 'UserController@getUsers');
