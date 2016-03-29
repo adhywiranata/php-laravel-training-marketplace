@@ -46,7 +46,10 @@
     </div>
     @else
       <a href="{{ url('dashboard/basic-profile') }}" class="btn full-width">Edit Basic Profile</a>
-      <a href="{{ url('dashboard/group') }}" class="btn full-width">Manage Training Provider</a>
+
+      @if( ($provider > 0) && ($is_admin == 1) )
+        <a href="{{ url('dashboard/group') }}" class="btn full-width">Manage Training Provider</a>
+      @endif
     @endif
     <!--
       <a class="btn full-width">Edit Provider Profile</a>

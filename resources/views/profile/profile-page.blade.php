@@ -9,7 +9,9 @@
     <div class="row">
       <div class="col-xs-12">
         <ul class="breadcrumb pull-left full-width">
-          <li><a href="{{ url('') }}">Freelance Trainers</a></li>
+
+          <li><a href="{{ url('') }}">{{ $gridType }}</a></li>
+
           <li>
             <a href="">{{ $grids->name }}</a>
           </li>

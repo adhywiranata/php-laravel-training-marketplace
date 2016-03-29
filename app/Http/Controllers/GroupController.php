@@ -4,8 +4,12 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\General;
+use App\Models\Video as Video;
+use App\Models\Contact as Contact;
+
 use Illuminate\Http\Request;
 
+use Auth;
 use DB;
 
 class GroupController extends Controller {
@@ -27,8 +31,30 @@ class GroupController extends Controller {
 	 */
 	 public function getGroupProfile()
 	 {
+		 $user = Auth::user();
+		 if(!isset($user)):
+			 echo "You have to login First"; exit();
+		 endif;
+
+
+		 $user_id = Auth::user()->id;
+		 $check_provider =	DB::table('user_provider_corporate_nodes')
+											->where('user_provider_corporate_nodes.user_id', '=', $user_id)
+											->where('user_provider_corporate_nodes.group_role_id', '=', 1) // Table Providers
+											->first();
+		 if(count($check_provider) > 0):
+			 $provider = DB::table('providers')
+									->where('providers.id', '=', $check_provider->group_id)
+									->first();
+
+			 return $this->getGroup($provider->slug);
+		 else:
+			 echo "Sorry , you have no provider yet.";exit();
+		 endif;
+
+
 		 //$users = User::all();
-		 return view('profile.profile-page')->with('gridType',2)->withAuth(1);
+		 //return view('profile.profile-page')->with('gridType',2)->withAuth(1);
 	 }
 
 	/**
@@ -541,12 +567,6 @@ class GroupController extends Controller {
 		 // TRAINING EXPERIENCES -->
 
 
-
-
-
-// TO BE CONTINUED
-
-
 		 //<!--PROVIDER'S TRAINER
 /*
 		 $companies_providers_trainers_query =
@@ -681,7 +701,7 @@ class GroupController extends Controller {
 		   $group_training_program_learning_outcomes =
 		   DB::table('user_training_program_learning_outcome_nodes')
 		   ->join('learning_outcomes','user_training_program_learning_outcome_nodes.learning_outcome_id','=','learning_outcomes.id')
-		   ->where('user_training_program_learning_outcome_nodes.group_training_program_id', '=', $group_training_program->id)
+		   ->where('user_training_program_learning_outcome_nodes.user_training_program_id', '=', $group_training_program->training_program_id)
 		   ->get();
 
 		   $group_training_programs_learning_outcomes_data = array();
@@ -691,7 +711,7 @@ class GroupController extends Controller {
 		     $group_training_program_learning_outcome_outcome_preferences =
 		     DB::table('user_training_program_learning_outcome_outcome_preference_nodes')
 		     ->join('outcome_preferences','user_training_program_learning_outcome_outcome_preference_nodes.outcome_preference_id','=','outcome_preferences.id')
-		     ->where('user_training_program_learning_outcome_outcome_preference_nodes.group_training_program_learning_outcome_id', '=', $group_training_program_learning_outcome->id)
+		     ->where('user_training_program_learning_outcome_outcome_preference_nodes.user_training_program_learning_outcome_id', '=', $group_training_program_learning_outcome->id)
 		     ->get();
 
 		     $group_training_program_learning_outcome_outcome_preferences_data = array();
@@ -923,7 +943,9 @@ class GroupController extends Controller {
 		 $group_data = array(
 			 "user_id"														=> $group->id,
 			 "name"																=> $group->provider_name,
+			 "phone_number"												=> $group->phone_number,
 			 "email"															=> $group->email,
+			 "service_area"												=> $group->service_area,
 			 "profile_picture"										=> $group->profile_picture,
 			 "summary"														=> $group->summary,
 			 "area"																=> "",
@@ -947,6 +969,34 @@ class GroupController extends Controller {
 		 $group_awards													= json_decode(json_encode($group_awards_data), FALSE); // ARRAY DATA
 		 $group_expertises											= json_decode(json_encode($group_expertises_data), FALSE);
 
+		 // <!--VIDEOS
+		 $group_videos =	Video::where('owner_id',$group->id)->where('owner_role_id',3)->get();
+		 // VIDEOS -->
+
+		 // <!-- IS A CONTACT
+			 $is_contact = '';
+		 if(Auth::check()):
+			 $is_contact =	Contact::where('owner_id',Auth::user()->id)
+											 ->where('contact_owner_id',$group->id)
+											 ->where('contact_owner_role_id',3)
+											 ->count();
+		 endif;
+		 // IS A CONTACT -->
+
+		 // <!-- IS ADMIN
+		 $user = Auth::user();
+		 $check_admin_provider = 0;
+		 if(isset($user)):
+			 $user_id = Auth::user()->id;
+			 $check_admin_provider =	DB::table('user_provider_corporate_nodes')
+											 ->where('user_provider_corporate_nodes.user_id', '=', $user_id)
+											 ->where('user_provider_corporate_nodes.group_id', '=', $group->id)
+											 ->where('user_provider_corporate_nodes.group_position_id', '=', 1) // ADMIN
+											 ->first();
+			 $check_admin_provider = count($check_admin_provider);
+		 endif;
+		 // IS ADMIN -->
+
 		 return view('profile/profile-page')
 							 ->with('grids',$group_data)
 							 ->with('trainingExperiences',$group_training_experiences)
@@ -956,7 +1006,11 @@ class GroupController extends Controller {
 							 ->with('certifications',$group_certifications)
 							 ->with('awards',$group_awards)
 							 ->with('expertises',$group_expertises)
-							 ->with('gridType',1)
+							 ->with('videos',$group_videos)
+							 ->with('provider',0) // Button Manage Provider
+							 ->with('is_contact',$is_contact)
+							 ->with('is_admin',$check_admin_provider)//Check Admin
+							 ->with('gridType', "Training Provider") // Training Provider
 							 ->with('role',2);
 	 endif;
 

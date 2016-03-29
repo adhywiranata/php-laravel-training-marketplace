@@ -1,6 +1,6 @@
 <div class="col-lg-12 profile-section" data-section="training-experiences">
-  <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
-  @if($grids->user_id == $user_id)
+
+  @if($is_admin == 1)
   <a href="{{ url('dashboard/training-experience/add') }}" class="btn">
     <i class="fa fa-plus"></i>
     Add New Training Experience
@@ -31,6 +31,7 @@
           {{ $trainingExperience->speaking_experience_description }}
         </p>
 
+        @if($is_admin == 1)
         <div class="row">
           <a href="{{url('/dashboard/training-experience/'. $trainingExperience->speaking_experience_id . '/edit') }}" class="btn btn-margin green-back pull-left">Edit</a>
           <form class="pull-left" action="{{url('/dashboard/training-experience/'.$trainingExperience->speaking_experience_id )}}" method="post">
@@ -38,8 +39,9 @@
             <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
             <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
           </form>
-
         </div>
+        @endif
+        
         <div class="row">
           <div class="col-lg-12">
             @if(count($trainingExperience->speaking_experience_expertises) != 0)

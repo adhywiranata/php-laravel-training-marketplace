@@ -1,6 +1,6 @@
 <div class="col-lg-12 profile-section" data-section="videos">
-  <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
-  @if($grids->user_id == $user_id)
+
+  @if($is_admin == 1)
   <a href="{{ url('dashboard/video/add') }}" class="btn">
     <i class="fa fa-plus"></i>
     Add New Video

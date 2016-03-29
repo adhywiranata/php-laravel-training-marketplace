@@ -1,11 +1,12 @@
 <div class="col-lg-12 profile-section" data-section="skills">
-  <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
-  @if($grids->user_id == $user_id)
+
+  @if($is_admin == 1)
   <a href="{{ url('dashboard/skill/add') }}" class="btn">
     <i class="fa fa-plus"></i>
     Add New Skills
   </a>
   @endif
+
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="row">
       <div class="col-lg-12 col-md-10 col-sm-10 col-xs-10">

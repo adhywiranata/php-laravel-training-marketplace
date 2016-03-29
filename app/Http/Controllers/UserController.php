@@ -341,7 +341,7 @@ class UserController extends Controller {
 							->first();
 
 		 if(count($user) == 0 ):
-			  echo "<b>Not Found</b>";
+			  echo "<b>User Is Not Found</b>";
 				exit();
 		 else:
 				// <!-- USER EXPERTISES
@@ -747,10 +747,10 @@ class UserController extends Controller {
 			// AWARD -->
 
 			//SUMMARY TRAINER PROFILING VARIABLE
+
 			$user_data = array(
 				"user_id"														=> $user->id,
 				"name"															=> $user->first_name .' '. $user->last_name,
-				"email"															=> $user->email,
 				"phone_number"											=> $user->phone_number,
 				"email"															=> $user->email,
 				"service_area"											=> $user->service_area,
@@ -773,16 +773,39 @@ class UserController extends Controller {
 			$user_awards													= json_decode(json_encode($user_awards_data), FALSE); // ARRAY DATA
 			$user_expertises											= json_decode(json_encode($user_expertises_data),FALSE);
 
-			// VIDEOS
+			// <!--VIDEOS
 			$user_videos =	Video::where('owner_id',$user->id)->where('owner_role_id',2)->get();
 			// VIDEOS -->
 
 			// IS A CONTACT
 				$is_contact = '';
 			if(Auth::check()):
-				$is_contact =	Contact::where('owner_id',Auth::user()->id)->where('contact_owner_id',$user->id)->count();
+				$is_contact =	Contact::where('owner_id',Auth::user()->id)
+											->where('contact_owner_id',$user->id)
+											->where('contact_owner_role_id',2)
+											->count();
 			endif;
 			// IS A CONTACT -->
+
+			// <!--CHECK USER HAVE PROVIDER
+			$check_provider =	DB::table('user_provider_corporate_nodes')
+											 ->where('user_provider_corporate_nodes.user_id', '=', $user->id)
+											 ->where('user_provider_corporate_nodes.group_role_id', '=', 1) // Table Providers
+											 ->first();
+			// CHECK USER HAVE PROVIDER-->
+
+			// <!-- IS ADMIN
+			$admin = Auth::user();
+ 		 	$check_admin = 0;
+
+
+			if(isset($user)):
+				$admin_id = Auth::user()->id;
+				if($admin_id == $user->id):
+					$check_admin = 1;
+				endif;
+			endif;
+			// IS ADMIN-->
 
 			return view('profile/profile-page')
 								->with('grids',$user_data)
@@ -795,7 +818,9 @@ class UserController extends Controller {
 								->with('expertises',$user_expertises)
 								->with('videos',$user_videos)
 								->with('is_contact',$is_contact)
-								->with('gridType',1)
+								->with('is_admin',$check_admin)
+								->with('provider',count($check_provider))
+								->with('gridType',"Freelance Trainer") // Freelance Trainer
 								->with('role',1);
 		endif;
 	 }

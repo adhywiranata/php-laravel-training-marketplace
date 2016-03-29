@@ -1,6 +1,6 @@
 <div class="col-lg-12 profile-section" data-section="awards">
-  <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
-  @if($grids->user_id == $user_id)
+
+  @if($is_admin == 1)
   <a href="{{ url('dashboard/award/add') }}" class="btn">
     <i class="fa fa-plus"></i>
     Add New Award
@@ -16,14 +16,15 @@
         <br/>
         <a href="">{{$award->award_publisher_name}}</a>
 
-        <form action="{{url('/dashboard/award/'.$award->award_id .'/delete')}}" method="post">
-          <input type="hidden" name="_method" value="DELETE" />
-          <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
-          <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
-        </form>
+        @if($is_admin == 1)
+          <form action="{{url('/dashboard/award/'.$award->award_id .'/delete')}}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+            <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
+          </form>
 
-        <a href="{{url('/dashboard/award/'. $award->award_id . '/edit') }}" class="btn btn-margin green-back pull-right">Edit</a>
-
+          <a href="{{url('/dashboard/award/'. $award->award_id . '/edit') }}" class="btn btn-margin green-back pull-right">Edit</a>
+        @endif
         <!--
         <a href="#" class="btn btn-margin red-back pull-right">Delete</a>
         <a href="#" class="btn btn-margin green-back pull-right">Edit</a>

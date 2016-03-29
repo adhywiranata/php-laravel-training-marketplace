@@ -1,6 +1,5 @@
 <div class="col-lg-12 profile-section" data-section="work-experiences">
-  <?php $user_id = (isset(Auth::user()->id))?Auth::user()->id:''; ?>
-  @if($grids->user_id == $user_id)
+  @if($is_admin == 1)
   <a href="{{ url('dashboard/work-experience/add') }}" class="btn">
     <i class="fa fa-plus"></i>
     Add New Work Experience
@@ -19,6 +18,7 @@
         <a href="" class="title">{{$workExperience->title}}</a>
         <!--<a href="" class="title">Marketing Manager</a>-->
 
+        @if($is_admin == 1)
         <form action="{{url('/dashboard/work-experience/'.$workExperience->work_experience_id .'/delete')}}" method="post">
           <input type="hidden" name="_method" value="DELETE" />
           <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
@@ -26,6 +26,7 @@
         </form>
 
         <a href="{{url('/dashboard/work-experience/'. $workExperience->work_experience_id . '/edit') }}" class="btn btn-margin green-back pull-right">Edit</a>
+        @endif
 
         <br/>
         <a href="#">{{ $workExperience->corporate_name }}</a>
