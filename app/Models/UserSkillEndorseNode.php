@@ -7,16 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class UserRole
  */
-class UserSkillNode extends Model
+class UserSkillEndorseNode extends Model
 {
-    protected $table = 'user_skill_nodes';
+    protected $table = 'user_skill_endorse_nodes';
 
     public $timestamps = false;
 
     protected $fillable = [
-        'owner_id',
-        'owner_role_id',
-        'skill_id',
+        'user_skill_node_id',
+        'user_id',
     ];
 
     protected $guarded = [];
