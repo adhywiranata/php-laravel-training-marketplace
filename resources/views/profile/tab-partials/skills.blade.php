@@ -42,6 +42,14 @@
           <a class="trigger-popup trigger-sign-in">endorse</a>
         @endif
 
+
+        @if( ($is_admin == 1) && (count($expertise->endorse_users) == 0) )
+          <form action="{{url('/dashboard/skill/'.$expertise->expertise_node_id )}}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+            <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
+          </form>
+        @endif
       </div>
       <div class="col-lg-5">
         @if(count($expertise->endorse_users) > 0)

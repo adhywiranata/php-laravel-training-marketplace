@@ -1402,6 +1402,13 @@ class GeneralController extends Controller {
 		return redirect('dashboard#skills');
 	}
 
+	public function deleteSkill($id)
+	{
+		UserSkillNode::find($id)->delete();
+		UserSkillEndorseNode::where('user_skill_node_id', '=', $id)->delete();
+		return redirect('dashboard#skills');
+	}
+
 	public function addEndorse($id)
 	{
 		$logged_user = Auth::user();
