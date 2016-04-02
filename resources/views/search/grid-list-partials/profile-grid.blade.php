@@ -33,7 +33,7 @@
       <!--<a href="{{url('/g/super-cool-coach')}}" class="user-name">{{ $grid->name }}</a>-->
       @endif
       <i class="fa fa-check-circle text-green bigger-1-5 pointer"></i>
-      <span class="user-score">{{ $grid->score }}</span>
+      <!--<span class="user-score">{{ $grid->score }}</span>-->
       <span class="text-grey">
         <a href="{{ url('evaluation/s') }}" class=""  title="5 people evaluated this freelance trainer">
           (0 evaluation)

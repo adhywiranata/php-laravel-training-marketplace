@@ -14,10 +14,10 @@ class LearningOutcome extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'learning_outcome'
+        'learning_outcome_name'
     ];
 
     protected $guarded = [];
 
-        
+
 }

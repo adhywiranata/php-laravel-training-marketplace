@@ -31,6 +31,8 @@ use App\Models\SectionPhoto as SectionPhoto;
 //Training Program
 use App\Models\TrainingProgram as TrainingProgram;
 use App\Models\UserTrainingProgramNode as UserTrainingProgramNode;
+use App\Models\UserTrainingProgramLearningOutcomeNode as UserTrainingProgramLearningOutcomeNode;
+use App\Models\UserTrainingProgramLearningOutcomeOutcomePreferenceNode as UserTrainingProgramLearningOutcomeOutcomePreferenceNode;
 
 //Certification
 use App\Models\Certification as Certification;
@@ -1331,9 +1333,44 @@ class GeneralController extends Controller {
 			'is_certification_included' => $input['is_certification_included'],
 		];
 
-		UserTrainingProgramNode::create($insert_user_training_program);
+		$userTrainingProgramNode = UserTrainingProgramNode::create($insert_user_training_program);
 
 		//CHECK IF LEARNING OUTCOME DOES NOT EXISTS
+		$lo_op = explode('|||',$input['lo_op']);
+		for($i=1;$i<count($lo_op);$i++)
+		{
+			$this_lo_op = explode('|',$lo_op[$i]);
+
+			$learning_outcome_str = $this_lo_op[0];
+
+			if($learning_outcome_str != '' && $learning_outcome_str != 'undefined')
+			{
+				$learning_outcome = LearningOutcome::where('learning_outcome_name',$learning_outcome_str)->first();
+				if(count($learning_outcome) == 0)
+				{
+					$learning_outcome = LearningOutcome::create([ 'learning_outcome_name' => $learning_outcome_str ]);
+				}
+
+				$utplo = [
+					'learning_outcome_id' => $learning_outcome->id,
+					'user_training_program_id' => $userTrainingProgramNode->id
+				];
+
+				$utploN = UserTrainingProgramLearningOutcomeNode::create($utplo);
+
+				$outcome_preference = $this_lo_op[1];
+
+				$utploop = [
+					'user_training_program_learning_outcome_id' => $utploN->id,
+					'outcome_preference_id' => $outcome_preference
+				];
+
+				UserTrainingProgramLearningOutcomeOutcomePreferenceNode::create($utploop);
+
+			}
+
+		}
+		/*
 		$learning_outcomes = explode('|||',$input['learning_outcomes']);
 		for($i=0;$i<count($learning_outcomes);$i++)
 		{
@@ -1346,7 +1383,7 @@ class GeneralController extends Controller {
 					$learning_outcome = LearningOutcome::create([ 'learning_outcome_name' => $learning_outcome ]);
 				}
 			}
-		}
+		}*/
 
 		return redirect('dashboard#programs');
 	}

@@ -14,6 +14,22 @@
       <div class="col-lg-12 col-md-10 col-sm-10 col-xs-10">
 
         <a href="" class="title">{{$trainingProgramme->training_program_name_id}}</a>
+        <br/>
+        @if($trainingProgramme->learning_outcome_names != '')
+          <?php $number = 1; ?>
+          @foreach($trainingProgramme->learning_outcome_names as $learning_outcome_name)
+            @if($learning_outcome_name->learning_outcome_name != '')
+              {{ $number }}. {{ $learning_outcome_name->learning_outcome_name }}
+              (outcome preference:
+                @foreach($learning_outcome_name->outcome_preference_names as $op)
+                {{ $op->outcome_preference_name }},
+                @endforeach
+              )
+            @endif
+          <?php $number++;
+          echo '<br/>'; ?>
+          @endforeach
+        @endif
         <!--<a href="" class="title">Marketing in Entrepreneurship</a>-->
         <!--
         <a href="#" class="btn btn-margin red-back pull-right">Delete</a>

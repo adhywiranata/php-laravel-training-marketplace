@@ -117,7 +117,7 @@ Route::delete('/dashboard/award/{id}','GeneralController@deleteAward');
 
 //Training Program
 Route::get('/dashboard/program/add', 'GeneralController@addProgram');
-Route::post('/dashboard/program/create','GeneralController@createProgram');
+Route::post('/dashboard/program/add','GeneralController@createProgram');
 Route::get('/dashboard/program/{id}/edit','GeneralController@editProgram');
 Route::put('/dashboard/program/{id}/update','GeneralController@updateProgram');
 Route::delete('/dashboard/program/{id}','GeneralController@deleteProgram');

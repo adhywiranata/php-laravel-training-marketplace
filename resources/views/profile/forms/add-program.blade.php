@@ -37,12 +37,85 @@
             data-name="training_program"
             data-validation="required"
             data-placeholder="insert training program title"
-            data-current="  "
+            data-current=""
             data-get-ajax="{{ url('getautocompletedata/training_program/training_program_name_en') }}/"
             data-get-ajax-column="training_program_name_en"
             data-classes="form-control">
           </div>
 
+          <input id="lo-op" type="hidden" name="lo_op" value="" data-current-index="1" />
+          <div class="row" id="learning-multiple">
+            <div class="first-div">
+              <div class="col-xs-6">
+                <label for="fg-input-0">
+                  <span class="uppercase form-label">
+                    Learning Outcome
+                  </span>
+                </label>
+                <div class="fg-input-container">
+                  <input type="text" data-json=""
+                    data-get-ajax-column="training_program_name_en"
+                    data-get-ajax="http://localhost/cektraining/public/getautocompletedata/training_program/training_program_name_en/"
+                    data-items="undefined"
+                    autocomplete="off" value=""
+                    placeholder="insert training program title"
+                    class="form-control training-lo blurring"
+                    data-training-lo-index="1"
+                    name="fake"
+                    id="fg-input-0" data-validation="required">
+                </div>
+              </div>
+
+              <div class="col-xs-6">
+                <label for="fg-input-0">
+                  <span class="uppercase form-label">
+                    Outcome Preference
+                  </span>
+                </label>
+                <div class="fg-input-container">
+                  <select class="form-control blurring" data-training-op-index="1">
+                    <option value="1">Skill</option>
+                    <option value="2">Knowledge</option>
+                    <option value="3">Attitude</option>
+                  </select>
+                </div>
+              </div>
+            </div><!-- end of first div -->
+            <div class="template-div" style="display:none;">
+              <div class="col-xs-6">
+                <div class="fg-input-container">
+                  <input type="text" data-json=""
+                    data-get-ajax-column="training_program_name_en"
+                    data-get-ajax="http://localhost/cektraining/public/getautocompletedata/training_program/training_program_name_en/"
+                    data-items="undefined"
+                    autocomplete="off" value=""
+                    placeholder="insert training program title"
+                    class="form-control training-lo blurring"
+                    data-training-lo-index="2"
+                    name="fake2"
+                    id="fg-input-0" data-validation="required">
+                </div>
+              </div>
+
+              <div class="col-xs-6">
+                <div class="fg-input-container">
+                  <select class="form-control blurring">
+                    <option value="1">Skill</option>
+                    <option value="2">Knowledge</option>
+                    <option value="3">Attitude</option>
+                  </select>
+                </div>
+              </div>
+            </div><!-- end of template div -->
+            <div class="next-div">
+            </div>
+          </div>
+
+          <div class="col-xs-12">
+            <a class="learning-more">+ Add More</a>
+          </div>
+
+          <!--
           <div class="col-xs-12 fg-input"
             data-type="text"
             data-label="Learning Outcome"
@@ -66,7 +139,7 @@
             data-multiple-chip="Add More Learning Outcome"
             data-classes="form-control">
           </div>
-
+        -->
           <div class="col-xs-12 fg-input"
             data-type="combobox"
             data-label="Include Certificate?"

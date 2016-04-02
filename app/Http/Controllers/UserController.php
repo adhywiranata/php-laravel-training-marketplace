@@ -546,7 +546,8 @@ class UserController extends Controller {
 
 			//<!--TRAINING PROGRAMME
 			$user_training_programs =	DB::table('user_training_program_nodes')
-																 	 ->select('*','training_program.id AS training_program_id')
+																 	 ->select('*','training_program.id AS training_program_id'
+																	 						 ,'user_training_program_nodes.id AS user_training_program_nodes_id' )
 																	 ->join('training_program','user_training_program_nodes.training_program_id','=','training_program.id')
 																	 ->where('user_training_program_nodes.owner_id', '=', $user->id)
 																	 ->where('user_training_program_nodes.owner_role_id', '=', 2)
@@ -558,8 +559,9 @@ class UserController extends Controller {
 				//Learning Outcome
 				$user_training_program_learning_outcomes =
 				DB::table('user_training_program_learning_outcome_nodes')
+				->select('*','user_training_program_learning_outcome_nodes.id AS user_training_program_learning_outcome_nodes_id')
 				->join('learning_outcomes','user_training_program_learning_outcome_nodes.learning_outcome_id','=','learning_outcomes.id')
-				->where('user_training_program_learning_outcome_nodes.user_training_program_id', '=', $user_training_program->id)
+				->where('user_training_program_learning_outcome_nodes.user_training_program_id', '=', $user_training_program->user_training_program_nodes_id)
 				->get();
 
 				$user_training_programs_learning_outcomes_data = array();
@@ -569,7 +571,7 @@ class UserController extends Controller {
 					$user_training_program_learning_outcome_outcome_preferences =
 					DB::table('user_training_program_learning_outcome_outcome_preference_nodes')
 					->join('outcome_preferences','user_training_program_learning_outcome_outcome_preference_nodes.outcome_preference_id','=','outcome_preferences.id')
-					->where('user_training_program_learning_outcome_outcome_preference_nodes.user_training_program_learning_outcome_id', '=', $user_training_program_learning_outcome->id)
+					->where('user_training_program_learning_outcome_outcome_preference_nodes.user_training_program_learning_outcome_id', '=', $user_training_program_learning_outcome->user_training_program_learning_outcome_nodes_id)
 					->get();
 
 					$user_training_program_learning_outcome_outcome_preferences_data = array();
