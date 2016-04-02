@@ -124,6 +124,13 @@ Route::delete('/dashboard/program/{id}','GeneralController@deleteProgram');
 
 //Skills
 Route::get('/dashboard/skill/add', 'GeneralController@addSkill');
+Route::delete('/dashboard/skill/{id}', 'GeneralController@deleteSkill');
+
+
+Route::get('/skill/{id}/endorse', 'GeneralController@addEndorse');
+Route::delete('/skill/{id}/remove-endorse', 'GeneralController@deleteEndorse');
+
+
 
 //Video
 Route::get('/dashboard/video/add', 'GeneralController@addVideo');

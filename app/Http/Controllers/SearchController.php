@@ -35,7 +35,7 @@ class SearchController extends Controller {
 		//print preg_replace("/$words/i", "<b>$0</b>", $text);
 
 		$users = User::join('user_role_nodes', 'user_role_nodes.user_id', '=', 'users.id')
-				->where('role_id', '=', 2)				
+				->where('role_id', '=', 2)
 	            ->where('users.is_verified', '=', 1)
 	            ->where('users.first_name', '!=', '')
 	            ->whereIn('users.id', function($query) use ($request) {
@@ -72,7 +72,7 @@ class SearchController extends Controller {
 		if($request->budget != ''){
 			$users = $users->where('users.mandays_fee', '<=', $request->budget);
 		}
-				
+
 		$users = $users->where('users.service_area', 'like', '%'.$request->location.'%')
 				->where(function($query) use ($request) {
 					$method = explode('+', $request->method);
@@ -309,7 +309,7 @@ class SearchController extends Controller {
 				);
 				array_push($group_languages_data,$group_language_data);
 			endforeach;
-			
+
 
 
 			$average_material_score = "N/A";
@@ -327,23 +327,23 @@ class SearchController extends Controller {
 
 			//ALL GROUP DATA
 			$group_data = array(
-				"user_id"			=> $group->id,
-				"name"				=> $group->provider_name,
-				"email"				=> $group->email,
-				"profile_picture"	=> $group->profile_picture,
-				"summary"			=> $group->summary,
-				"area"				=> "",
-				"slug"				=> $group->slug,
-				"language"			=> $group_languages_data,
-				"material_score"	=> $average_material_score,
-				"facility_score"	=> $average_facility_score,
-				"delivery_score"	=> $average_delivery_score,
-				"score"				=> $average_group_review_score_data,
-				"expertises"		=> $group_expertises_data,
-				"connection"		=> $total_group_following_data,
-				"training"			=> $total_group_speaking_experience_data,
-				"review"			=> $total_group_review_data,
-			  	"view"				=> $group->is_view,
+				"user_id"						=> $group->id,
+				"name"							=> $group->provider_name,
+				"email"							=> $group->email,
+				"profile_picture"		=> $group->profile_picture,
+				"summary"						=> $group->summary,
+				"area"							=> "",
+				"slug"							=> $group->slug,
+				"language"					=> $group_languages_data,
+				"material_score"		=> $average_material_score,
+				"facility_score"		=> $average_facility_score,
+				"delivery_score"		=> $average_delivery_score,
+				"score"							=> $average_group_review_score_data,
+				"expertises"				=> $group_expertises_data,
+				"connection"				=> $total_group_following_data,
+				"training"					=> $total_group_speaking_experience_data,
+				"review"						=> $total_group_review_data,
+			  "view"							=> $group->is_view,
 			);
 			array_push($groups_data,$group_data);
 		endforeach;

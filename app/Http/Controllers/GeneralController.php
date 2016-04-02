@@ -23,7 +23,7 @@ use App\Models\WorkExperience as WorkExperience;
 use App\Models\Skill as Skill;
 use App\Models\SectionSkill as SectionSkill;
 use App\Models\UserSkillNode as UserSkillNode;
-
+use App\Models\UserSkillEndorseNode as UserSkillEndorseNode;
 
 //Photo
 use App\Models\SectionPhoto as SectionPhoto;
@@ -1436,7 +1436,93 @@ class GeneralController extends Controller {
 		}
 
 		//echo "<script type='text/javascript'>alert('Insert Success');</script>";exit();
-		return redirect('dashboard#programs');
+		return redirect('dashboard#skills');
+	}
+
+	public function deleteSkill($id)
+	{
+		UserSkillNode::find($id)->delete();
+		UserSkillEndorseNode::where('user_skill_node_id', '=', $id)->delete();
+		return redirect('dashboard#skills');
+	}
+
+	public function addEndorse($id)
+	{
+		$logged_user = Auth::user();
+		if($logged_user):
+			$logged_user_id = Auth::user()->id;
+			$insert_endorse = [
+				'user_skill_node_id' 	=> $id,
+				'user_id' 						=> $logged_user_id,
+			];
+			UserSkillEndorseNode::create($insert_endorse);
+
+			//GET ENDORSED USER TABLE
+			$endorsed_role_user  = DB::table('user_skill_nodes')
+														->where('user_skill_nodes.id', '=', $id)
+														->first();
+			if($endorsed_role_user->owner_role_id == 3){
+				$table = 'providers';
+				$prefix_path = 'g/';
+			}else if($endorsed_role_user->owner_role_id == 4){
+				$table = 'corporates';
+				$prefix_path = 'c/'; // PERLU DISKUSIKAN PENAMAAN ROUTES UNTUK CORPORATE
+			}else{
+				$table = 'users';
+				$prefix_path = 'u/';
+			}
+
+			//GET ENDORSED USER SLUG
+			$endorsed_user  = DB::table('user_skill_nodes')
+												->join($table,'user_skill_nodes.owner_id','=',$table.'.id')
+												->where('user_skill_nodes.id', '=', $id)
+												->first();
+
+			return redirect($prefix_path.$endorsed_user->slug.'#skills');
+
+		else:
+			echo "You have to log in first";exit();
+		endif;
+
+	}
+
+	public function deleteEndorse($id)
+	{
+		$logged_user = Auth::user();
+		if($logged_user):
+			$logged_user_id = Auth::user()->id;
+			$delete_endorse = [
+				'user_skill_node_id' 	=> $id,
+				'user_id' 						=> $logged_user_id,
+			];
+			UserSkillEndorseNode::where($delete_endorse)->delete();
+
+			//GET ENDORSED USER TABLE
+			$endorsed_role_user  = DB::table('user_skill_nodes')
+														->where('user_skill_nodes.id', '=', $id)
+														->first();
+			if($endorsed_role_user->owner_role_id == 3){
+				$table = 'providers';
+				$prefix_path = 'g/';
+			}else if($endorsed_role_user->owner_role_id == 4){
+				$table = 'corporates';
+				$prefix_path = 'c/'; // PERLU DISKUSIKAN PENAMAAN ROUTES UNTUK CORPORATE
+			}else{
+				$table = 'users';
+				$prefix_path = 'u/';
+			}
+
+			//GET ENDORSED USER SLUG
+			$endorsed_user  = DB::table('user_skill_nodes')
+												->join($table,'user_skill_nodes.owner_id','=',$table.'.id')
+												->where('user_skill_nodes.id', '=', $id)
+												->first();
+
+			return redirect($prefix_path.$endorsed_user->slug.'#skills');
+
+		else:
+			echo "You have to log in first";exit();
+		endif;
 	}
 
 	/**

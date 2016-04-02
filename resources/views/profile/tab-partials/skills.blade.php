@@ -24,6 +24,32 @@
               <span class="bold">{{$expertise->total_endorse}}</span>
               {{$expertise->expertise_name}}
         </a>
+
+        @if(Auth::check())
+          <?php $user_id = Auth::user()->id; ?>
+          @if($grids->user_id != $user_id)
+            @if($expertise->endorse_status == 0)
+              <a href="{{ url('/skill/'.$expertise->expertise_node_id.'/endorse') }}">endorse</a>
+            @else
+              <form action="{{ url('/skill/'.$expertise->expertise_node_id.'/remove-endorse') }}" method="post">
+                <input type="hidden" name="_method" value="DELETE" />
+                <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+                <input type="submit" value="remove endorse" />
+              </form>
+            @endif
+          @endif
+        @else
+          <a class="trigger-popup trigger-sign-in">endorse</a>
+        @endif
+
+
+        @if( ($is_admin == 1) && (count($expertise->endorse_users) == 0) )
+          <form action="{{url('/dashboard/skill/'.$expertise->expertise_node_id )}}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+            <button type="submit" class="btn btn-margin red-back pull-right">Delete</button>
+          </form>
+        @endif
       </div>
       <div class="col-lg-5">
         @if(count($expertise->endorse_users) > 0)
@@ -32,7 +58,7 @@
         </a>
         @endif
         @foreach($expertise->endorse_users as $endorse_user)
-        <img class="pull-right" style="margin:0 2px;" src="{{ url('images/users/$endorse_user->profile_picture') }}" height="30px" />
+        <img class="pull-right" style="margin:0 2px;" src="{{ url('images/users/'.$endorse_user->profile_picture) }}" height="30px" />
         @endforeach
       </div>
     </div>

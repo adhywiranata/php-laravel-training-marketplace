@@ -347,6 +347,7 @@ class UserController extends Controller {
 				// <!-- USER EXPERTISES
 				// Get Expertises Data
 				$user_expertises =	DB::table('user_skill_nodes')
+													 ->select('*','user_skill_nodes.id AS user_skill_nodes_id')
 													 ->join('skills', 'user_skill_nodes.skill_id', '=', 'skills.id')
 													 ->where('user_skill_nodes.owner_id', '=', $user->id)
 													 ->where('user_skill_nodes.owner_role_id', '=', 2)
@@ -357,14 +358,25 @@ class UserController extends Controller {
 					// Get Endorse Data
 
 					$user_endorses =	DB::table('user_skill_endorse_nodes')
+													 ->select('*','user_skill_endorse_nodes.user_id AS user_id')
 													 ->join('users','user_skill_endorse_nodes.user_id','=','users.id')
-													 ->where('user_skill_endorse_nodes.user_skill_node_id', '=', $user_expertise->id)
+													 ->where('user_skill_endorse_nodes.user_skill_node_id', '=', $user_expertise->user_skill_nodes_id)
 													 ->get();
 
 					$user_endorses_data = array();
+					$endorse_status = 0;
 					foreach($user_endorses as $user_endorse):
 
+						$logged_user = Auth::user();
+						if($logged_user):
+							$logged_user_id = Auth::user()->id;
+							if($user_endorse->user_id == $logged_user_id):
+								$endorse_status = 1;
+							endif;
+						endif;
+
 						$user_endorse_data  = array(
+								"user_id"						=>  $user_endorse->user_id,
 								"profile_picture"		=>	$user_endorse->profile_picture,
 								"first_name"				=>	$user_endorse->first_name,
 								"last_name"					=>	$user_endorse->last_name,
@@ -373,9 +385,11 @@ class UserController extends Controller {
 					endforeach;
 
 					$user_expertise_data  = array(
+						"expertise_node_id"	=> $user_expertise->user_skill_nodes_id,
 						"expertise_name"		=> $user_expertise->skill_name,
 						"total_endorse"			=> count($user_endorses),
 						"endorse_users"			=> $user_endorses_data,
+						"endorse_status"		=> $endorse_status,
 					);
 					array_push($user_expertises_data,$user_expertise_data);
 				endforeach;
@@ -801,7 +815,7 @@ class UserController extends Controller {
  		 	$check_admin = 0;
 
 
-			if(isset($user)):
+			if(isset($admin)):
 				$admin_id = Auth::user()->id;
 				if($admin_id == $user->id):
 					$check_admin = 1;
