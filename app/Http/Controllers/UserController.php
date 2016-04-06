@@ -762,6 +762,18 @@ class UserController extends Controller {
 			endforeach;
 			// AWARD -->
 
+			// <!--VIDEOS
+			$user_videos =	Video::where('owner_id',$user->id)->where('owner_role_id',2)->get();
+			// VIDEOS -->
+
+			// <!-- CLIENTS
+			$user_clients = array();
+			foreach($user_speaking_experiences as $user_speaking_experience):
+				array_push($user_clients,$user_speaking_experience->corporate_profile_picture);
+			endforeach;
+			$user_clients = array_unique($user_clients);
+			// CLIENTS -->
+
 			//SUMMARY TRAINER PROFILING VARIABLE
 
 			$user_data = array(
@@ -788,10 +800,7 @@ class UserController extends Controller {
 			$user_certifications									= json_decode(json_encode($user_certifications_data), FALSE); // ARRAY DATA
 			$user_awards													= json_decode(json_encode($user_awards_data), FALSE); // ARRAY DATA
 			$user_expertises											= json_decode(json_encode($user_expertises_data),FALSE);
-
-			// <!--VIDEOS
-			$user_videos =	Video::where('owner_id',$user->id)->where('owner_role_id',2)->get();
-			// VIDEOS -->
+			$user_clients													= json_decode(json_encode($user_clients),FALSE);
 
 			// IS A CONTACT
 				$is_contact = '';
@@ -833,6 +842,7 @@ class UserController extends Controller {
 								->with('awards',$user_awards)
 								->with('expertises',$user_expertises)
 								->with('videos',$user_videos)
+								->with('clients',$user_clients)
 								->with('is_contact',$is_contact)
 								->with('is_admin',$check_admin)
 								->with('provider',count($check_provider))

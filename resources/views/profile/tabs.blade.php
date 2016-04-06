@@ -24,6 +24,8 @@
         data-feature-name="skill">Skills and Endorsement</li>
       <li data-trigger="videos" class="ajax-count-feature"
         data-feature-name="video">Videos</li>
+      <li data-trigger="clients" class="ajax-count-feature"
+          data-feature-name="client">Client</li>
     </ul>
   </div>
 
@@ -49,4 +51,5 @@
 
   @include('profile.tab-partials.videos')
 
+  @include('profile.tab-partials.clients')
 </div>
