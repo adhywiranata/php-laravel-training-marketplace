@@ -955,6 +955,18 @@ class GroupController extends Controller {
 		 endforeach;
 		 // AWARD -->
 
+		 // <!--VIDEOS
+		 $group_videos =	Video::where('owner_id',$group->id)->where('owner_role_id',3)->get();
+		 // VIDEOS -->
+
+		 // <!-- CLIENTS
+		 $group_clients = array();
+		 foreach($group_speaking_experiences as $group_speaking_experience):
+			 array_push($group_clients,$group_speaking_experience->corporate_profile_picture);
+		 endforeach;
+		 $group_clients = array_unique($group_clients);
+		 // CLIENTS -->
+
 		 //SUMMARY PROVIDER PROFILING VARIABLE
 		 $group_data = array(
 			 "user_id"														=> $group->id,
@@ -985,9 +997,6 @@ class GroupController extends Controller {
 		 $group_awards													= json_decode(json_encode($group_awards_data), FALSE); // ARRAY DATA
 		 $group_expertises											= json_decode(json_encode($group_expertises_data), FALSE);
 
-		 // <!--VIDEOS
-		 $group_videos =	Video::where('owner_id',$group->id)->where('owner_role_id',3)->get();
-		 // VIDEOS -->
 
 		 // <!-- IS A CONTACT
 			 $is_contact = '';
@@ -1023,6 +1032,7 @@ class GroupController extends Controller {
 							 ->with('awards',$group_awards)
 							 ->with('expertises',$group_expertises)
 							 ->with('videos',$group_videos)
+							 ->with('clients',$group_clients)
 							 ->with('provider',0) // Button Manage Provider
 							 ->with('is_contact',$is_contact)
 							 ->with('is_admin',$check_admin_provider)//Check Admin
