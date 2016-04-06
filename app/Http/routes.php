@@ -30,6 +30,8 @@ Route::get('/skill/add', 'GeneralController@addSkill');
 |-----------------------
 */
 
+Route::get('/tr4ck1n6','GeneralController@tracking');
+
 Route::get('/', 'GeneralController@index');
 Route::get('/training-provider', 'GeneralController@provider');
 Route::get('/freelance-trainer', 'GeneralController@freelancer');

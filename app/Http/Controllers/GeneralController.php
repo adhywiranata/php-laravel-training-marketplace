@@ -69,6 +69,10 @@ use App\Models\Provider as Provider;
 
 use Intervention\Image\Facades\Image;
 
+
+//Feature Tracking
+use App\Models\FeatureTracking as FeatureTracking;
+
 class GeneralController extends Controller {
 
 	/**
@@ -116,7 +120,7 @@ class GeneralController extends Controller {
 		// roles: basic, freelance-trainer, training-provider
 		if($role == 'basic')
 		{
-			$role_code = 2;
+			$role_code = 1;
 		}
 		if($role == 'freelance-trainer')
 		{
@@ -266,7 +270,7 @@ class GeneralController extends Controller {
 	 } //ENDIF for Role 3 (provider) checking
 
 
-	 return redirect('/');
+	 return redirect('login');
 
 	}
 	/**
@@ -1668,6 +1672,16 @@ class GeneralController extends Controller {
 			'ip'						=> $_SERVER['REMOTE_ADDR']
 		];
 		$result = DB::table('feature_tracking')->insert($insert);
+	}
+
+	public function tracking()
+	{
+		$tracks = FeatureTracking::all();
+		echo '<table>';
+		foreach($tracks as $track):
+			echo '<tr><td>'.$track->feature_name.'</td><td>IP: '.$track->ip.'</td></tr>';
+		endforeach;
+		echo '</table>';
 	}
 
 	public function about()
