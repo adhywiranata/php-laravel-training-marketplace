@@ -32,7 +32,7 @@ return [
 
   "list_competency_preference" => [
     'Skill',
-    'knowledge',
+    'Knowledge',
     'Attitude',
   ],
 
