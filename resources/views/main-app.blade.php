@@ -108,29 +108,36 @@
 										{{ trans('content.nav_dashboard') }}
 									</a>
 								</li>
-								<li class="ajax-count-feature"
+								<li class="trigger-popup ajax-count-feature"
 					        data-feature-name="my_messages"
 					        data-trigger-popup="coming-soon">
 									<a href="#">
+
 										{{ trans('content.nav_messages') }}
+										<!--
 										<span class="red-back padding-3-5 bold uppercase rounded">
 											5 {{ trans('content.nav_unread') }}
 										</span>
+									-->
 									</a>
 								</li>
 								<li>
 									<a href="{{ url('dashboard/contacts') }}">
 										{{ trans('content.nav_contacts') }}
+										<!--
 										<span class="green-back padding-3-5 bold uppercase rounded">
 											5 {{ trans('content.nav_new_contact') }}
 										</span>
+										-->
 									</a>
 								</li>
 								<li>
 									<a href="{{ url('settings/plan') }}">
 										{{ trans('content.nav_account') }}
 										<span class="bold">BASIC</span>
+										<!--
 										<span class="orange-back padding-3-5 bold uppercase rounded">
+										-->
 											{{ trans('content.nav_upgrade') }}
 										</span>
 									</a>

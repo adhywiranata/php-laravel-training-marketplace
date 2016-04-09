@@ -73,9 +73,9 @@
     <br/>
         <span class="user-score bigger-1-5"  title="Overall Evaluation Score: 9.5">{{$grids->score}}</span>
     <!--<span class="user-score bigger-1-5">9.0</span>-->
-    <a href="{{ url('evaluation/s') }}" class="ajax-count-feature"
+    <a href="" class="trigger-popup ajax-count-feature"
       title="5 people evaluated this freelance trainer"
-      data-feature-name="evaluation">
+      data-feature-name="evaluation" data-trigger-popup="coming-soon">
       (5 evaluation(s))
     </a>
   </div>
