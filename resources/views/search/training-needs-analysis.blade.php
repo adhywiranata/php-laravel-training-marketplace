@@ -6,7 +6,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <form action="{{ url() }}" method="GET">
+        <form action="" method="GET">
 
           <!-- STEP 0 -->
           <div class="tna-section first-section text-center" id="search-wizard-step-0">
@@ -110,7 +110,7 @@
                 <button type="button" class="btn btn-default" onclick="goToSearchWizard('2')">
                   <span class="lnr lnr-chevron-left-circle"></span> Prev
                 </button>
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('4')">
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('4', 'next')">
                   Next <span class="lnr lnr-chevron-right-circle"></span>
                 </button>
               </div>
@@ -131,8 +131,7 @@
                   data-validation=""
                   data-placeholder="Insert participant Seniority Level"
                   data-current=""
-                  data-get-ajax="{{ url('getautocompletedata/job_seniority_levels/job_seniority_level_name') }}/" 
-                  data-get-ajax-column="job_seniority_level_name"
+                  data-items=""
                   data-classes="form-control"
                   data-multiple-chip="Add More Seniority Level">
                 </div>
@@ -199,42 +198,53 @@
                   data-item-label="-- Choose Prefered Outcome Competency Below --,<?php echo implode(',',trans('custom.list_competency_preference')); ?>"
                   data-item-value="0,<?php echo implode(',',trans('custom.list_competency_preference')); ?>"
                   data-current=""
-                  data-classes="form-control">
+                  data-classes="form-control"
+                  data-multiple="+ Add More Outcome Competency">
                 </div>
               </div>
               <br/>
 
               <div class="col-md-12">
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('5')">&lt;&lt; Prev</button>
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('7')">Next &gt;&gt;</button>
+                <br/>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('5')">
+                  <span class="lnr lnr-chevron-left-circle"></span> Prev
+                </button>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('7', 'next')">
+                  Next <span class="lnr lnr-chevron-right-circle"></span>
+                </button>
               </div>
             </div>
           </div>
 
 
           <!-- STEP 7 -->
-          <div class="tna-section no-padding text-center fg-form" id="search-wizard-step-7">
+          <div class="tna-section text-center fg-form" id="search-wizard-step-7">
             <h3 class="roboto-light text-blue">Step 7 of 8<br/>You can select more than one related skills and training programs</h3>
             <br/>
 
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
-                  data-type="combobox"
-                  data-name="gender"
+                  data-type="text-autocomplete"
+                  data-name="related_skills"
                   data-validation=""
-                  data-item-label="-- Choose Related Skills and Training Programs --,<?php echo implode(',',trans('custom.list_industries')); ?>"
-                  data-item-value="0,<?php echo implode(',',trans('custom.list_industries')); ?>"
+                  data-placeholder="Select related skill and training programs"
                   data-current=""
+                  data-items=""
                   data-classes="form-control"
-                  data-multiple="+ Add More Field">
+                  data-multiple-chip="Add More">
                 </div>
                 <br/>
               </div>
 
               <div class="col-md-12">
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('6')">&lt;&lt; Prev</button>
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('8')">Next &gt;&gt;</button>
+                <br/>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('6')">
+                  <span class="lnr lnr-chevron-left-circle"></span> Prev
+                </button>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('8', 'next')">
+                  Next <span class="lnr lnr-chevron-right-circle"></span>
+                </button>
               </div>
             </div>
           </div>
@@ -260,8 +270,13 @@
               </div>
 
               <div class="col-md-12">
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('7')">&lt;&lt; Prev</button>
-                <button type="submit" class="btn btn-default"><i class="lnr lnr-magnifier"></i> Search</button>
+                <br/>
+                <button type="button" class="btn btn-default" onclick="goToSearchWizard('7')">
+                  <span class="lnr lnr-chevron-left-circle"></span> Prev
+                </button>
+                <button type="button" class="btn btn-default" onclick="submitTNA()">
+                  Submit
+                </button>
               </div>
             </div>
           </div>

@@ -486,6 +486,30 @@ function goToSearchWizard(step, text)
       });
     }
   }
+  else if(step == '4')
+  {
+    if(text != ""){
+      //Stringify Job Function Data
+      var jobFunctionData = "";
+
+      if($('#search-wizard-step-3 input[type=text]').val() != "")
+        jobFunctionData = $('#search-wizard-step-3 input[type=text]').val() + '#';
+
+      for (var i = 0; i < $('#search-wizard-step-3 .fg-chip').length; i++) {
+        jobFunctionData = jobFunctionData + $('#search-wizard-step-3 .fg-chip')[i].getAttribute("data-value") + '#';
+      };
+      jobFunctionData = jobFunctionData.slice(0, jobFunctionData.length-1);
+
+
+      $.ajax({
+        url: base_url+'/tna/getSeniorityLevels',
+        data: {jobFunction: jobFunctionData},
+        success: function(val){
+          $('#search-wizard-step-4 input[type=text]').attr("data-items", val);
+        }
+      });
+    }
+  }
   else if(step == '5')
   {
     if(text != ""){
@@ -525,11 +549,68 @@ function goToSearchWizard(step, text)
       });
     }
   }
+  else if(step == '7')
+  {
+    if(text != ""){
+      //Stringify Industry Data
+      var industryData = "";
+
+      if($('#search-wizard-step-5 input[type=text]').val() != "")
+        industryData = $('#search-wizard-step-5 input[type=text]').val() + '#';
+
+      for (var i = 0; i < $('#search-wizard-step-5 .fg-chip').length; i++) {
+        industryData = industryData + $('#search-wizard-step-5 .fg-chip')[i].getAttribute("data-value") + '#';
+      };
+      industryData = industryData.slice(0, industryData.length-1);
+
+
+      $.ajax({
+        url: base_url+'/tna/getRelated',
+        data: {
+          industry: industryData
+        },
+        success: function(val){
+          $('#search-wizard-step-7 input[type=text]').attr("data-items", val);
+        }
+      });
+    }
+  }
 
   $('html, body').animate({
     scrollTop: $("#search-wizard-step-"+step).offset().top
   }, 700);
 }
+
+function submitTNA()
+{
+  var type = $('#search-wizard-step-0 input[type=hidden]').val();
+
+  //Stringify Job Function Data
+  var jobFunctionData = "";
+
+  if($('#search-wizard-step-3 input[type=text]').val() != "")
+    jobFunctionData = $('#search-wizard-step-3 input[type=text]').val() + '#';
+
+  for (var i = 0; i < $('#search-wizard-step-3 .fg-chip').length; i++) {
+    jobFunctionData = jobFunctionData + $('#search-wizard-step-3 .fg-chip')[i].getAttribute("data-value") + '#';
+  };
+  jobFunctionData = jobFunctionData.slice(0, jobFunctionData.length-1);
+
+  //Stringify Related Skill Data
+  var skill = "";
+
+  if($('#search-wizard-step-7 input[type=text]').val() != "")
+    skill = $('#search-wizard-step-7 input[type=text]').val() + '#';
+
+  for (var i = 0; i < $('#search-wizard-step-7 .fg-chip').length; i++) {
+    skill = skill + $('#search-wizard-step-7 .fg-chip')[i].getAttribute("data-value") + '#';
+  };
+  skill = skill.slice(0, skill.length-1);
+
+
+  window.location = "training-needs-analysis/result?type="+type+"&jobfunction="+jobFunctionData+"&skill="+skill;
+}
+
 
 /*
 =============
