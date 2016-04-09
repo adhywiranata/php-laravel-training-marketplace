@@ -35,7 +35,9 @@
       <i class="fa fa-check-circle text-green bigger-1-5 pointer"></i>
       <!--<span class="user-score">{{ $grid->score }}</span>-->
       <span class="text-grey">
-        <a href="{{ url('evaluation/s') }}" class=""  title="5 people evaluated this freelance trainer">
+        <a href="#" class="ajax-count-feature"
+          data-feature-name="view_evaluations"
+          data-trigger-popup="coming-soon" title="5 people evaluated this freelance trainer">
           (0 evaluation)
         </a>
         </span>

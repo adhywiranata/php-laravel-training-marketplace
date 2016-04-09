@@ -213,11 +213,11 @@ class SearchController extends Controller {
 
 		            	$query->select('providers.id')
 		            		->from('providers')
-		            		->join('user_skill_nodes', function($join){
+		            		->leftJoin('user_skill_nodes', function($join){
 		            			$join->on('user_skill_nodes.owner_id', '=', 'providers.id')
 		            				->on('user_skill_nodes.owner_role_id', '=', DB::raw("3"));
 		            		})
-							->join('skills', 'skills.id', '=', 'user_skill_nodes.skill_id');
+							->leftJoin('skills', 'skills.id', '=', 'user_skill_nodes.skill_id');
 							/*->join('user_training_program_nodes', function($join){
 		            			$join->on('user_training_program_nodes.owner_id', '=', 'providers.id')
 		            				->on('user_training_program_nodes.owner_role_id', '=', DB::raw("3"));
@@ -264,7 +264,7 @@ class SearchController extends Controller {
 			// Get Expertises Data
 
 			$group_expertises =	DB::table('user_skill_nodes')
-				 ->join('skills', 'user_skill_nodes.skill_id', '=', 'skills.id')
+				 ->leftJoin('skills', 'user_skill_nodes.skill_id', '=', 'skills.id')
 				 ->where('user_skill_nodes.owner_id', '=', $group->id)
 					->where('user_skill_nodes.owner_role_id', '=', 3)
 				 ->get();

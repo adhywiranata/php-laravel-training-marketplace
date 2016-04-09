@@ -249,7 +249,7 @@ class GeneralController extends Controller {
 			 'provider_name' 		=> $input['provider_name'],
 			 'phone_number' 		=> $input['provider_phone'],
 		 	 'email' 						=> $input['provider_email'],
-		 	 'profile_picture' 	=> $input['provider_email'],
+		 	 'profile_picture' 	=> $input['provider_profile_picture'],
 		 ];
 
 		 $provider = Provider::create($create_provider);
@@ -258,6 +258,8 @@ class GeneralController extends Controller {
 			 'slug'	=> $provider->id,
 			 'is_verified' => 1
 		 ];
+
+		 $provider = Provider::update($provider->id);
 
 		 $create_node = [
 			 'user_id' => $user->id,
@@ -1676,8 +1678,38 @@ class GeneralController extends Controller {
 
 	public function tracking()
 	{
+
+		$arr_ftr = [
+			'add_to_contact',
+			'send_message',
+			'training_program',
+			'testimonial',
+			'certification',
+			'awards',
+			'skills',
+			'video',
+			'training_experience',
+			'work_experience'
+		];
+
+
+		echo '<h1>All Count</h1>';
+
+		for($i=0;$i<count($arr_ftr);$i++):
+			$ftr = FeatureTracking::where('feature_name',$arr_ftr[$i])->count();
+			echo '<br/>';
+			echo '<b>'.$arr_ftr[$i].'</b><br/> Total Count: '.$ftr;
+		endfor;
+
+		echo '<h1>Per IP</h1>';
+		for($i=0;$i<count($arr_ftr);$i++):
+			$ftr = FeatureTracking::where('feature_name',$arr_ftr[$i])->groupBy('ip')->count();
+			echo '<br/>';
+			echo '<b>'.$arr_ftr[$i].'</b><br/> Total Count: '.$ftr;
+		endfor;
+
 		$tracks = FeatureTracking::all();
-		echo '<table>';
+		echo '<br/><br/><br/><br/><table>';
 		foreach($tracks as $track):
 			echo '<tr><td>'.$track->feature_name.'</td><td>IP: '.$track->ip.'</td></tr>';
 		endforeach;

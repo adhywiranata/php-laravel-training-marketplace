@@ -15,7 +15,7 @@
       <li data-trigger="programs" class="ajax-count-feature"
         data-feature-name="training_program">Training Programs</li>
       <li data-trigger="testimonials" class="ajax-count-feature"
-        data-feature-name="testimonial">Testimonials</li>
+        data-feature-name="testimonial" data-trigger-popup="coming-soon">Testimonials</li>
       <li data-trigger="certifications" class="ajax-count-feature"
         data-feature-name="certification">Certifications</li>
       <li data-trigger="awards" class="ajax-count-feature"

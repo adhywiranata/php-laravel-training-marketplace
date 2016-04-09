@@ -108,8 +108,10 @@
 										{{ trans('content.nav_dashboard') }}
 									</a>
 								</li>
-								<li>
-									<a href="{{ url('dashboard/messages') }}">
+								<li class="ajax-count-feature"
+					        data-feature-name="my_messages"
+					        data-trigger-popup="coming-soon">
+									<a href="#">
 										{{ trans('content.nav_messages') }}
 										<span class="red-back padding-3-5 bold uppercase rounded">
 											5 {{ trans('content.nav_unread') }}

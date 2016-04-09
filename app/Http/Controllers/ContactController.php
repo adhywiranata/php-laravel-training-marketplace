@@ -23,6 +23,7 @@ class ContactController extends Controller {
 	{
 		$users =	DB::table('contacts')
 						 ->join('users', 'contacts.contact_owner_id', '=', 'users.id')
+						 ->where('contacts.owner_id','=',Auth::user()->id)
 						 ->get();
 
 		$users_data = array();
