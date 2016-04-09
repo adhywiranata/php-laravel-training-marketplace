@@ -535,9 +535,9 @@ class SearchController extends Controller {
 	public function tnaResult()
 	{
 		$data = array(
-			'type' 			= Input::get('type'),
-			'jobFunction' 	= explode('#', Input::get('jobfunction')),
-			'skill' 		= explode('#', Input::get('skill'))
+			'type' 					=> Input::get('type'),
+			'jobFunction' 	=> explode('#', Input::get('jobfunction')),
+			'skill' 				=> explode('#', Input::get('skill'))
 		);
 
 		if($type == "Freelance Trainer"){
