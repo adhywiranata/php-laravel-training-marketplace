@@ -43,9 +43,13 @@ use App\Models\Award as Award;
 //Video
 use App\Models\Video as Video;
 
+//Testimonial
+use App\Models\Testimonial as Testimonial;
+
 //Learning Outcome
 use App\Models\LearningOutcome as LearningOutcome;
 
+//Request
 use App\Http\Requests\trainingExperienceRequest;
 use App\Http\Requests\workExperienceRequest;
 use App\Http\Requests\trainingProgramRequest;
@@ -53,6 +57,7 @@ use App\Http\Requests\certificationRequest;
 use App\Http\Requests\awardRequest;
 use App\Http\Requests\skillRequest;
 use App\Http\Requests\videoRequest;
+use App\Http\Requests\testimonialRequest;
 use App\Http\Requests\SignUpLandingRequest;
 
 
@@ -1532,7 +1537,7 @@ class GeneralController extends Controller {
 	}
 
 	/**
-	* Display user award form page
+	* Display user video form page
 	*
 	* @return Response
 	*/
@@ -1577,6 +1582,69 @@ class GeneralController extends Controller {
 		return view('profile.yt-video-popup')
 			->with('video_title',$video_title)
 			->with('video_id',$video_id);
+	}
+
+	/**
+	* Create Testimonial
+	*
+	* @return Response
+	*/
+	public function createTestimonial($role,$id,testimonialRequest $request)
+	{
+		$input 				= $request->all();
+		$logged_user 	= Auth::user();
+		if($logged_user):
+
+			$logged_user_id = Auth::user()->id;
+
+			//GET USER ROLE NODE TABLE
+			$user_role_node 		= DB::table('user_role_nodes')
+														->where('user_role_nodes.user_id', '=', $logged_user_id)
+														->where('user_role_nodes.role_id', '!=', 3)
+														->first();
+			$reviewer_role_id 	= $user_role_node->role_id;
+
+			$insert_testimonial = [
+				'owner_id' 					=> $id,
+				'owner_role_id' 		=> $role,
+				'reviewer_id' 			=> $logged_user_id,
+				'reviewer_role_id' 	=> $reviewer_role_id,
+				'testimony'					=> $input['testimony'],
+			];
+			$testimonial = Testimonial::create($insert_testimonial);
+			$new_testimonial_id = $testimonial->id;
+
+			//GET ENDORSED USER TABLE
+			if($role == 3){
+				$table = 'providers';
+				$prefix_path = 'g/';
+			}else if($role == 4){
+				$table = 'corporates';
+				$prefix_path = 'c/'; // PERLU DISKUSIKAN PENAMAAN ROUTES UNTUK CORPORATE
+			}else{
+				$table = 'users';
+				$prefix_path = 'u/';
+			}
+
+			//GET TESTIMONIAL USER SLUG
+			$testimonial_user  = DB::table('testimonials')
+													->join($table,'testimonials.owner_id','=',$table.'.id')
+													->where('testimonials.id', '=', $new_testimonial_id)
+													->first();
+
+			return redirect($prefix_path.$testimonial_user->slug.'#testimonials');
+
+		else:
+			echo "You have to log in first";exit();
+		endif;
+	}
+
+	public function popupSectionTestimonial($owner_id,$owner_role_id,$owner_name)
+	{
+		return view('general.send-testimonial-popup')
+			->with('owner_id',$owner_id)
+			->with('owner_role_id',$owner_role_id)
+			->with('owner_name',$owner_name);
 	}
 
 	/**

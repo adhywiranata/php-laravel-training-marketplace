@@ -128,7 +128,6 @@ Route::delete('/dashboard/program/{id}','GeneralController@deleteProgram');
 Route::get('/dashboard/skill/add', 'GeneralController@addSkill');
 Route::delete('/dashboard/skill/{id}', 'GeneralController@deleteSkill');
 
-
 Route::get('/skill/{id}/endorse', 'GeneralController@addEndorse');
 Route::delete('/skill/{id}/remove-endorse', 'GeneralController@deleteEndorse');
 
@@ -141,6 +140,8 @@ Route::get('/dashboard/video/{id}/edit','GeneralController@editVideo');
 Route::put('/dashboard/video/{id}/update','GeneralController@updateVideo');
 Route::delete('/dashboard/video/{id}','GeneralController@deleteVideo');
 
+//TESTIMONIAL
+Route::post('/dashboard/testimonial/{role}/{id}/create','GeneralController@createTestimonial');
 /*
 |--------
 | Search
@@ -204,6 +205,7 @@ Route::post('{group}/training/{name}/add-evaluation','TrainingController@insertE
 Route::get('getautocompletedata/{table}/{columnName}/{key}','GeneralController@getAutoCompleteData');
 
 Route::get('/popup/video/{video_title}/{video_id}', 'GeneralController@popupSectionVideo');
+Route::get('/popup/testimonial/{owner_id}/{owner_role_id}/{owner_name}', 'GeneralController@popupSectionTestimonial');
 
 Route::get('/create-contact/{owner_id}/{owner_role_id}', 'ContactController@createContact');
 Route::get('/remove-contact/{owner_id}/{owner_role_id}', 'ContactController@deleteContact');

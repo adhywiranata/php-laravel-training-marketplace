@@ -324,6 +324,25 @@ $(document).on('click','.ajax-popup-video',function(){
   });
 });
 
+//Testimonial Popup Section
+$(document).on('click','.ajax-popup-testimonial',function(){
+
+  var owner_id      = $(this).data('id');
+  var owner_role_id = $(this).data('roleid');
+  var owner_name    = $(this).data('name');
+
+  $.ajax({
+    url: base_url + '/popup/testimonial/' + owner_id + '/' + owner_role_id
+                  + '/' + owner_name,
+    success: function(data){
+      $('#popup-container').html(data);
+      $('#popup-container > .popup.send-testimonial-popup.row').show();
+      $('#popup-container > .popup.send-testimonial-popup.row').css('z-index',9999);
+    }
+  });
+});
+
+
 
 /*
 * USER EVALUATIONS

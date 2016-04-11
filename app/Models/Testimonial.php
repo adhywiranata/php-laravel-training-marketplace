@@ -15,11 +15,13 @@ class Testimonial extends Model
 
     protected $fillable = [
         'owner_id',
-        'giver_id',
+        'owner_role_id',
+        'reviewer_id',
+        'reviewer_role_id',
         'testimony'
     ];
 
     protected $guarded = [];
 
-        
+
 }

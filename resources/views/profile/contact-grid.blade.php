@@ -13,12 +13,16 @@
       </div>
       <div class="col-lg-8 col-md-7 col-sm-7 col-xs-6 user-list-info">
         <div class="row pointer" title="Verified User">
+          <?php $role_id = 0; ?>
           @if($gridType == 1)
+          <?php $role_id = 2; ?>
           <a href="{{url('/u/'.$grid->slug)}}" class="user-name capitalize" style="font-size:1.2em !important;">
             {{ $grid->name }}
+
           </a>
           @endif
           @if($gridType == 2)
+          <?php $role_id = 3; ?>
           <a href="{{url('/g/'.$grid->slug)}}" class="user-name capitalize">
             {{ $grid->name }}
           </a>
@@ -71,7 +75,14 @@
         <!--
         <a class="btn btn-default trigger-popup" data-trigger-popup="send-evaluation">Give Evaluation</a>
         -->
-        <a class="btn btn-default trigger-popup" data-trigger-popup="send-testimonial">Give Testimonial</a>
+        <a class="btn btn-default ajax-popup-testimonial"
+            data-trigger-popup="send-testimonial"
+            data-id="{{$grid->user_id}}"
+            data-roleid="{{$role_id}}"
+            data-name="{{$grid->name}}">
+
+            Give Testimonial
+        </a>
       </div>
   </div><!-- end of col lg 12 -->
   </div>
