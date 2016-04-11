@@ -703,3 +703,14 @@ $(document).on('click','.learning-more',function(event){
 $(document).on('blur','.blurring',function(event){
   getEachMultiple();
 });
+
+//MISCELLANEOUS
+$(document).on('change','.toggle-training',function(){
+  var mode = $(this).val();
+  if(mode == 'inhouse'){
+    $('.toggle-training-corporate').show();
+  }
+  else{
+      $('.toggle-training-corporate').hide();
+  }
+});

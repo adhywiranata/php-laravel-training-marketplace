@@ -12,6 +12,10 @@
 
       <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
 
+        <span class="orange-back text-white padding-10">
+          {{ $trainingExperience->speaking_experience_type}} training
+        </span>
+        <br/><br/>
         <a href="" class="title">
           {{$trainingExperience->speaking_experience_title}}
         </a>
@@ -41,7 +45,7 @@
           </form>
         </div>
         @endif
-        
+
         <div class="row">
           <div class="col-lg-12">
             @if(count($trainingExperience->speaking_experience_expertises) != 0)
