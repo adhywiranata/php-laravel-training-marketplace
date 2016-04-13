@@ -530,6 +530,7 @@ class UserController extends Controller {
 				$user_speaking_experience_data  = array(
 					"speaking_experience_id"					  	=>		$user_speaking_experience->training_experience_id,
 					"speaking_experience_title"					  =>		$user_speaking_experience->training_experience,
+					"speaking_experience_type"					  =>		$user_speaking_experience->training_type,
 					"speaking_experience_description"			=>		$user_speaking_experience->description,
 					"speaking_experience_start_date"		  =>		$user_speaking_experience->start_date,
 					"speaking_experience_end_date"				=>		$user_speaking_experience->end_date,

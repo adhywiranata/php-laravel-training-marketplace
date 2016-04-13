@@ -47,6 +47,17 @@
           <span class="fg-error">{{$errors->first('training_experience')}}</span>
 
           <div class="col-xs-12 fg-input"
+            data-type="combobox"
+            data-label="Training Type"
+            data-name="training_type"
+            data-validation=""
+            data-item-label="Inhouse Training,Public Training"
+            data-item-value="inhouse,public"
+            data-current="<?php if(isset($training_experience)): echo $training_experience->speaking_experience_type; else: echo Input::old('training_type'); endif; ?>"
+            data-classes="form-control toggle-training">
+          </div>
+
+          <div class="col-xs-12 fg-input toggle-training-corporate"
             data-type="text-autocomplete"
             data-label="Corporate"
             data-name="company"

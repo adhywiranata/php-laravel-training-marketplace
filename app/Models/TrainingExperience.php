@@ -15,6 +15,7 @@ class TrainingExperience extends Model
 
     protected $fillable = [
         'training_experience',
+        'training_type',
         'owner_id',
         'owner_role_id',
         'provider_id',
