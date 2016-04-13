@@ -245,7 +245,7 @@ class GeneralController extends Controller {
 		 {
 			 if( $request->file('provider_profile_picture')->isvalid() ):
 
-				 $file  						= $request->file('provider_profile_picture');
+				 $file  					= $request->file('provider_profile_picture');
 				 $file_name  			= $request->file('provider_profile_picture')->getClientOriginalName();
 
 				 $destinationPath = public_path() . '/images/users';
@@ -256,13 +256,18 @@ class GeneralController extends Controller {
 				 $photo_error = $request->file('provider_profile_picture')->getErrorMessage();
 				 echo $photo_error;
 			 endif;
+			 $provider_profile_picture = $input['provider_profile_picture'];
 		 }
-
+		 else
+		 {
+		 	 $provider_profile_picture = 'default.png';
+		 }
+		 
 		 $create_provider = [
 			 'provider_name' 		=> $input['provider_name'],
 			 'phone_number' 		=> $input['provider_phone'],
 		 	 'email' 						=> $input['provider_email'],
-		 	 'profile_picture' 	=> $input['provider_profile_picture'],
+		 	 'profile_picture' 	=> $provider_profile_picture,
 		 ];
 
 		 $provider = Provider::create($create_provider);
