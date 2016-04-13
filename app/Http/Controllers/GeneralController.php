@@ -212,27 +212,35 @@ class GeneralController extends Controller {
 
 		 //'training_method' 			=> $input['training_method'],
 		 //'training_style' 			=> $input['training_style'],
-		 'profile_picture' 			=> (isset($file_name))?$file_name:'',
+		 'profile_picture' 			=> (isset($file_name))?$file_name:'default.png',
 	 ];
 
 	 $user = User::create($create);
 
 	 $update = [
-		 'slug' => $user->id,
-		 'is_verified' => 1
+		 'slug' 				=> $user->id,
+		 'is_verified' 	=> 1
 	 ];
 	 User::where('id',$user->id)->update($update);
 
-	 $create_node = [
-		 'user_id' => $user->id,
-		 'role_id' => $role_code
-	 ];
-	 $userRoleNode = UserRoleNode::create($create_node);
+
+	 //CREATE USERS NODE
+	 if($role_code == 3):
+		 $create_node = [
+			'user_id' => $user->id,
+			'role_id' => 1,
+		 ];
+	 else:
+		 $create_node = [
+			 'user_id' => $user->id,
+			 'role_id' => $role_code
+		 ];
+	 endif;
+		 $userRoleNode = UserRoleNode::create($create_node);
 
 	 //CHECK IF role is a Training Provider ($role_code = 3)
 	 if($role_code == 3)
 	 {
-
 		 if ( $request->hasFile('provider_profile_picture') )
 		 {
 			 if( $request->file('provider_profile_picture')->isvalid() ):
@@ -260,17 +268,23 @@ class GeneralController extends Controller {
 		 $provider = Provider::create($create_provider);
 
 		 $update_provider = [
-			 'slug'	=> $provider->id,
-			 'is_verified' => 1
+			 'slug'					=> $provider->id,
+			 'is_verified' 	=> 1,
 		 ];
+		 Provider::where('id',$provider->id)->update($update_provider);
 
-		 $provider = Provider::where('id',$provider->id)->update($update_provider);
+		 //CREATE PROVIDER NODE
+		 $create_provider_node = [
+			 'user_id' => $provider->id,
+			 'role_id' => 3,
+		 ];
+		 $providerRoleNode = UserRoleNode::create($create_provider_node);
 
 		 $create_node = [
-			 'user_id' => $user->id,
-			 'group_id' => $provider->id,
-			 'group_role_id' => 1,
-			 'group_position_id' => 1
+			 'user_id' 						=> $user->id,
+			 'group_id' 					=> $provider->id,
+			 'group_role_id' 			=> 1,
+			 'group_position_id' 	=> 1
 		 ];
 		 UserProviderCorporateNode::create($create_node);
 
