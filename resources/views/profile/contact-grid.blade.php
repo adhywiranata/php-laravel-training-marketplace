@@ -3,6 +3,9 @@
     <h3>Sorry, No Results Found</h3>
   </div>
 @endif
+
+<h3>My Contacts</h3>
+<div class="row">
 @foreach($grids as $grid)
   <div class="col-lg-4">
     <div class="row col-lg-12 box-grid">
@@ -87,3 +90,11 @@
   </div><!-- end of col lg 12 -->
   </div>
 @endforeach
+</div>
+
+<div class="row">
+  <h3>Who Added Me</h3>
+  @foreach($whoAddedMe as $who)
+    {{ $who->first_name }}
+  @endforeach
+</div>

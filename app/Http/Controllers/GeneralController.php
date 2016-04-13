@@ -264,7 +264,7 @@ class GeneralController extends Controller {
 			 'is_verified' => 1
 		 ];
 
-		 $provider = Provider::update($provider->id);
+		 $provider = Provider::where('id',$provider->id)->update($update_provider);
 
 		 $create_node = [
 			 'user_id' => $user->id,

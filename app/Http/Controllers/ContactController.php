@@ -26,6 +26,11 @@ class ContactController extends Controller {
 						 ->where('contacts.owner_id','=',Auth::user()->id)
 						 ->get();
 
+	  $users_who_added_me = DB::table('contacts')
+						 ->join('users', 'contacts.contact_owner_id', '=', 'users.id')
+						 ->where('contacts.contact_owner_id','=',Auth::user()->id)
+						 ->get();
+
 		$users_data = array();
 		foreach($users as $user):
 
@@ -109,7 +114,8 @@ class ContactController extends Controller {
 		return view('profile.contacts')
 			->withGrids($users_data_object)
 			->with('gridType',1)
-			->with('resCount',$res_count);
+			->with('resCount',$res_count)
+			->with('whoAddedMe',$users_who_added_me);
 	}
 
 	public function indexAjax($searchParam='',$sortBy='',$sortOrder='ASC',$filterBy='',$filterParam='')
