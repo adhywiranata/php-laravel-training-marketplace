@@ -176,7 +176,7 @@ class GeneralController extends Controller {
 	 {
 		 if( $request->file('profile_picture')->isvalid() ):
 
-			 $file  						= $request->file('profile_picture');
+			 $file  					= $request->file('profile_picture');
 			 $file_name  			= $request->file('profile_picture')->getClientOriginalName();
 
 			 $destinationPath = public_path() . '/images/users';
@@ -245,31 +245,28 @@ class GeneralController extends Controller {
 		 {
 			 if( $request->file('provider_profile_picture')->isvalid() ):
 
-				 $file  					= $request->file('provider_profile_picture');
-				 $file_name  			= $request->file('provider_profile_picture')->getClientOriginalName();
+				 $file_provider  					= $request->file('provider_profile_picture');
+				 $file_name_provider  		= $request->file('provider_profile_picture')->getClientOriginalName();
 
-				 $destinationPath = public_path() . '/images/users';
-				 $request->file('provider_profile_picture')->move($destinationPath, $file_name);
+				 $destinationPathProvider = public_path() . '/images/users';
+				 $request->file('provider_profile_picture')->move($destinationPathProvider, $file_name_provider);
 				 //Resize & Crop | source image started from level public
-				 $img = Image::make('images/users/'.$file_name)->fit(200,200)->save('images/users/thumb/'.$file_name);
+				 $img = Image::make('images/users/'.$file_name_provider)->fit(200,200)->save('images/users/thumb/'.$file_name_provider);
 			 else:
 				 $photo_error = $request->file('provider_profile_picture')->getErrorMessage();
 				 echo $photo_error;
 			 endif;
-			 $provider_profile_picture = $input['provider_profile_picture'];
 		 }
 		 else
 		 {
-		 	 $provider_profile_picture = 'default.png';
+		 		 $file_name_provider = 'default.png';
 		 }
-		 
 		 $create_provider = [
 			 'provider_name' 		=> $input['provider_name'],
 			 'phone_number' 		=> $input['provider_phone'],
 		 	 'email' 						=> $input['provider_email'],
-		 	 'profile_picture' 	=> $provider_profile_picture,
+		 	 'profile_picture' 	=> $file_name_provider,
 		 ];
-
 		 $provider = Provider::create($create_provider);
 
 		 $update_provider = [
@@ -354,7 +351,6 @@ class GeneralController extends Controller {
 			'corporate_id' 				=> $corporate->id,
 			'training_experience' => $input['training_experience'],
 			'description' 				=> $input['description'],
-			'training_type' 			=> $input['training_type'],
 			'start_date' 					=> $input['start_date'],
 			'end_date' 						=> $input['end_date'],
 		];
@@ -501,7 +497,6 @@ class GeneralController extends Controller {
 		$training_experience_data  = array(
 			"speaking_experience_id"					  	=>		$training_experience->training_experience_id,
 			"speaking_experience_title"					  =>		$training_experience->training_experience,
-			"speaking_experience_type"					  =>		$training_experience->training_type,
 			"speaking_experience_description"			=>		$training_experience->description,
 			"speaking_experience_start_date"		  =>		$training_experience->start_date,
 			"speaking_experience_end_date"				=>		$training_experience->end_date,
@@ -558,7 +553,6 @@ class GeneralController extends Controller {
 			'provider_id' 				=> 1,
 			'corporate_id' 				=> $corporate->id,
 			'training_experience' => $input['training_experience'],
-			'training_type' 			=> $input['training_type'],
 			'description' 				=> $input['description'],
 			'start_date' 					=> $input['start_date'],
 			'end_date' 						=> $input['end_date'],
