@@ -775,8 +775,14 @@ class UserController extends Controller {
 			$user_clients = array_unique($user_clients);
 			// CLIENTS -->
 
-			//SUMMARY TRAINER PROFILING VARIABLE
+			// <!-- TESTIMONIAL
+			$user_testimonials =	DB::table('testimonials')
+                            ->join('users','testimonials.reviewer_id','=','users.id')
+														->where('testimonials.owner_id', '=', $user->id)
+                      			->get();
+			// TESTIMONIAL -->
 
+			//SUMMARY TRAINER PROFILING VARIABLE
 			$user_data = array(
 				"user_id"														=> $user->id,
 				"name"															=> $user->first_name .' '. $user->last_name,
@@ -797,7 +803,7 @@ class UserController extends Controller {
 			$user_training_experiences 						= json_decode(json_encode($user_speaking_experiences_data), FALSE); // ARRAY DATA
 			$user_work_experiences 								= json_decode(json_encode($user_work_experiences), FALSE); // OBJECT DATA
 			$user_training_programmes							= json_decode(json_encode($user_training_programs_data), FALSE); // OBJECT DATA
-			$user_testimonials										= json_decode(json_encode($user_reviews), FALSE); // OBJECT DATA
+			$user_testimonials										= json_decode(json_encode($user_testimonials), FALSE); // OBJECT DATA
 			$user_certifications									= json_decode(json_encode($user_certifications_data), FALSE); // ARRAY DATA
 			$user_awards													= json_decode(json_encode($user_awards_data), FALSE); // ARRAY DATA
 			$user_expertises											= json_decode(json_encode($user_expertises_data),FALSE);
