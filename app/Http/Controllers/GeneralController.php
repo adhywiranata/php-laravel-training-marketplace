@@ -271,6 +271,7 @@ class GeneralController extends Controller {
 			 'slug'					=> $provider->id,
 			 'is_verified' 	=> 1,
 		 ];
+		 
 		 Provider::where('id',$provider->id)->update($update_provider);
 
 		 //CREATE PROVIDER NODE
