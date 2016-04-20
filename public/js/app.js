@@ -331,6 +331,8 @@ $(document).on('click','.ajax-popup-testimonial',function(){
   var owner_role_id = $(this).data('roleid');
   var owner_name    = $(this).data('name');
 
+  console.log(owner_id);
+
   $.ajax({
     url: base_url + '/popup/testimonial/' + owner_id + '/' + owner_role_id
                   + '/' + owner_name,

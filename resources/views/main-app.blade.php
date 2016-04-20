@@ -185,8 +185,6 @@
 
 	@include('general.send-evaluation-popup')
 
-	@include('general.send-testimonial-popup')
-
 	@include('general.coming-soon-popup')
 
 	<div id="popup-container">

@@ -78,7 +78,7 @@
         <!--
         <a class="btn btn-default trigger-popup" data-trigger-popup="send-evaluation">Give Evaluation</a>
         -->
-        <a class="btn btn-default ajax-popup-testimonial"
+        <a class="btn btn-default trigger-popup ajax-popup-testimonial"
             data-trigger-popup="send-testimonial"
             data-id="{{$grid->user_id}}"
             data-roleid="{{$role_id}}"

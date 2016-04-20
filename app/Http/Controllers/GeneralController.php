@@ -273,6 +273,7 @@ class GeneralController extends Controller {
 			 'slug'					=> $provider->id,
 			 'is_verified' 	=> 1,
 		 ];
+
 		 Provider::where('id',$provider->id)->update($update_provider);
 
 		 //CREATE PROVIDER NODE
@@ -352,6 +353,7 @@ class GeneralController extends Controller {
 			'provider_id' 				=> 1,
 			'corporate_id' 				=> $corporate->id,
 			'training_experience' => $input['training_experience'],
+			'training_type' 			=> $input['training_type'],
 			'description' 				=> $input['description'],
 			'start_date' 					=> $input['start_date'],
 			'end_date' 						=> $input['end_date'],
@@ -500,6 +502,7 @@ class GeneralController extends Controller {
 			"speaking_experience_id"					  	=>		$training_experience->training_experience_id,
 			"speaking_experience_title"					  =>		$training_experience->training_experience,
 			"speaking_experience_description"			=>		$training_experience->description,
+			"speaking_experience_type"						=>		$training_experience->training_type,
 			"speaking_experience_start_date"		  =>		$training_experience->start_date,
 			"speaking_experience_end_date"				=>		$training_experience->end_date,
 			"company_profile_picture"					  	=>		$training_experience->corporate_profile_picture,
@@ -555,6 +558,7 @@ class GeneralController extends Controller {
 			'provider_id' 				=> 1,
 			'corporate_id' 				=> $corporate->id,
 			'training_experience' => $input['training_experience'],
+			'training_type' 			=> $input['training_type'],
 			'description' 				=> $input['description'],
 			'start_date' 					=> $input['start_date'],
 			'end_date' 						=> $input['end_date'],
