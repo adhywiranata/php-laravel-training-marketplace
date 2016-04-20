@@ -4,7 +4,6 @@
 
 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-5">
   <div class="profile-picture">
-
     @if($grids->profile_picture == 'default.png')
       <img src="{{ url('images/users/thumb/'.$grids->profile_picture) }}" width="100%">
     @else

@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use DB;
 use Auth;
 use Request;
 use Redirect;
@@ -28,8 +29,8 @@ class AuthController extends Controller {
 	public function index()
 	{
 		$data = array(
-			'email'		=> Request::input('email'),
-			'password'	=> md5(Request::input('password'))
+			'email'				=> Request::input('email'),
+			'password'		=> md5(Request::input('password'))
 		);
 
 		$regis = User::where('email', $data['email'])->first();
@@ -42,9 +43,30 @@ class AuthController extends Controller {
 			{
 				//Login Success, Set User Data to Auth
 				Auth::login($user);
+
+				$owner_sessions =	DB::table('user_role_nodes')
+					 	            	->join('roles', 'user_role_nodes.role_id', '=', 'roles.id')
+					 	            	->join('users', 'user_role_nodes.user_id', '=', 'users.id')
+						 	            ->where('role_id', '!=', 3) // NOT TRAINING PROVIDER ROLE
+						 	            ->get();
+
+				$owner_role_chosen = '';
+
+				foreach($owner_sessions as $owner_session):
+					if($owner_session->role_id == 1):
+						$owner_role_chosen = 1;
+					endif;
+				endforeach;
+
+				foreach($owner_sessions as $owner_session):
+					if($owner_session->role_id == 2):
+						$owner_role_chosen = 2;
+					endif;
+				endforeach;
+
 				//Set Session
 				Session::set('owner_id', $user->id);
-				Session::set('owner_role_id', 2);
+				Session::set('owner_role_id', $owner_role_chosen);
 				return Redirect::to('/');
 			}
 			else
@@ -66,19 +88,26 @@ class AuthController extends Controller {
 
 
 			$update = [
-				'slug' 			=> $user->id,
+				'slug' 						=> $user->id,
+				'is_verified' 		=> '1',
+				'profile_picture'	=> 'default.png',
 			];
 			User::find($user->id)->update($update);
 
 
 			$create_node = [
 	 		 'user_id' => $user->id,
-	 		 'role_id' => 2, // BASIC ROLE
+	 		 'role_id' => 1, // BASIC ROLE
 	 	 	];
 	 	 $userRoleNode = UserRoleNode::create($create_node);
 
 
 			Auth::login($user);
+
+			//Set Session
+			Session::set('owner_id', $user->id);
+			Session::set('owner_role_id', 1);
+
 			return Redirect::to('/dashboard');
 		}
 	}

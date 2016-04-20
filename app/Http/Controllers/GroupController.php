@@ -76,7 +76,7 @@ class GroupController extends Controller {
 				$group_expertises =	DB::table('user_skill_nodes')
 													 ->join('skills', 'user_skill_nodes.skill_id', '=', 'skills.id')
 													 ->where('user_skill_nodes.owner_id', '=', $group->id)
-														->where('user_skill_nodes.owner_role_id', '=', 3)
+													 ->where('user_skill_nodes.owner_role_id', '=', 3)
 													 ->get();
 
 				$group_expertises_data  = array();
@@ -289,10 +289,7 @@ class GroupController extends Controller {
 	*/
 	public function getGroup($group_slug)
 	{
-		$group =	DB::table('user_role_nodes')
-						 ->join('roles', 'user_role_nodes.role_id', '=', 'roles.id')
-						 ->join('providers', 'user_role_nodes.user_id', '=', 'providers.id')
-						 ->where('role_id', '=', 3)
+		$group =	DB::table('providers')
 						 ->where('providers.slug', '=', $group_slug)
 						 ->first();
 
@@ -352,7 +349,6 @@ class GroupController extends Controller {
 			 // GROUP EXPERTISES -->
 
 			 //<!-- LANGUAGE PROFIECIENCY
-
 			 $group_languages =	DB::table('user_language_nodes')
  												 ->join('languages', 'user_language_nodes.language_id' ,'=', 'languages.id')
  												 ->where('user_language_nodes.owner_id', '=', $group->id)
@@ -582,122 +578,56 @@ class GroupController extends Controller {
 
 
 		 //<!--PROVIDER'S TRAINER
-/*
-		 $companies_providers_trainers_query =
-		 [
-			 "table"		=> "user",
-			 "join"			=>
-									 [
-										 "tr_group"	=>
-														 [
-															 "statement"	=> "user.user_id = tr_group.user_id",
-															 "type"				=> "join",
-														 ],
-									 ],
-			 "condition"	=>
-									 [
-										 "0"		=>
-													 [
-														 "column"				=>  "tr_group.group_id",
-														 "comparison"		=>	"=",
-														 "value"				=>	$group->group_id,
-													 ],
-									 ],
-		 ];
-		 $companies_providers_trainers = General::Selects($companies_providers_trainers_query)->get();
+		 $group_trainers = DB::table('user_provider_corporate_nodes')
+											 ->join('users','user_provider_corporate_nodes.user_id','=','users.id')
+											 ->where('user_provider_corporate_nodes.group_id', '=', $group->id)
+											 ->where('user_provider_corporate_nodes.group_role_id', '=', 1)
+											 ->where('user_provider_corporate_nodes.group_position_id', '=', 2)
+											 ->get();
 
-		 $companies_providers_trainers_data  = array();
-		 foreach($companies_providers_trainers as $company_provider_trainer):
-			 $group_expertises_query =
-			 [
-				"table"			=> "tr_user_expertise",
-				"join"			=>
-										[
-											"expertise"	=>
-															[
-																"statement"		=> "expertise.expertise_id = tr_user_expertise.expertise_id",
-																"type"				=> "join",
-															],
-										],
-				"condition"	=>
-										[
-											"0"		=>
-														[
-															"column"				=>  "tr_user_expertise.user_id",
-															"comparison"		=>	"=",
-															"value"					=>	$company_provider_trainer->user_id,
-														],
-										],
-			];
-			$group_expertises = General::Selects($group_expertises_query)->get();
+		 $group_trainers_data = array();
+	   foreach($group_trainers as $group_trainer):
+	       // <!-- USER EXPERTISES
+	       // Get Expertises Data
 
-			$group_expertises_data  = array();
-			foreach($group_expertises as $group_expertise):
-					// Get Endorse Data
-					$group_endorses_query =
-					[
-						"table"			=> "tr_endorse",
-						"condition"	=>
-													[
-														"0"		=>
-																	[
-																		"column"			=>  "tr_endorse.tr_user_expertise_id",
-																		"comparison"	=>	"=",
-																		"value"				=>	$group_expertise->tr_user_expertise_id,
-																	],
-													],
-					];
-					$group_endorses = General::Selects($group_endorses_query)->get();
+	       $user_expertises =	DB::table('user_skill_nodes')
+	                          ->join('skills', 'user_skill_nodes.skill_id', '=', 'skills.id')
+	                          ->where('user_skill_nodes.owner_id', '=', $group_trainer->user_id)
+	                          ->get();
 
-					$group_expertise_data  = array(
-						"expertise_name"			=> $group_expertise->expertise_name,
-						"total_endorse"				=> count($group_endorses),
-					);
-					array_push($group_expertises_data,$group_expertise_data);
-				endforeach;
+	       $user_expertises_data  = array();
+	       foreach($user_expertises as $user_expertise):
+	         // Get Endorse Data
+	         $user_endorses =	DB::table('user_skill_endorse_nodes')
+	                          ->where('user_skill_endorse_nodes.user_skill_node_id', '=', $user_expertise->id)
+	                          ->get();
 
-					// Get Featured / Promote Data
+	         $user_expertise_data  = array(
+	           "expertise_name"			=> $user_expertise->skill_name,
+	           "total_endorse"			=> count($user_endorses),
+	         );
+	         array_push($user_expertises_data,$user_expertise_data);
+	       endforeach;
+	       // USER EXPERTISES -->
 
-					$group_featured_query =
-					[
-						"table"			=> "tr_featured",
-						"condition"	=>
-													[
-														"0"		=>
-																	[
-																		"column"			=>  "tr_featured.user_id",
-																		"comparison"	=>	"=",
-																		"value"				=>	$company_provider_trainer->user_id,
-																	],
-													],
-					];
-					$group_featured = General::Selects($group_featured_query)->get();
+	       //ALL GROUP TRAINER DATA
+				 $group_trainer_data = array(
+	         "user_id"													=> $group_trainer->id,
+	         "name"															=> $group_trainer->first_name . ' ' . $group_trainer->last_name,
+					 "initial_name"											=> $group_trainer->first_name[0] . '. ' . $group_trainer->last_name[0].'.',
+					 "email"														=> $group_trainer->email,
+	         "profile_picture"									=> $group_trainer->profile_picture,
+	         "summary"													=> $group_trainer->summary,
+	         "area"															=> $group_trainer->service_area,
+	         "slug"												  		=> $group_trainer->slug,
+	         "expertises"												=> $user_expertises_data,
+	         "view"															=> $group_trainer->is_view,
+	       );
+	       array_push($group_trainers_data,$group_trainer_data);
+	   endforeach;
 
-					$group_featured_chosen = "promote";
-					if(count($group_featured_query) > 0):
-						$group_featured_chosen = "promoted";
-					endif;
-
-					$company_provider_trainer_data = array(
-            "user_id"                           => $company_provider_trainer->user_id,
-            "user_slug"                         => $company_provider_trainer->user_slug,
-            "group_id"                          => $group->group_id,
-            "email"                             => $company_provider_trainer->email,
-            "summary"                        		=> $company_provider_trainer->summary,
-						"initial_name"                      => strtoupper(substr($company_provider_trainer->first_name,0,1))." ".strtoupper(substr($company_provider_trainer->last_name,0,1)),
-						"name"                        			=> $company_provider_trainer->first_name." ".$company_provider_trainer->last_name,
-            "profile_image"                     => $company_provider_trainer->profile_image,
-            "expertises"                        => $group_expertises_data,
-            "featured"                          => $group_featured_chosen,
-          );
-
-          array_push($companies_providers_trainers_data,$company_provider_trainer_data);
-
-		 endforeach;
-		 */
+		 $companies_providers_trainers_data = $group_trainers_data;
 		 // PROVIDER"S TRAINER -->
-		 $companies_providers_trainers_data = array();
-// END HERE TO BE CONTINUED
 
 		 //<!--TRAINING PROGRAMME
 
