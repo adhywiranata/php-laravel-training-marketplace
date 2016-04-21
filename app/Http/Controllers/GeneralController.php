@@ -142,7 +142,11 @@ class GeneralController extends Controller {
 										 ->count();
 		if($corp_exist == 0)
 		{
-			Corporate::create(['corporate_name' => $input['corporate_name']]);
+			$insert_new_corporate = [
+				'corporate_name' 							=> $input['corporate_name'],
+				'corporate_profile_picture'		=> 'default.png',
+			];
+			Corporate::create($insert_new_corporate);
 		}
 
 		//CHECK IF JOB TITLE DOES NOT EXIST,CREATE A NEW ONE
@@ -332,7 +336,11 @@ class GeneralController extends Controller {
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
 		if(count($corporate) == 0)
 		{
-			$corporate = Corporate::create([ 'corporate_name' => $input['company'] ]);
+			$insert_new_corporate = [
+				'corporate_name' 							=> $input['company'],
+				'corporate_profile_picture'		=> 'default.png',
+			];
+			$corporate = Corporate::create($insert_new_corporate);
 		}
 
 		//CHECK IF TRAINING PROGRAM DOES NOT EXIST,CREATE A NEW ONE
@@ -536,7 +544,11 @@ class GeneralController extends Controller {
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
 		if(count($corporate) == 0)
 		{
-			$corporate = Corporate::create([ 'corporate_name' => $input['company'] ]);
+			$insert_new_corporate = [
+				'corporate_name' 							=> $input['company'],
+				'corporate_profile_picture'		=> 'default.png',
+			];
+			$corporate = Corporate::create($insert_new_corporate);
 		}
 
 		//CHECK IF TRAINING PROGRAM DOES NOT EXIST,CREATE A NEW ONE
@@ -699,7 +711,11 @@ class GeneralController extends Controller {
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
 		if(count($corporate) == 0)
 		{
-			$corporate = Corporate::create([ 'corporate_name' => $input['company'] ]);
+			$insert_new_corporate = [
+				'corporate_name' 							=> $input['company'],
+				'corporate_profile_picture'		=> 'default.png',
+			];
+			$corporate = Corporate::create($insert_new_corporate);
 		}
 
 
@@ -737,7 +753,11 @@ class GeneralController extends Controller {
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
 		if(count($corporate) == 0)
 		{
-			$corporate = Corporate::create([ 'corporate_name' => $input['company'] ]);
+			$insert_new_corporate = [
+				'corporate_name' 							=> $input['company'],
+				'corporate_profile_picture'		=> 'default.png',
+			];
+			$corporate = Corporate::create($insert_new_corporate);
 		}
 
 		$update_work_experience = [

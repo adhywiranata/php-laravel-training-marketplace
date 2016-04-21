@@ -26,7 +26,6 @@ class SignUpLandingRequest extends Request {
 			'password' => 'required',
 			'first_name' => 'required',
 			'last_name' => 'required',
-			'profile_picture' => 'required'
 		];
 	}
 
