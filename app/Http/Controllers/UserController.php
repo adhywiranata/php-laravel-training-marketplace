@@ -21,6 +21,8 @@ use App\Models\Contact as Contact;
 
 use Intervention\Image\Facades\Image;
 
+use Illuminate\Support\Facades\Session;
+
 class UserController extends Controller {
 
 	/**
