@@ -905,6 +905,8 @@ class GroupController extends Controller {
 		 $group_data = array(
 			 "user_id"														=> $group->id,
 			 "name"																=> $group->provider_name,
+			 "job_title"												  => "",
+			 "current_company"										=> "",
 			 "phone_number"												=> $group->phone_number,
 			 "email"															=> $group->email,
 			 "service_area"												=> $group->service_area,
