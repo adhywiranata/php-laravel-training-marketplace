@@ -79,6 +79,25 @@
     </a>
   </div>
   <div class="row">
+
+
+    @if( ($grids->current_company != "") || ($grids->job_title != "") )
+      <i class="fa fa-briefcase"  aria-hidden="true"></i>
+    @endif
+
+    @if($grids->job_title)
+     {{ $grids->job_title }}
+    @endif
+
+    @if( ($grids->current_company != "") && ($grids->job_title != "") )
+      at
+    @endif
+
+    @if($grids->current_company)
+     {{ $grids->current_company }}
+    @endif
+
+    <br/>
     @if($grids->area)
       <i class="fa fa-map-marker"></i>
       {{ $grids->area }}

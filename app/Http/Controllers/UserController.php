@@ -779,6 +779,8 @@ class UserController extends Controller {
 			$user_data = array(
 				"user_id"														=> $user->id,
 				"name"															=> $user->first_name .' '. $user->last_name,
+				"job_title"												  => $user->job_title,
+				"current_company"										=> $user->corporate_name,
 				"phone_number"											=> $user->phone_number,
 				"email"															=> $user->email,
 				"service_area"											=> $user->service_area,
