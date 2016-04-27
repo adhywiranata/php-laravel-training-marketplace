@@ -94,7 +94,9 @@
 
 <div class="row">
   <h3>Who Added Me</h3>
-  @foreach($whoAddedMe as $who)
-    {{ $who->first_name }}
-  @endforeach
+  @if(isset($whoAddedMe)):
+    @foreach($whoAddedMe as $who)
+      {{ $who->first_name }}
+    @endforeach
+  @endif
 </div>

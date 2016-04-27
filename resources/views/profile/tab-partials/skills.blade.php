@@ -20,7 +20,7 @@
 
     <div class="row">
       <div class="col-lg-5 col-md-3 col-sm-3 col-xs-10">
-        <a title="0 persons endorsed this skill" class="skill-tag tag">
+        <a title="0 persons endorsed this skill" class="skill-tag tag pull-left">
               <span class="bold">{{$expertise->total_endorse}}</span>
               {{$expertise->expertise_name}}
         </a>
@@ -31,10 +31,10 @@
             @if($expertise->endorse_status == 0)
               <a href="{{ url('/skill/'.$expertise->expertise_node_id.'/endorse') }}">endorse</a>
             @else
-              <form action="{{ url('/skill/'.$expertise->expertise_node_id.'/remove-endorse') }}" method="post">
+              <form action="{{ url('/skill/'.$expertise->expertise_node_id.'/remove-endorse') }}" method="post" style="float:left !important">
                 <input type="hidden" name="_method" value="DELETE" />
                 <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
-                <input type="submit" value="remove endorse" />
+                <input type="submit" value="remove endorse" style="background:none; border:0; color:#22a7f0; float:left !important; cursor:pointer;" />
               </form>
             @endif
           @endif
