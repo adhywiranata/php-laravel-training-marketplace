@@ -354,7 +354,6 @@ class UserController extends Controller {
 													 ->select('*','user_skill_nodes.id AS user_skill_nodes_id')
 													 ->join('skills', 'user_skill_nodes.skill_id', '=', 'skills.id')
 													 ->where('user_skill_nodes.owner_id', '=', $user->id)
-													 ->where('user_skill_nodes.owner_role_id', '=', 2)
 													 ->get();
 
 				$user_expertises_data  = array();
@@ -403,7 +402,6 @@ class UserController extends Controller {
 			$user_languages =	DB::table('user_language_nodes')
 												 ->join('languages', 'user_language_nodes.language_id' ,'=', 'languages.id')
 												 ->where('user_language_nodes.owner_id', '=', $user->id)
-												 ->where('user_language_nodes.owner_role_id', '=', 2)
 												 ->get();
 
 			$user_languages_data = array();
@@ -473,7 +471,6 @@ class UserController extends Controller {
 																	 ->join('providers','training_experiences.provider_id','=','providers.id')
 																	 ->join('corporates','training_experiences.corporate_id','=','corporates.id')
 																	 ->where('training_experiences.owner_id', '=', $user->id)
-																	 ->where('training_experiences.owner_role_id', '=', 2)
 																	 ->get();
 
 			$user_speaking_experiences_data  = array();
@@ -558,7 +555,6 @@ class UserController extends Controller {
 																 ->select('*','work_experiences.id AS work_experience_id')
 																 ->join('corporates','work_experiences.corporate_id','=','corporates.id')
 																 ->where('work_experiences.owner_id', '=', $user->id)
-																 ->where('work_experiences.owner_role_id', '=', 2)
 																 ->get();
 
 			// WORK EXPERIENCES -->
@@ -569,7 +565,6 @@ class UserController extends Controller {
 																	 						 ,'user_training_program_nodes.id AS user_training_program_nodes_id' )
 																	 ->join('training_program','user_training_program_nodes.training_program_id','=','training_program.id')
 																	 ->where('user_training_program_nodes.owner_id', '=', $user->id)
-																	 ->where('user_training_program_nodes.owner_role_id', '=', 2)
 																	 ->get();
 
 			$user_training_programs_data = array();
@@ -626,7 +621,6 @@ class UserController extends Controller {
 
 			$user_certifications =	DB::table('certifications')
 															->where('certifications.owner_id', '=', $user->id)
-															->where('certifications.owner_role_id', '=', 2)
 															->get();
 
 			$user_certifications_data  = array();
@@ -698,7 +692,6 @@ class UserController extends Controller {
 			//<!--AWARD
 			$user_awards =	DB::table('awards')
                       ->where('awards.owner_id', '=', $user->id)
-                      ->where('awards.owner_role_id', '=', 2)
                       ->get();
 
 			$user_awards_data  = array();
@@ -768,7 +761,7 @@ class UserController extends Controller {
 			// AWARD -->
 
 			// <!--VIDEOS
-			$user_videos =	Video::where('owner_id',$user->id)->where('owner_role_id',2)->get();
+			$user_videos =	Video::where('owner_id',$user->id)->get();
 			// VIDEOS -->
 
 			// <!-- CLIENTS
@@ -790,6 +783,8 @@ class UserController extends Controller {
 			$user_data = array(
 				"user_id"														=> $user->id,
 				"name"															=> $user->first_name .' '. $user->last_name,
+				"job_title"												  => $user->job_title,
+				"current_company"										=> $user->corporate_name,
 				"phone_number"											=> $user->phone_number,
 				"email"															=> $user->email,
 				"service_area"											=> $user->service_area,
@@ -818,7 +813,6 @@ class UserController extends Controller {
 			if(Auth::check()):
 				$is_contact =	Contact::where('owner_id',Auth::user()->id)
 											->where('contact_owner_id',$user->id)
-											->where('contact_owner_role_id',2)
 											->count();
 			endif;
 			// IS A CONTACT -->

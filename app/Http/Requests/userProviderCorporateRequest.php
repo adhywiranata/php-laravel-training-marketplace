@@ -2,7 +2,7 @@
 
 use App\Http\Requests\Request;
 
-class SignUpLandingRequest extends Request {
+class userProviderCorporateRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -22,10 +22,8 @@ class SignUpLandingRequest extends Request {
 	public function rules()
 	{
 		return [
-			'email' => 'required|email',
-			'password' => 'required',
-			'first_name' => 'required',
-			'last_name' => 'required',
+			//
+			"email"			=>	"required",
 		];
 	}
 

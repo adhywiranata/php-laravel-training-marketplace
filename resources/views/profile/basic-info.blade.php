@@ -4,7 +4,6 @@
 
 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-5">
   <div class="profile-picture">
-
     @if($grids->profile_picture == 'default.png')
       <img src="{{ url('images/users/thumb/'.$grids->profile_picture) }}" width="100%">
     @else
@@ -80,6 +79,25 @@
     </a>
   </div>
   <div class="row">
+
+
+    @if( ($grids->current_company != "") || ($grids->job_title != "") )
+      <i class="fa fa-briefcase"  aria-hidden="true"></i>
+    @endif
+
+    @if($grids->job_title)
+     {{ $grids->job_title }}
+    @endif
+
+    @if( ($grids->current_company != "") && ($grids->job_title != "") )
+      at
+    @endif
+
+    @if($grids->current_company)
+     {{ $grids->current_company }}
+    @endif
+
+    <br/>
     @if($grids->area)
       <i class="fa fa-map-marker"></i>
       {{ $grids->area }}

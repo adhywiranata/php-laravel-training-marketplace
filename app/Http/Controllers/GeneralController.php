@@ -59,7 +59,7 @@ use App\Http\Requests\skillRequest;
 use App\Http\Requests\videoRequest;
 use App\Http\Requests\testimonialRequest;
 use App\Http\Requests\SignUpLandingRequest;
-
+use App\Http\Requests\userProviderCorporateRequest;
 
 use App\Models\UserRoleNode as UserRoleNode;
 use App\Models\UserProviderCorporateNode as UserProviderCorporateNode;
@@ -142,7 +142,11 @@ class GeneralController extends Controller {
 										 ->count();
 		if($corp_exist == 0)
 		{
-			Corporate::create(['corporate_name' => $input['corporate_name']]);
+			$insert_new_corporate = [
+				'corporate_name' 							=> $input['corporate_name'],
+				'corporate_profile_picture'		=> 'default.png',
+			];
+			Corporate::create($insert_new_corporate);
 		}
 
 		//CHECK IF JOB TITLE DOES NOT EXIST,CREATE A NEW ONE
@@ -277,11 +281,13 @@ class GeneralController extends Controller {
 		 Provider::where('id',$provider->id)->update($update_provider);
 
 		 //CREATE PROVIDER NODE
+		 /*
 		 $create_provider_node = [
 			 'user_id' => $provider->id,
 			 'role_id' => 3,
 		 ];
 		 $providerRoleNode = UserRoleNode::create($create_provider_node);
+		 */
 
 		 $create_node = [
 			 'user_id' 						=> $user->id,
@@ -330,7 +336,11 @@ class GeneralController extends Controller {
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
 		if(count($corporate) == 0)
 		{
-			$corporate = Corporate::create([ 'corporate_name' => $input['company'] ]);
+			$insert_new_corporate = [
+				'corporate_name' 							=> $input['company'],
+				'corporate_profile_picture'		=> 'default.png',
+			];
+			$corporate = Corporate::create($insert_new_corporate);
 		}
 
 		//CHECK IF TRAINING PROGRAM DOES NOT EXIST,CREATE A NEW ONE
@@ -534,7 +544,11 @@ class GeneralController extends Controller {
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
 		if(count($corporate) == 0)
 		{
-			$corporate = Corporate::create([ 'corporate_name' => $input['company'] ]);
+			$insert_new_corporate = [
+				'corporate_name' 							=> $input['company'],
+				'corporate_profile_picture'		=> 'default.png',
+			];
+			$corporate = Corporate::create($insert_new_corporate);
 		}
 
 		//CHECK IF TRAINING PROGRAM DOES NOT EXIST,CREATE A NEW ONE
@@ -697,7 +711,11 @@ class GeneralController extends Controller {
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
 		if(count($corporate) == 0)
 		{
-			$corporate = Corporate::create([ 'corporate_name' => $input['company'] ]);
+			$insert_new_corporate = [
+				'corporate_name' 							=> $input['company'],
+				'corporate_profile_picture'		=> 'default.png',
+			];
+			$corporate = Corporate::create($insert_new_corporate);
 		}
 
 
@@ -735,7 +753,11 @@ class GeneralController extends Controller {
 		$corporate = Corporate::where('corporate_name',$input['company'])->first();
 		if(count($corporate) == 0)
 		{
-			$corporate = Corporate::create([ 'corporate_name' => $input['company'] ]);
+			$insert_new_corporate = [
+				'corporate_name' 							=> $input['company'],
+				'corporate_profile_picture'		=> 'default.png',
+			];
+			$corporate = Corporate::create($insert_new_corporate);
 		}
 
 		$update_work_experience = [
@@ -1668,13 +1690,32 @@ class GeneralController extends Controller {
 	}
 
 	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
+	* Create InHouse Trainer
+	*
+	* @return Response
+	*/
+
+	public function invitedInHouseTrainer(userProviderCorporateRequest $request)
 	{
-		//
+		// ON PROGRESS
+		$input = $request->all();
+
+		$session_owner_id = Session::get('owner_id'); //ID PROVIDER
+		$session_owner_role_id = Session::get('owner_role_id'); // ROLE Providers
+
+		$create = [
+ 		 'email'								=> $input['email'],
+ 	  ];
+ 	  $user = User::create($create);
+
+	  $create_node = [
+		 'user_id' 						=> $user->id,
+		 'group_id' 					=> $session_owner_id,
+		 'group_role_id' 			=> 1,
+		 'group_position_id' 	=> 2,
+	  ];
+	  UserProviderCorporateNode::create($create_node);
+
 	}
 
 	/**
