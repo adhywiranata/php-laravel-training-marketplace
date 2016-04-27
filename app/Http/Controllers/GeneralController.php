@@ -169,11 +169,7 @@ class GeneralController extends Controller {
 
 		if($job_node_exist == 0 && $input['job_title'] != '')
 		{
-			$job_node = JobNode::where('job_title_id',$job_title_id)->first();
-			$job_seniority_level = JobSeniorityLevel::where('id',$job_node->job_seniority_level_id)
-																 ->first()->job_seniority_level_name;
-			$job_function = JobFunction::where('id',$job_node->job_function_id)
-												 ->first()->job_function_name;
+			$job_node = JobNode::create(array('job_title_id' => $job_title_id));
 		}
 
 	 if ( $request->hasFile('profile_picture') )
