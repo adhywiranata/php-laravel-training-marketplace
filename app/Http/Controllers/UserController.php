@@ -174,6 +174,10 @@ class UserController extends Controller {
 	 */
 	 public function getUsers()
 	 {
+		 $user_id = Auth::user()->id;
+		 Session::put('owner_id',$user_id);
+		 Session::put('owner_role_id', '2');
+
 	   $users =	DB::table('user_role_nodes')
 	            ->join('roles', 'user_role_nodes.role_id', '=', 'roles.id')
 	            ->join('users', 'user_role_nodes.user_id', '=', 'users.id')

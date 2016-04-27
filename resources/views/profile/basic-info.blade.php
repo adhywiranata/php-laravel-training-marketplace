@@ -48,7 +48,7 @@
       <a href="{{ url('dashboard/basic-profile') }}" class="btn full-width">Edit Basic Profile</a>
 
       @if( ($provider > 0) && ($is_admin == 1) )
-        <a href="{{ url('dashboard/group') }}" class="btn full-width">Manage Training Provider</a>
+        <a href="{{ url('dashboard/group/8') }}" class="btn full-width">Manage Training Provider</a>
       @endif
     @endif
     <!--

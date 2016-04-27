@@ -82,7 +82,7 @@ Route::get('auth/linkedin/callback', 'AuthController@handleLinkedinCallback');
 Route::get('/dashboard', 'UserController@getUser');
 Route::get('/dashboard/contacts', 'ContactController@index');
 Route::get('/dashboard/messages', 'MessageController@index');
-Route::get('/dashboard/group', 'GroupController@getGroupProfile');
+Route::get('/dashboard/group/{id}', 'GroupController@getGroupProfile');
 
 Route::get('dashboard/basic-profile', 'UserController@editBasicProfile');
 Route::put('dashboard/basic-profile', 'UserController@updateBasicProfile');

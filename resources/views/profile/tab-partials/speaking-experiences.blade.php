@@ -3,7 +3,7 @@
   @if($is_admin == 1)
   <a href="{{ url('dashboard/training-experience/add') }}" class="btn">
     <i class="fa fa-plus"></i>
-    Add New Training Experience
+    Add New Training Delivery Experience
   </a>
   @endif
   @foreach($trainingExperiences as $trainingExperience)

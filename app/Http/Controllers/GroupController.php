@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Auth;
 use DB;
 
+use Illuminate\Support\Facades\Session;
+
 class GroupController extends Controller {
 
 	/**
@@ -29,13 +31,15 @@ class GroupController extends Controller {
 	 *
 	 * @return Response
 	 */
-	 public function getGroupProfile()
+	 public function getGroupProfile($groupSessionId)
 	 {
 		 $user = Auth::user();
 		 if(!isset($user)):
 			 echo "You have to login First"; exit();
 		 endif;
 
+		 Session::put('owner_id',$groupSessionId);
+		 Session::put('owner_role_id', '3');
 
 		 $user_id = Auth::user()->id;
 		 $check_provider =	DB::table('user_provider_corporate_nodes')

@@ -3,7 +3,7 @@
     <ul class="profile-tab-list">
       <li class="active ajax-count-feature"
         data-trigger="training-experiences"
-        data-feature-name="training_experience">Training Experiences</li>
+        data-feature-name="training_experience">Training Delivery Experiences</li>
       @if($role == 2)
       <li data-trigger="trainers">Trainers</li>
       @endif
