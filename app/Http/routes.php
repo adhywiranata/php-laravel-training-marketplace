@@ -126,6 +126,7 @@ Route::delete('/dashboard/program/{id}','GeneralController@deleteProgram');
 
 //Skills
 Route::get('/dashboard/skill/add', 'GeneralController@addSkill');
+Route::post('/dashboard/skill/create', 'GeneralController@createSkill');
 Route::delete('/dashboard/skill/{id}', 'GeneralController@deleteSkill');
 
 Route::get('/skill/{id}/endorse', 'GeneralController@addEndorse');
@@ -142,6 +143,12 @@ Route::delete('/dashboard/video/{id}','GeneralController@deleteVideo');
 
 //TESTIMONIAL
 Route::post('/dashboard/testimonial/{role}/{id}/create','GeneralController@createTestimonial');
+
+//LANGUAGE
+Route::get('/dashboard/language/add', 'GeneralController@addLanguage');
+Route::post('/dashboard/language/create', 'GeneralController@createLanguage');
+
+
 /*
 |--------
 | Search

@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class User-language
  */
-class User-language extends Model
+class UserLanguageNode extends Model
 {
-    protected $table = 'user-languages';
+    protected $table = 'user_language_nodes';
 
     public $timestamps = true;
 
     protected $fillable = [
         'language_id',
-        'user_id'
+        'owner_id',
+        'owner_role_id',
     ];
 
     protected $guarded = [];
 
-        
+
 }
