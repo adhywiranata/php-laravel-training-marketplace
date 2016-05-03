@@ -442,11 +442,11 @@ $(document).on('click','.btn-submit',function(){
 
   if(role == 1)
   {
-    window.location = 'trainers?keywords='+keywords+'&budget='+budget+'&location='+location+'&method='+method+'&style='+style+'&must_have='+must_have+'&start_date='+start_date+'&end_date='+end_date;
+    window.location = base_url+'/trainers?keywords='+keywords+'&budget='+budget+'&location='+location+'&method='+method+'&style='+style+'&must_have='+must_have+'&start_date='+start_date+'&end_date='+end_date;
   }
   else if(role == 2)
   {
-    window.location = 'training-providers?keywords='+keywords+'&budget='+budget+'&location='+location+'&method='+method+'&style='+style+'&must_have='+must_have+'&start_date='+start_date+'&end_date='+end_date;
+    window.location = base_url+'/training-providers?keywords='+keywords+'&budget='+budget+'&location='+location+'&method='+method+'&style='+style+'&must_have='+must_have+'&start_date='+start_date+'&end_date='+end_date;
   }
   /*else if(role == 3)
   {
@@ -480,7 +480,8 @@ function goToSearchWizard(step, text)
         url: base_url+'/tna/getSubObjectives',
         data: {objectiveId: text},
         success: function(val){
-          $('#search-wizard-step-2 input[type=text]').attr("data-items", val);
+          //$('#search-wizard-step-2 input[type=text]').attr("data-items", val);
+          $('#search-wizard-step-2 select').html(val);
         }
       });
     }
@@ -488,21 +489,29 @@ function goToSearchWizard(step, text)
   else if(step == '3')
   {
     if(text != ""){
+
+      //Stringify Sub Objective Data
       var data = "";
 
-      if($('#search-wizard-step-2 input[type=text]').val() != "")
+      /*if($('#search-wizard-step-2 input[type=text]').val() != "")
         data = $('#search-wizard-step-2 input[type=text]').val() + '#';
 
       for (var i = 0; i < $('#search-wizard-step-2 .fg-chip').length; i++) {
         data = data + $('#search-wizard-step-2 .fg-chip')[i].getAttribute("data-value") + '#';
       };
+      data = data.slice(0, data.length-1);*/
+      for (var i = 0; i < $('select[name="sub_objectives"]').length; i++) {
+        data = data + $('select[name="sub_objectives"]')[i].value + '#';
+      };
       data = data.slice(0, data.length-1);
+
 
       $.ajax({
         url: base_url+'/tna/getJobFunctions',
         data: {subObjective: data},
         success: function(val){
-          $('#search-wizard-step-3 input[type=text]').attr("data-items", val);
+          //$('#search-wizard-step-3 input[type=text]').attr("data-items", val);
+          $('#search-wizard-step-3 select').html(val);
         }
       });
     }
@@ -511,7 +520,7 @@ function goToSearchWizard(step, text)
   {
     if(text != ""){
       //Stringify Job Function Data
-      var jobFunctionData = "";
+      /*var jobFunctionData = "";
 
       if($('#search-wizard-step-3 input[type=text]').val() != "")
         jobFunctionData = $('#search-wizard-step-3 input[type=text]').val() + '#';
@@ -519,14 +528,14 @@ function goToSearchWizard(step, text)
       for (var i = 0; i < $('#search-wizard-step-3 .fg-chip').length; i++) {
         jobFunctionData = jobFunctionData + $('#search-wizard-step-3 .fg-chip')[i].getAttribute("data-value") + '#';
       };
-      jobFunctionData = jobFunctionData.slice(0, jobFunctionData.length-1);
+      jobFunctionData = jobFunctionData.slice(0, jobFunctionData.length-1);*/
 
 
       $.ajax({
         url: base_url+'/tna/getSeniorityLevels',
-        data: {jobFunction: jobFunctionData},
         success: function(val){
-          $('#search-wizard-step-4 input[type=text]').attr("data-items", val);
+          //$('#search-wizard-step-4 input[type=text]').attr("data-items", val);
+          $('#search-wizard-step-4 select').html(val);
         }
       });
     }
@@ -534,38 +543,11 @@ function goToSearchWizard(step, text)
   else if(step == '5')
   {
     if(text != ""){
-      //Stringify Sub Objective Data
-      var subObjectiveData = "";
-
-      if($('#search-wizard-step-2 input[type=text]').val() != "")
-        subObjectiveData = $('#search-wizard-step-2 input[type=text]').val() + '#';
-
-      for (var i = 0; i < $('#search-wizard-step-2 .fg-chip').length; i++) {
-        subObjectiveData = subObjectiveData + $('#search-wizard-step-2 .fg-chip')[i].getAttribute("data-value") + '#';
-      };
-      subObjectiveData = subObjectiveData.slice(0, subObjectiveData.length-1);
-
-
-      //Stringify Job Function Data
-      var jobFunctionData = "";
-
-      if($('#search-wizard-step-3 input[type=text]').val() != "")
-        jobFunctionData = $('#search-wizard-step-3 input[type=text]').val() + '#';
-
-      for (var i = 0; i < $('#search-wizard-step-3 .fg-chip').length; i++) {
-        jobFunctionData = jobFunctionData + $('#search-wizard-step-3 .fg-chip')[i].getAttribute("data-value") + '#';
-      };
-      jobFunctionData = jobFunctionData.slice(0, jobFunctionData.length-1);
-
-
       $.ajax({
         url: base_url+'/tna/getIndustryTypes',
-        data: {
-          subObjective: subObjectiveData,
-          jobFunction: jobFunctionData
-        },
         success: function(val){
-          $('#search-wizard-step-5 input[type=text]').attr("data-items", val);
+          //$('#search-wizard-step-5 input[type=text]').attr("data-items", val);
+          $('#search-wizard-step-5 select').html(val);
         }
       });
     }
@@ -576,11 +558,8 @@ function goToSearchWizard(step, text)
       //Stringify Industry Data
       var industryData = "";
 
-      if($('#search-wizard-step-5 input[type=text]').val() != "")
-        industryData = $('#search-wizard-step-5 input[type=text]').val() + '#';
-
-      for (var i = 0; i < $('#search-wizard-step-5 .fg-chip').length; i++) {
-        industryData = industryData + $('#search-wizard-step-5 .fg-chip')[i].getAttribute("data-value") + '#';
+      for (var i = 0; i < $('select[name="industry_types"]').length; i++) {
+        industryData = industryData + $('select[name="industry_types"]')[i].value + '#';
       };
       industryData = industryData.slice(0, industryData.length-1);
 
@@ -591,7 +570,8 @@ function goToSearchWizard(step, text)
           industry: industryData
         },
         success: function(val){
-          $('#search-wizard-step-7 input[type=text]').attr("data-items", val);
+          //$('#search-wizard-step-7 input[type=text]').attr("data-items", val);
+          $('#search-wizard-step-7 select').html(val);
         }
       });
     }
@@ -602,6 +582,7 @@ function goToSearchWizard(step, text)
   }, 700);
 }
 
+
 function submitTNA()
 {
   var type = $('#search-wizard-step-0 input[type=hidden]').val();
@@ -609,27 +590,40 @@ function submitTNA()
   //Stringify Job Function Data
   var jobFunctionData = "";
 
-  if($('#search-wizard-step-3 input[type=text]').val() != "")
-    jobFunctionData = $('#search-wizard-step-3 input[type=text]').val() + '#';
-
-  for (var i = 0; i < $('#search-wizard-step-3 .fg-chip').length; i++) {
-    jobFunctionData = jobFunctionData + $('#search-wizard-step-3 .fg-chip')[i].getAttribute("data-value") + '#';
+  for (var i = 0; i < $('select[name="job_functions"]').length; i++) {
+    jobFunctionData = jobFunctionData + $('select[name="job_functions"]')[i].value + '#';
   };
   jobFunctionData = jobFunctionData.slice(0, jobFunctionData.length-1);
+
+
+  //Stringify Seniority Level Data
+  var seniorityLevelData = "";
+
+  for (var i = 0; i < $('select[name="seniority_levels"]').length; i++) {
+    seniorityLevelData = seniorityLevelData + $('select[name="seniority_levels"]')[i].value + '#';
+  };
+  seniorityLevelData = seniorityLevelData.slice(0, seniorityLevelData.length-1);
+
+
+  //Stringify Industry Data
+  var industryData = "";
+
+  for (var i = 0; i < $('select[name="industry_types"]').length; i++) {
+    industryData = industryData + $('select[name="industry_types"]')[i].value + '#';
+  };
+  industryData = industryData.slice(0, industryData.length-1);
+
 
   //Stringify Related Skill Data
   var skill = "";
 
-  if($('#search-wizard-step-7 input[type=text]').val() != "")
-    skill = $('#search-wizard-step-7 input[type=text]').val() + '#';
-
-  for (var i = 0; i < $('#search-wizard-step-7 .fg-chip').length; i++) {
-    skill = skill + $('#search-wizard-step-7 .fg-chip')[i].getAttribute("data-value") + '#';
+  for (var i = 0; i < $('select[name="related_skills"]').length; i++) {
+    skill = skill + $('select[name="related_skills"]')[i].value + '#';
   };
   skill = skill.slice(0, skill.length-1);
 
 
-  window.location = "training-needs-analysis/result?type="+type+"&jobfunction="+jobFunctionData+"&skill="+skill;
+  window.location = "training-needs-analysis/result?type="+type+"&jobfunction="+jobFunctionData+"&senioritylevel="+seniorityLevelData+"&industry="+industryData+"&skill="+skill;
 }
 
 
