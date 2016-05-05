@@ -11,7 +11,7 @@ use App\Models\JobNode;
 use App\Models\SubObjectiveJobFunctionSubCategoryNode;
 use App\Models\IndustrySubCategoryNode;
 use App\Models\JobSeniorityLevel;
-use App\Models\Industrie;
+use App\Models\Industry;
 
 
 use Illuminate\Http\Request;
@@ -101,7 +101,7 @@ class SearchController extends Controller {
 		            			$join->on('videos.owner_id', '=', 'users.id')
 		            				->on('videos.owner_role_id', '=', DB::raw("2"));
 		            		});
-		            		
+
 		            });
 		}
 
@@ -114,7 +114,7 @@ class SearchController extends Controller {
 		            			$join->on('testimonials.owner_id', '=', 'users.id')
 		            				->on('testimonials.owner_role_id', '=', DB::raw("2"));
 		            		});
-		            		
+
 		            });
 		}
 
@@ -287,7 +287,7 @@ class SearchController extends Controller {
 					    }
 		            });
 
-		
+
 		$must_have = ' '.$request->must_have;
 		if (strpos($must_have, "Certification")) {
     		$users = $users->whereIn('users.id', function($query) {
@@ -314,7 +314,7 @@ class SearchController extends Controller {
 		            			$join->on('videos.owner_id', '=', 'users.id')
 		            				->on('videos.owner_role_id', '=', DB::raw("3"));
 		            		});
-		            		
+
 		            });
 		}
 
@@ -327,7 +327,7 @@ class SearchController extends Controller {
 		            			$join->on('testimonials.owner_id', '=', 'users.id')
 		            				->on('testimonials.owner_role_id', '=', DB::raw("3"));
 		            		});
-		            		
+
 		            });
 		}
 
@@ -604,7 +604,7 @@ class SearchController extends Controller {
 					}
 				})
 				->get();*/
-		$indType = Industrie::get();
+		$indType = Industry::get();
 
 		/*$value = "";
 		foreach ($indType as $row) {
@@ -707,7 +707,7 @@ class SearchController extends Controller {
 							    		$where = $where->orWhere('skill_name', 'like', '%'.$row.'%');
 							    }
 		            		});
-		            
+
 		            })
 					->get();
 
