@@ -34,7 +34,7 @@
               <form action="{{ url('/skill/'.$expertise->expertise_node_id.'/remove-endorse') }}" method="post" style="float:left !important">
                 <input type="hidden" name="_method" value="DELETE" />
                 <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
-                <input type="submit" value="remove endorse" style="background:none; border:0; color:#22a7f0; float:left !important; cursor:pointer;" />
+                <input type="submit" value="remove endorse" style="background:none; border:0; color:#337ab7; float:left !important; cursor:pointer;" />
               </form>
             @endif
           @endif
