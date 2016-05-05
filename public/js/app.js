@@ -636,6 +636,7 @@ function submitTNA()
 function reloadContacts()
 {
   var search = $('.contact-search').val();
+  if(search=='') search = 'NONE';
   var sort = $('.contact-sort').val();
   var order = $('.contact-sort-order').val();
 

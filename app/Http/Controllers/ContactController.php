@@ -27,7 +27,7 @@ class ContactController extends Controller {
 						 ->get();
 
 	  $users_who_added_me = DB::table('contacts')
-						 ->join('users', 'contacts.contact_owner_id', '=', 'users.id')
+						 ->join('users', 'contacts.owner_id', '=', 'users.id')
 						 ->where('contacts.contact_owner_id','=',Auth::user()->id)
 						 ->get();
 
@@ -111,10 +111,12 @@ class ContactController extends Controller {
 
 		$users_data_object = json_decode(json_encode($users_data), FALSE);
 		$res_count = count($users_data_object);
+		$res_count2 = count($users_who_added_me);
 		return view('profile.contacts')
 			->withGrids($users_data_object)
 			->with('gridType',1)
 			->with('resCount',$res_count)
+			->with('resWhoAddedMeCount',$res_count2)
 			->with('whoAddedMe',$users_who_added_me);
 	}
 
@@ -125,9 +127,19 @@ class ContactController extends Controller {
 				$sortOrder = 'asc';
 		}
 
+		if($searchParam == 'NONE') $searchParam = '';
+
 		$users =	DB::table('contacts')
 						 ->join('users', 'contacts.contact_owner_id', '=', 'users.id')
 						 ->where('users.first_name','like','%'.$searchParam.'%')
+						 ->where('contacts.owner_id','=',Auth::user()->id)
+						 ->orderBy($sortBy,$sortOrder)
+						 ->get();
+
+	 $users_who_added_me = DB::table('contacts')
+						 ->join('users', 'contacts.owner_id', '=', 'users.id')
+						 ->where('users.first_name','like','%'.$searchParam.'%')
+						 ->where('contacts.contact_owner_id','=',Auth::user()->id)
 						 ->orderBy($sortBy,$sortOrder)
 						 ->get();
 
@@ -212,10 +224,13 @@ class ContactController extends Controller {
 		$users_data_object = json_decode(json_encode($users_data), FALSE);
 
 		$res_count = count($users_data_object);
+		$res_count2 = count($users_who_added_me);
 		return view('profile.contact-grid')
 			->withGrids($users_data_object)
 			->with('gridType',1)
-			->with('resCount',$res_count);
+			->with('resCount',$res_count)
+			->with('resWhoAddedMeCount',$res_count2)
+			->with('whoAddedMe',$users_who_added_me);
 	}
 
 	public function createContact($contact_owner_id,$contact_owner_role_id)

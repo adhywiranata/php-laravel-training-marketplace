@@ -111,6 +111,7 @@
             data-classes="form-control">
           </div>
 
+          <!--
           <div class="col-xs-12 fg-input"
             data-type="text-autocomplete"
             data-label="Area of Service"
@@ -131,6 +132,7 @@
             data-current="<?php if(isset($user->address)): echo $user->address; else: echo Input::old('address'); endif; ?>"
             data-classes="form-control">
           </div>
+        -->
 
           <div class="col-xs-12 fg-input"
             data-type="text"

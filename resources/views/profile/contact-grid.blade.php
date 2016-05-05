@@ -1,10 +1,10 @@
-@if($resCount == 0)
-  <div class="col-lg-12 text-center">
-    <h3>Sorry, No Results Found</h3>
-  </div>
-@endif
 
 <h3>My Contacts</h3>
+@if($resCount == 0)
+  <div class="col-lg-12 text-center">
+    <h5>Sorry, No Results Found</h5>
+  </div>
+@endif
 <div class="row">
 @foreach($grids as $grid)
   <div class="col-lg-4">
@@ -94,9 +94,33 @@
 
 <div class="row">
   <h3>Who Added Me</h3>
-  @if(isset($whoAddedMe)):
+  @if(isset($whoAddedMe))
+
+    @if($resWhoAddedMeCount == 0)
+      <div class="col-lg-12 text-center">
+        <h5>Sorry, No Results Found</h5>
+      </div>
+    @endif
+
     @foreach($whoAddedMe as $who)
-      {{ $who->first_name }}
+      <div class="col-lg-4">
+        <div class="row col-lg-12 box-grid">
+          <div class="col-lg-4 col-md-2 col-sm-2 col-xs-3">
+            <div class="" style="width:100%;">
+              <img src="{{ url('images/users/thumb/'.$who->profile_picture) }}" width="80%">
+            </div>
+          </div>
+          <div class="col-lg-8 col-md-7 col-sm-7 col-xs-6 user-list-info">
+            <div class="row pointer" title="Verified User">
+              <a href="{{url('/u/'.$who->slug)}}" class="user-name capitalize" style="font-size:1.2em !important;">
+                {{ $who->first_name }}
+                {{ $who->last_name }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
     @endforeach
   @endif
 </div>
