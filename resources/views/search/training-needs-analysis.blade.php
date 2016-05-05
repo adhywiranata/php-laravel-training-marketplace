@@ -61,14 +61,15 @@
 
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
-                  data-type="text-autocomplete"
+                  data-type="combobox"
                   data-name="sub_objectives"
                   data-validation=""
                   data-placeholder="Insert Your Objective's detail"
                   data-current=""
-                  data-items=""
+                  data-item-label=""
+                  data-item-value=""
                   data-classes="form-control"
-                  data-multiple-chip="Add More Objective's detail">
+                  data-multiple="+ Add More Objective's detail">
                 </div>
               </div>
 
@@ -93,14 +94,15 @@
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
-                  data-type="text-autocomplete"
+                  data-type="combobox"
                   data-name="job_functions"
                   data-validation=""
                   data-placeholder="Insert Your Job Functions"
                   data-current=""
-                  data-items=""
+                  data-item-label=""
+                  data-item-value=""
                   data-classes="form-control"
-                  data-multiple-chip="Add More Job Function">
+                  data-multiple="+ Add More Job Function">
                 </div>
               </div>
               <br/>
@@ -126,14 +128,15 @@
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
-                  data-type="text-autocomplete"
+                  data-type="combobox"
                   data-name="seniority_levels"
                   data-validation=""
-                  data-placeholder="Insert participant Seniority Level"
+                  data-placeholder="Insert Your Job Functions"
                   data-current=""
-                  data-items=""
+                  data-item-label=""
+                  data-item-value=""
                   data-classes="form-control"
-                  data-multiple-chip="Add More Seniority Level">
+                  data-multiple="+ Add More Seniority Level">
                 </div>
               </div>
               <br/>
@@ -159,14 +162,15 @@
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
-                  data-type="text-autocomplete"
-                  data-name="seniority_levels"
+                  data-type="combobox"
+                  data-name="industry_types"
                   data-validation=""
-                  data-placeholder="Insert participant Industry Type"
+                  data-placeholder="Insert Your Job Functions"
                   data-current=""
-                  data-items=""
+                  data-item-label=""
+                  data-item-value=""
                   data-classes="form-control"
-                  data-multiple-chip="Add More Industry Type">
+                  data-multiple="+ Add More Industry Type">
                 </div>
               </div>
               <br/>
@@ -186,16 +190,16 @@
 
           <!-- STEP 6 -->
           <div class="tna-section text-center fg-form" id="search-wizard-step-6">
-            <h3 class="roboto-light text-blue">Step 6 of 8<br/>What is Your Prefered Outcome Competency?</h3>
+            <h3 class="roboto-light text-blue">Step 6 of 8<br/>What is Your Expected Outcome Competency?</h3>
             <br/>
 
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
                   data-type="combobox"
-                  data-name="gender"
+                  data-name="outcome_ompetency"
                   data-validation=""
-                  data-item-label="-- Choose Prefered Outcome Competency Below --,<?php echo implode(',',trans('custom.list_competency_preference')); ?>"
+                  data-item-label="-- Choose Expected Outcome Competency Below --,<?php echo implode(',',trans('custom.list_competency_preference')); ?>"
                   data-item-value="0,<?php echo implode(',',trans('custom.list_competency_preference')); ?>"
                   data-current=""
                   data-classes="form-control"
@@ -218,21 +222,22 @@
 
 
           <!-- STEP 7 -->
-          <div class="tna-section text-center fg-form" id="search-wizard-step-7">
-            <h3 class="roboto-light text-blue">Step 7 of 8<br/>You can select more than one related skills and training programs</h3>
+          <div class="tna-section text-center fg-form" id="search-wizard-step-7" style="padding-top: 10em;">
+            <h3 class="roboto-light text-blue">Step 7 of 8<br/>You can choose more than one Related Skills</h3>
             <br/>
 
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <div class="fg-input"
-                  data-type="text-autocomplete"
+                  data-type="combobox"
                   data-name="related_skills"
                   data-validation=""
-                  data-placeholder="Select related skill and training programs"
+                  data-placeholder="Insert Your Job Functions"
                   data-current=""
-                  data-items=""
+                  data-item-label=""
+                  data-item-value=""
                   data-classes="form-control"
-                  data-multiple-chip="Add More">
+                  data-multiple="+ Add More Related Skills">
                 </div>
                 <br/>
               </div>
@@ -242,8 +247,8 @@
                 <button type="button" class="btn btn-default" onclick="goToSearchWizard('6')">
                   <span class="lnr lnr-chevron-left-circle"></span> Prev
                 </button>
-                <button type="button" class="btn btn-default" onclick="goToSearchWizard('8', 'next')">
-                  Next <span class="lnr lnr-chevron-right-circle"></span>
+                <button type="button" class="btn btn-default" onclick="submitTNA()">
+                  Submit
                 </button>
               </div>
             </div>
@@ -251,7 +256,7 @@
 
 
           <!-- STEP 8 -->
-          <div class="tna-section text-center fg-form" id="search-wizard-step-8">
+          <!-- <div class="tna-section text-center fg-form" id="search-wizard-step-8">
             <h3 class="roboto-light text-blue">Step 8 of 8<br/>Do you need Certification for your Training?</h3>
             <br/>
 
@@ -280,6 +285,7 @@
               </div>
             </div>
           </div>
+          -->
 
         </form>
 

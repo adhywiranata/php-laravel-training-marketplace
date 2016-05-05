@@ -10,6 +10,9 @@ use App\Models\ObjectiveSubObjectiveNode;
 use App\Models\JobNode;
 use App\Models\SubObjectiveJobFunctionSubCategoryNode;
 use App\Models\IndustrySubCategoryNode;
+use App\Models\JobSeniorityLevel;
+use App\Models\Industrie;
+
 
 use Illuminate\Http\Request;
 use DB;
@@ -44,23 +47,23 @@ class SearchController extends Controller {
 
 	            	$query->select('users.id')
 	            		->from('users')
-	            		->join('user_skill_nodes', function($join){
+	            		->leftJoin('user_skill_nodes', function($join){
 	            			$join->on('user_skill_nodes.owner_id', '=', 'users.id')
 	            				->on('user_skill_nodes.owner_role_id', '=', DB::raw("2"));
 	            		})
-						->join('skills', 'skills.id', '=', 'user_skill_nodes.skill_id')
-						->join('user_training_program_nodes', function($join){
+						->leftJoin('skills', 'skills.id', '=', 'user_skill_nodes.skill_id')
+						->leftJoin('user_training_program_nodes', function($join){
 	            			$join->on('user_training_program_nodes.owner_id', '=', 'users.id')
 	            				->on('user_training_program_nodes.owner_role_id', '=', DB::raw("2"));
 	            		})
-	            		->join('training_program', 'training_program.id', '=', 'user_training_program_nodes.training_program_id');
+	            		->leftJoin('training_program', 'training_program.id', '=', 'user_training_program_nodes.training_program_id');
 
 
 	            	$keywords = explode('+', $request->keywords);
 
 					//Search by Keywords
 					foreach ($keywords as $row) {
-				    	$query->orWhere('first_name', 'like', '%'.$row.'%')
+				    	$query = $query->orWhere('first_name', 'like', '%'.$row.'%')
 				    		->orWhere('last_name', 'like', '%'.$row.'%')
 				    		->orWhere('job_title', 'like', '%'.$row.'%')
 				    		->orWhere('job_function', 'like', '%'.$row.'%')
@@ -70,6 +73,52 @@ class SearchController extends Controller {
 				    		->orWhere('training_program_name_id', 'like', '%'.$row.'%');
 				    }
 	            });
+
+
+		$must_have = ' '.$request->must_have;
+		if (strpos($must_have, "Certification")) {
+    		$users = $users->whereIn('users.id', function($query) {
+
+		            	$query->select('users.id')
+		            		->from('users')
+		            		->join('certifications', function($join){
+		            			$join->on('certifications.owner_id', '=', 'users.id')
+		            				->on('certifications.owner_role_id', '=', DB::raw("2"));
+		            		});
+
+		            });
+		}
+
+		if (strpos($must_have, "Evaluation")) {
+		}
+
+		if (strpos($must_have, "Video")) {
+    		$users = $users->whereIn('users.id', function($query) {
+
+		            	$query->select('users.id')
+		            		->from('users')
+		            		->join('videos', function($join){
+		            			$join->on('videos.owner_id', '=', 'users.id')
+		            				->on('videos.owner_role_id', '=', DB::raw("2"));
+		            		});
+		            		
+		            });
+		}
+
+		if (strpos($must_have, "Testimonial")) {
+    		$users = $users->whereIn('users.id', function($query) {
+
+		            	$query->select('users.id')
+		            		->from('users')
+		            		->join('testimonials', function($join){
+		            			$join->on('testimonials.owner_id', '=', 'users.id')
+		            				->on('testimonials.owner_role_id', '=', DB::raw("2"));
+		            		});
+		            		
+		            });
+		}
+
+
 
 		if($request->budget != ''){
 			$users = $users->where('users.mandays_fee', '<=', $request->budget);
@@ -237,6 +286,51 @@ class SearchController extends Controller {
 					    		//->orWhere('training_program_name_id', 'like', '%'.$row.'%');
 					    }
 		            });
+
+		
+		$must_have = ' '.$request->must_have;
+		if (strpos($must_have, "Certification")) {
+    		$users = $users->whereIn('users.id', function($query) {
+
+		            	$query->select('users.id')
+		            		->from('users')
+		            		->join('certifications', function($join){
+		            			$join->on('certifications.owner_id', '=', 'users.id')
+		            				->on('certifications.owner_role_id', '=', DB::raw("3"));
+		            		});
+
+		            });
+		}
+
+		if (strpos($must_have, "Evaluation")) {
+		}
+
+		if (strpos($must_have, "Video")) {
+    		$users = $users->whereIn('users.id', function($query) {
+
+		            	$query->select('users.id')
+		            		->from('users')
+		            		->join('videos', function($join){
+		            			$join->on('videos.owner_id', '=', 'users.id')
+		            				->on('videos.owner_role_id', '=', DB::raw("3"));
+		            		});
+		            		
+		            });
+		}
+
+		if (strpos($must_have, "Testimonial")) {
+    		$users = $users->whereIn('users.id', function($query) {
+
+		            	$query->select('users.id')
+		            		->from('users')
+		            		->join('testimonials', function($join){
+		            			$join->on('testimonials.owner_id', '=', 'users.id')
+		            				->on('testimonials.owner_role_id', '=', DB::raw("3"));
+		            		});
+		            		
+		            });
+		}
+
 
 		if($request->budget != ''){
 			$groups = $groups->where('providers.mandays_fee', '<=', $request->budget);
@@ -431,9 +525,9 @@ class SearchController extends Controller {
 				->where('objective_id', '=', $objectiveId)
 				->get();
 
-		$value = "";
+		$value = '<option disabled selected value="0">-- Please Select Objective Detail --</option>';
 		foreach ($sub as $row) {
-			$value .= $row->training_sub_objective.',';
+			$value .= '<option value="'.$row->training_sub_objective.'">'.$row->training_sub_objective.'</option>';
 		}
 		echo $value;
 	}
@@ -452,18 +546,22 @@ class SearchController extends Controller {
 				})
 				->get();
 
-		$value = "";
+		/*$value = "";
 		foreach ($jobfunc as $row) {
 			$value .= $row->job_function_name.',';
+		}*/
+		$value = '<option disabled selected value="0">-- Please Select Job Function --</option>';
+		foreach ($jobfunc as $row) {
+			$value .= '<option value="'.$row->job_function_name.'">'.$row->job_function_name.'</option>';
 		}
 		echo $value;
 	}
 
 	public function getSeniorityLevels()
 	{
-		$jobFunction = explode('#', Input::get('jobFunction'));
+		//$jobFunction = explode('#', Input::get('jobFunction'));
 
-		$seniorityLevel = JobNode::select(DB::raw('distinct job_seniority_level_name'))
+		/*$seniorityLevel = JobNode::select(DB::raw('distinct job_seniority_level_name'))
 				->join('job_functions', 'job_functions.id', '=', 'job_nodes.job_function_id')
 				->join('job_seniority_levels', 'job_seniority_levels.id', '=', 'job_nodes.job_seniority_level_id')
 				->where(function($query) use ($jobFunction) {
@@ -471,21 +569,26 @@ class SearchController extends Controller {
 						$query->orWhere('job_function_name', '=', $row);
 					}
 				})
-				->get();
+				->get();*/
+		$seniorityLevel = JobSeniorityLevel::get();
 
-		$value = "";
+		/*$value = "";
 		foreach ($seniorityLevel as $row) {
 			$value .= $row->job_seniority_level_name.',';
+		}*/
+		$value = '<option disabled selected value="0">-- Please Select Seniority Level --</option>';
+		foreach ($seniorityLevel as $row) {
+			$value .= '<option value="'.$row->job_seniority_level_name.'">'.$row->job_seniority_level_name.'</option>';
 		}
 		echo $value;
 	}
 
 	public function getIndustryTypes()
 	{
-		$subObjective = explode('#', Input::get('subObjective'));
-		$jobFunction = explode('#', Input::get('jobFunction'));
+		//$subObjective = explode('#', Input::get('subObjective'));
+		//$jobFunction = explode('#', Input::get('jobFunction'));
 
-		$indType = SubObjectiveJobFunctionSubCategoryNode::select(DB::raw('distinct industry_name'))
+		/*$indType = SubObjectiveJobFunctionSubCategoryNode::select(DB::raw('distinct industry_name'))
 				->join('job_functions', 'job_functions.id', '=', 'sub_objective_job_function_sub_category_nodes.job_function_id')
 				->join('training_sub_objectives', 'training_sub_objectives.id', '=', 'sub_objective_job_function_sub_category_nodes.sub_objective_id')
 				->join('industry_sub_category_nodes', 'industry_sub_category_nodes.sub_category_id', '=', 'sub_objective_job_function_sub_category_nodes.sub_category_id')
@@ -500,11 +603,16 @@ class SearchController extends Controller {
 						$query->orWhere('job_function_name', '=', $row);
 					}
 				})
-				->get();
+				->get();*/
+		$indType = Industrie::get();
 
-		$value = "";
+		/*$value = "";
 		foreach ($indType as $row) {
 			$value .= $row->industry_name.',';
+		}*/
+		$value = '<option disabled selected value="0">-- Please Select Industry Type --</option>';
+		foreach ($indType as $row) {
+			$value .= '<option value="'.$row->industry_name.'">'.$row->industry_name.'</option>';
 		}
 		echo $value;
 	}
@@ -522,11 +630,16 @@ class SearchController extends Controller {
 						$query->orWhere('industry_name', '=', $row);
 					}
 				})
+				->orderBy('skill_name', 'asc')
 				->get();
 
-		$value = "";
+		/*$value = "";
 		foreach ($skill as $row) {
 			$value .= $row->skill_name.',';
+		}*/
+		$value = '<option disabled selected value="0">-- Please Select Related Skill --</option>';
+		foreach ($skill as $row) {
+			$value .= '<option value="'.$row->skill_name.'">'.$row->skill_name.'</option>';
 		}
 		echo $value;
 	}
@@ -534,13 +647,17 @@ class SearchController extends Controller {
 
 	public function tnaResult()
 	{
+		$type = Input::get('type');
 		$data = array(
 			'type' 					=> Input::get('type'),
-			'jobFunction' 	=> explode('#', Input::get('jobfunction')),
+			'jobFunction' 			=> explode('#', Input::get('jobfunction')),
+			'seniorityLevel' 		=> explode('#', Input::get('senioritylevel')),
+			'industryType' 			=> explode('#', Input::get('industry')),
 			'skill' 				=> explode('#', Input::get('skill'))
 		);
 
-		if($type == "Freelance Trainer"){
+		if($type == "Freelance Trainer")
+		{
 			$users = User::join('user_role_nodes', 'user_role_nodes.user_id', '=', 'users.id')
 					->where('role_id', '=', 2)
 		            ->where('users.is_verified', '=', 1)
@@ -549,31 +666,54 @@ class SearchController extends Controller {
 
 		            	$query->select('users.id')
 		            		->from('users')
-		            		->join('user_skill_nodes', function($join){
+		            		->leftJoin('user_skill_nodes', function($join){
 		            			$join->on('user_skill_nodes.owner_id', '=', 'users.id')
 		            				->on('user_skill_nodes.owner_role_id', '=', DB::raw("2"));
 		            		})
-							->join('skills', 'skills.id', '=', 'user_skill_nodes.skill_id')
-							->join('user_training_program_nodes', function($join){
+							->leftJoin('skills', 'skills.id', '=', 'user_skill_nodes.skill_id')
+							->leftJoin('user_training_program_nodes', function($join){
 		            			$join->on('user_training_program_nodes.owner_id', '=', 'users.id')
 		            				->on('user_training_program_nodes.owner_role_id', '=', DB::raw("2"));
 		            		})
-		            		->join('training_program', 'training_program.id', '=', 'user_training_program_nodes.training_program_id');
-
-
-						//Search by Job Function
-						foreach ($data['jobFunction'] as $row) {
-					    	$query->orWhere('job_function', 'like', '%'.$row.'%');
-					    }
-
-					    //Search by Skill
-						foreach ($data['skill'] as $row) {
-					    	$query->orWhere('skill_name', 'like', '%'.$row.'%');
-					    }
+		            		->leftJoin('training_program', 'training_program.id', '=', 'user_training_program_nodes.training_program_id')
+		            		->leftJoin('corporates', 'corporates.corporate_name', '=', 'users.corporate_name')
+		            		->leftJoin('corporate_industry_nodes', 'corporate_industry_nodes.corporate_id', '=', 'corporates.id')
+		            		->leftJoin('industries', 'industries.id', '=', 'corporate_industry_nodes.industry_id')
+		            		->where(function($where) use ($data) {
+		            			//Search by Job Function
+		            			foreach ($data['jobFunction'] as $row) {
+							    	if($row != '0')
+							    		$where = $where->orWhere('job_function', 'like', '%'.$row.'%');
+							    }
+		            		})
+		            		->where(function($where) use ($data) {
+		            			//Search by Seniority Level
+								foreach ($data['seniorityLevel'] as $row) {
+							    	if($row != '0')
+							    		$where = $where->orWhere('job_seniority_level', 'like', '%'.$row.'%');
+							    }
+		            		})
+		            		->where(function($where) use ($data) {
+		            			//Search by Industry Type
+								foreach ($data['industryType'] as $row) {
+									if($row != '0')
+							    		$where = $where->orWhere('industry_name', 'like', '%'.$row.'%');
+							    }
+		            		})
+		            		->where(function($where) use ($data) {
+								//Search by Skill
+								foreach ($data['skill'] as $row) {
+									if($row != '0')
+							    		$where = $where->orWhere('skill_name', 'like', '%'.$row.'%');
+							    }
+		            		});
+		            
 		            })
 					->get();
 
+
 		    $users_data = array();
+
 		   	foreach($users as $user):
 		       // <!-- USER EXPERTISES
 		       // Get Expertises Data
@@ -673,31 +813,42 @@ class SearchController extends Controller {
 
 			            	$query->select('providers.id')
 			            		->from('providers')
-			            		->join('user_skill_nodes', function($join){
+			            		->leftJoin('user_skill_nodes', function($join){
 			            			$join->on('user_skill_nodes.owner_id', '=', 'providers.id')
 			            				->on('user_skill_nodes.owner_role_id', '=', DB::raw("3"));
 			            		})
-								->join('skills', 'skills.id', '=', 'user_skill_nodes.skill_id');
-								/*->join('user_training_program_nodes', function($join){
+								->leftJoin('skills', 'skills.id', '=', 'user_skill_nodes.skill_id')
+								->leftJoin('user_training_program_nodes', function($join){
 			            			$join->on('user_training_program_nodes.owner_id', '=', 'providers.id')
 			            				->on('user_training_program_nodes.owner_role_id', '=', DB::raw("3"));
+			            		})
+			            		->leftJoin('training_program', 'training_program.id', '=', 'user_training_program_nodes.training_program_id')
+			            		/*->where(function($where) use ($data) {
+			            			//Search by Job Function
+			            			foreach ($data['jobFunction'] as $row) {
+								    	$where = $where->orWhere('job_function', 'like', '%'.$row.'%');
+								    }
+			            		})
+			            		->where(function($where) use ($data) {
+			            			//Search by Seniority Level
+									foreach ($data['seniorityLevel'] as $row) {
+								    	$where = $where->orWhere('job_seniority_level', 'like', '%'.$row.'%');
+								    }
+			            		})
+			            		->where(function($where) use ($data) {
+			            			//Search by Industry Type
+									foreach ($data['industryType'] as $row) {
+								    	$where = $where->orWhere('industry_name', 'like', '%'.$row.'%');
+								    }
 			            		})*/
-			            		//->join('training_program', 'training_program.id', '=', 'user_training_program_nodes.training_program_id');
+			            		->where(function($where) use ($data) {
+									//Search by Skill
+									foreach ($data['skill'] as $row) {
+								    	if($row != '0')
+								    		$where = $where->orWhere('skill_name', 'like', '%'.$row.'%');
+								    }
+			            		});
 
-
-			            	$keywords = explode('+', $request->keywords);
-
-							/*foreach ($keywords as $row) {
-						    	$query->orWhere('provider_name', 'like', '%'.$row.'%')
-						    		->orWhere('skill_name', 'like', '%'.$row.'%');
-						    		//->orWhere('training_program_name_en', 'like', '%'.$row.'%')
-						    		//->orWhere('training_program_name_id', 'like', '%'.$row.'%');
-						    }*/
-
-						    //Search by Skill
-							foreach ($data['skill'] as $row) {
-						    	$query->orWhere('skill_name', 'like', '%'.$row.'%');
-						    }
 			            })
 						->get();
 

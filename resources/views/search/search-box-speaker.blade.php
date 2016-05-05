@@ -140,7 +140,7 @@
         data-name="must_have"
         data-validation=""
         data-item-label="<?php echo implode(',',config('custom.list_must_have')); ?>"
-        data-item-value="1,2,3"
+        data-item-value="<?php echo implode(',',config('custom.list_must_have')); ?>"
         data-classes="form-control"
         data-current="">
       </div>
