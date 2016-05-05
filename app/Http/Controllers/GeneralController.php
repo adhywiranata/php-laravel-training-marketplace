@@ -49,6 +49,10 @@ use App\Models\Testimonial as Testimonial;
 //Learning Outcome
 use App\Models\LearningOutcome as LearningOutcome;
 
+//Language
+use App\Models\Language as Language;
+use App\Models\UserLanguageNode as UserLanguageNode;
+
 //Request
 use App\Http\Requests\trainingExperienceRequest;
 use App\Http\Requests\workExperienceRequest;
@@ -60,6 +64,7 @@ use App\Http\Requests\videoRequest;
 use App\Http\Requests\testimonialRequest;
 use App\Http\Requests\SignUpLandingRequest;
 use App\Http\Requests\userProviderCorporateRequest;
+use App\Http\Requests\languageRequest;
 
 use App\Models\UserRoleNode as UserRoleNode;
 use App\Models\UserProviderCorporateNode as UserProviderCorporateNode;
@@ -1715,6 +1720,58 @@ class GeneralController extends Controller {
 	}
 
 	/**
+	* Create Language
+	*
+	* @return Response
+	*/
+
+	public function addLanguage()
+	{
+		return view('profile.forms.add-language');
+	}
+
+	public function createLanguage(languageRequest $request)
+	{
+		$input = $request->all();
+		$session_owner_id = Session::get('owner_id');
+		$session_owner_role_id = Session::get('owner_role_id');
+
+		$languages = explode('|||',$input['language']);
+		for($i=0;$i<count($languages);$i++)
+		{
+			$language_name = $languages[$i];
+			if($language_name != '')
+			{
+				$language = Language::where('language',$language_name)->first();
+				if(count($language) == 0)
+				{
+					$language = Language::create([ 'language' => $language_name ]);
+				}
+
+				$user_language_node = DB::table('user_language_nodes')
+													 ->where('user_language_nodes.owner_id', '=', $session_owner_id)
+													 ->where('user_language_nodes.owner_role_id', '=', $session_owner_role_id)
+													 ->where('user_language_nodes.language_id', '=', $language->id)
+													 ->first();
+
+				if(count($user_language_node) == 0):
+					$insert_language = [
+						'owner_id' 						=> $session_owner_id,
+						'owner_role_id' 			=> $session_owner_role_id,
+						'language_id' 				=> $language->id,
+					];
+					UserLanguageNode::create($insert_language);
+				endif;
+
+			}
+		}
+
+
+		return redirect('dashboard');
+	}
+
+
+	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
@@ -1788,7 +1845,6 @@ class GeneralController extends Controller {
 				->select($columnName)
 				->get();
 		}
-
 		echo json_encode($result);
 	}
 
