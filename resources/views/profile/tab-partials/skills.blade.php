@@ -58,7 +58,9 @@
         </a>
         @endif
         @foreach($expertise->endorse_users as $endorse_user)
-        <img class="pull-right" style="margin:0 2px;" src="{{ url('images/users/'.$endorse_user->profile_picture) }}" height="30px" />
+        <a href="{{url('/u/'.$endorse_user->endorse_slug)}}">
+          <img title="<?php echo $endorse_user->first_name." ".$endorse_user->last_name; ?>" class="pull-right" style="margin:0 2px;" src="{{ url('images/users/'.$endorse_user->profile_picture) }}" height="30px" />
+        </a>
         @endforeach
       </div>
     </div>

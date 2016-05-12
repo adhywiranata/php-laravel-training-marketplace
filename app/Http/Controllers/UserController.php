@@ -386,6 +386,7 @@ class UserController extends Controller {
 								"profile_picture"		=>	$user_endorse->profile_picture,
 								"first_name"				=>	$user_endorse->first_name,
 								"last_name"					=>	$user_endorse->last_name,
+								"endorse_slug"		  =>	$user_endorse->slug,
 						);
 						array_push($user_endorses_data,$user_endorse_data);
 					endforeach;
